@@ -16,14 +16,14 @@ static void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color)
   memcpy(buffer, &col, screenSurface->format->BytesPerPixel);
 }
 
-SDL_Surface* drawBox(SDL_Surface* screenSurface, int posX, int posY, int width, int height, SDL_Color color)
+SDL_Surface* drawBox(SDL_Surface* screenSurface, int posX, int posY, int size, SDL_Color color)
 {
   // Lock the surface before painting it
   if(SDL_MUSTLOCK(screenSurface)) SDL_LockSurface(screenSurface);
 
-  // Draw a box of pixels with size width * height
-  for(int x = posX; x < posX + width; x++) {
-    for (int y = posY; y < posY + height; y++) {
+  // Draw a box of pixels
+  for(int x = posX; x < posX + size; x++) {
+    for (int y = posY; y < posY + size; y++) {
       drawPixel(screenSurface, x, y, color);
     }
   }

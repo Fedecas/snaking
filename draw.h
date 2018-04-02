@@ -3,7 +3,7 @@
 
 #endif //SNAKE_DRAW_H
 
-SDL_Surface* drawBox(SDL_Surface* screenSurface, int posX, int posY, int width, int height, SDL_Color color);
+SDL_Surface* drawBox(SDL_Surface* screenSurface, int posX, int posY, int size, SDL_Color color);
 /*
- * Draw a box of color in the posX and posY on window with size width * height
+ * Draw a box of color in the posX and posY on window
  */
