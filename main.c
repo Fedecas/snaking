@@ -4,7 +4,7 @@
 #include "draw.h"
 #include "window.h"
 
-#define DELAY_IN_MS 33
+#define DELAY_IN_MS 25
 
 int main(int argc, char* args[])
 {
@@ -20,9 +20,6 @@ int main(int argc, char* args[])
   // For events on window
   SDL_Event event;
 
-  // Create the color to paint
-  SDL_Color color;
-
   //Initialize SDL
   if(SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -32,6 +29,8 @@ int main(int argc, char* args[])
 
     // Create a snake
     snake = snakeCreate();
+    snakeIncrease(snake);
+    snakeIncrease(snake);
     snakeIncrease(snake);
     snakeIncrease(snake);
 
@@ -45,7 +44,7 @@ int main(int argc, char* args[])
           case SDL_QUIT: quit = 1; break;
           case SDL_WINDOWEVENT:
             switch (event.window.event) {
-              case SDL_WINDOWEVENT_CLOSE: quit = 1; break;
+              case SDL_WINDOWEVENT_CLOSE: quit = 0; break;
               default: break;
             } break;
           case SDL_KEYDOWN:
@@ -61,15 +60,17 @@ int main(int argc, char* args[])
         }
       }
 
-      color = colorBuild(255, 255, 255, 255); // White color
-
       // Set the surface color to white
-      screenSurface = windowSurfaceColor(screenSurface, window, color);
+      screenSurface = windowSurfaceColor(screenSurface, window, COLOR_WHITE);
 
-      color = colorBuild(255, 0, 0, 255); // Red color
+      // Draw the blocks of the level
+      drawLevelBlocks(screenSurface);
+
+      // Draw the limits of the level
+      drawLimits(screenSurface);
 
       // Draw the snake in the screen
-      screenSurface = drawSnake(screenSurface, snake, color);
+      drawSnake(screenSurface, snake, COLOR_RED);
 
       // Move the snake according the last key pressed
       snakeMove(snake, arrow);
@@ -83,7 +84,7 @@ int main(int argc, char* args[])
   }
 
   // Destroy snake
-  snakeDestroy(snake);
+  snake = snakeDestroy(snake);
 
   // Destroy window
   SDL_DestroyWindow(window);

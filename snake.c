@@ -25,10 +25,10 @@ struct snake* snakeCreate()
 
   snake = malloc(sizeof(struct snake));
 
-  snake->direction = 1;
+  snake->direction = DIRECTION_LEFT;
   snake->size = 1;
-  snake->blocksX[0] = 105;
-  snake->blocksY[0] = 105;
+  snake->blocksX[0] = BLOCKS_X/2;
+  snake->blocksY[0] = BLOCKS_Y/2;
 
   return snake;
 }
@@ -44,23 +44,23 @@ void snakeMove(struct snake* snake, int direction)
 
   switch (direction) {
     case DIRECTION_LEFT:
-      futureheadpos = snake->blocksX[0] - SNAKE_BLOCK;
-      if(futureheadpos < WINDOW_LIMIT_LEFT) break;
+      futureheadpos = snake->blocksX[0] - 1;
+      if(futureheadpos < WINDOW_LIMIT_LEFT + 1) break;
       snake->blocksX[0] = futureheadpos;
       snakeMoveBody(snake, copyX, copyY); break;
     case DIRECTION_RIGHT:
-      futureheadpos = snake->blocksX[0] + SNAKE_BLOCK;
-      if(futureheadpos > WINDOW_LIMIT_RIGHT) break;
+      futureheadpos = snake->blocksX[0] + 1;
+      if(futureheadpos > WINDOW_LIMIT_RIGHT - 1) break;
       snake->blocksX[0] = futureheadpos;
       snakeMoveBody(snake, copyX, copyY); break;
     case DIRECTION_UP:
-      futureheadpos = snake->blocksY[0] - SNAKE_BLOCK;
-      if(futureheadpos < WINDOW_LIMIT_UP) break;
+      futureheadpos = snake->blocksY[0] - 1;
+      if(futureheadpos < WINDOW_LIMIT_UP + 1) break;
       snake->blocksY[0] = futureheadpos;
       snakeMoveBody(snake, copyX, copyY); break;
     case DIRECTION_DOWN:
-      futureheadpos = snake->blocksY[0] + SNAKE_BLOCK;
-      if(futureheadpos > WINDOW_LIMIT_DOWN) break;
+      futureheadpos = snake->blocksY[0] + 1;
+      if(futureheadpos > WINDOW_LIMIT_DOWN - 1) break;
       snake->blocksY[0] = futureheadpos;
       snakeMoveBody(snake, copyX, copyY); break;
     default: break;
@@ -69,6 +69,8 @@ void snakeMove(struct snake* snake, int direction)
 
 void snakeIncrease(struct snake* snake)
 {
+  if(snake->size == SNAKE_MAX_BLOCKS) goto end;
+
   int oldlastblock = snake->size - 1;
 
   snake->size++;
@@ -76,32 +78,35 @@ void snakeIncrease(struct snake* snake)
   int newlastblock = snake->size - 1;
 
   switch (snake->direction) {
-    case 1:
-      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] - SNAKE_BLOCK;
+    case DIRECTION_LEFT:
+      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] - 1;
       snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
       break;
-    case 2:
-      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] + SNAKE_BLOCK;
+    case DIRECTION_RIGHT:
+      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] + 1;
       snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
       break;
-    case 3:
+    case DIRECTION_UP:
       snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
-      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] - SNAKE_BLOCK;
+      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] - 1;
       break;
-    case 4:
+    case DIRECTION_DOWN:
       snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
-      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] + SNAKE_BLOCK;
+      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] + 1;
       break;
     default: break;
   }
+  end:;
 }
 
 int snakeIsColliding(struct snake* snake) {
   return 0;
 }
 
-void snakeDestroy(struct snake* snake)
+struct snake* snakeDestroy(struct snake* snake)
 {
   free(snake);
   snake = NULL;
+
+  return snake;
 }
