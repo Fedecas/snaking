@@ -34,4 +34,11 @@ SDL_Surface* drawBox(SDL_Surface* screenSurface, int posX, int posY, int size, S
   return screenSurface;
 }
 
+SDL_Surface* drawSnake(SDL_Surface* screenSurface, struct snake* snake, SDL_Color color)
+{
+  for(unsigned int i = 0; i < snake->size; i++) {
+    screenSurface = drawBox(screenSurface, snake->blocksX[i], snake->blocksY[i], BOX_SIZE, color);
+  }
 
+  return screenSurface;
+}

@@ -1,4 +1,4 @@
-OBJS = window.c draw.c color.c
+OBJS = window.c draw.c color.c snake.c
 CFLAGS = -Wall -Werror -Wextra -pedantic -std=c99
 PROGRAM = snake
 COMPILER = gcc
