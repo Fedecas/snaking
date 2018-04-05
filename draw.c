@@ -9,6 +9,7 @@
 #define FOODCOLOR         COLOR_DRED
 #define SURFACECOLOR      COLOR_DGREEN
 #define SNAKEHEADCOLOR    COLOR_ORANGE
+#define SNAKEBODYCOLOR    COLOR_RED
 
 void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color)
 {
@@ -58,12 +59,12 @@ void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color, 
   if(SDL_MUSTLOCK(screenSurface)) SDL_UnlockSurface(screenSurface);
 }
 
-void drawSnake(SDL_Surface* screenSurface, struct snake* snake, SDL_Color color)
+void drawSnake(SDL_Surface* screenSurface, struct snake* snake)
 {
   drawBlock(screenSurface, snake->blocksX[0], snake->blocksY[0], SNAKEHEADCOLOR, 1);
 
   for(unsigned int i = 1; i < snake->size; i++) {
-    drawBlock(screenSurface, snake->blocksX[i], snake->blocksY[i], color, 1);
+    drawBlock(screenSurface, snake->blocksX[i], snake->blocksY[i], SNAKEBODYCOLOR, 1);
   }
 }
 

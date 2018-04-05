@@ -1,6 +1,8 @@
 #ifndef SNAKE_SNAKE_H
 #define SNAKE_SNAKE_H
 
+#include "block.h"
+
 #define DIRECTION_LEFT  1
 #define DIRECTION_RIGHT 2
 #define DIRECTION_UP    3
@@ -12,7 +14,7 @@
 #define SNAKE_SPAWNX    (BLOCKS_X / 2) // Default block X to spawn a snake
 #define SNAKE_SPAWNY    (BLOCKS_Y / 2) // Default block Y to spawn a snake
 
-#define SNAKE_MAX_BLOCKS  20 // Maximum of blocks of a snake
+#define SNAKE_MAX_BLOCKS  ((BLOCKS_X - 2) * (BLOCKS_Y - 2)) // Maximum of blocks of a snake
 
 struct snake {
     int direction;

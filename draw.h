@@ -4,8 +4,8 @@
 #include "food.h"
 #include "snake.h"
 
-#define TYPE_FLAT   0
-#define TYPE_BORDER 1
+#define TYPE_FLAT   0 // Draw flat block
+#define TYPE_BORDER 1 // Draw block with black border
 
 void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color);
 /*
@@ -17,7 +17,7 @@ void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color, 
  * Draw a block of color in the screen
  */
 
-void drawSnake(SDL_Surface* screenSurface, struct snake* snake, SDL_Color color);
+void drawSnake(SDL_Surface* screenSurface, struct snake* snake);
 /*
  * Draw a snake of color in the screen
  */
@@ -33,5 +33,8 @@ void drawSurface(SDL_Surface* screenSurface);
  */
 
 void drawFood(SDL_Surface* screenSurface, struct food* food);
+/*
+ * Draw the actual food in screen
+ */
 
 #endif //SNAKE_DRAW_H

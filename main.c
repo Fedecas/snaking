@@ -34,7 +34,7 @@ int main(int argc, char* args[])
     window = windowCreate(window, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Initialize the surface of the window
-    screenSurface = windowSurfaceColor(screenSurface, window, COLOR_BLACK);
+    screenSurface = SDL_GetWindowSurface(window);
 
     // Create a snake
     snake = snakeCreate();
@@ -84,7 +84,7 @@ int main(int argc, char* args[])
       snakeMove(snake, arrow);
 
       // Draw the snake in the screen
-      drawSnake(screenSurface, snake, COLOR_RED);
+      drawSnake(screenSurface, snake);
 
       // If snake eat the food
       if(foodInCollision(food, snake)) {
@@ -119,6 +119,8 @@ int main(int argc, char* args[])
 
   // Destroy the snake
   snake = snakeDestroy(snake);
+
+  SDL_FreeSurface(screenSurface);
 
   // Destroy the window
   SDL_DestroyWindow(window);
