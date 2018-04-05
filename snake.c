@@ -25,10 +25,15 @@ struct snake* snakeCreate()
 
   snake = malloc(sizeof(struct snake));
 
-  snake->direction = DIRECTION_LEFT;
+  snake->direction = SNAKE_DIRECTION;
   snake->size = 1;
-  snake->blocksX[0] = BLOCKS_X/2;
-  snake->blocksY[0] = BLOCKS_Y/2;
+  snake->hunger = SNAKE_HUNGER;
+  snake->blocksX[0] = SNAKE_SPAWNX;
+  snake->blocksY[0] = SNAKE_SPAWNY;
+
+  for(unsigned int i = 1; i < SNAKE_SIZE; i++) {
+    snakeIncrease(snake);
+  }
 
   return snake;
 }

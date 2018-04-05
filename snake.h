@@ -1,18 +1,23 @@
 #ifndef SNAKE_SNAKE_H
 #define SNAKE_SNAKE_H
 
-#include "block.h"
-
 #define DIRECTION_LEFT  1
 #define DIRECTION_RIGHT 2
 #define DIRECTION_UP    3
 #define DIRECTION_DOWN  4
 
-#define SNAKE_MAX_BLOCKS  10
+#define SNAKE_DIRECTION 1 //(1 + ((int)random() % 4))
+#define SNAKE_SIZE      3
+#define SNAKE_HUNGER    10
+#define SNAKE_SPAWNX    (BLOCKS_X / 2)
+#define SNAKE_SPAWNY    (BLOCKS_Y / 2)
+
+#define SNAKE_MAX_BLOCKS  20
 
 struct snake {
     int direction;
     int size;
+    int hunger;
     int blocksX[SNAKE_MAX_BLOCKS];
     int blocksY[SNAKE_MAX_BLOCKS];
 };

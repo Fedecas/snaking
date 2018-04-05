@@ -1,6 +1,10 @@
 #ifndef SNAKE_DRAW_H
 #define SNAKE_DRAW_H
 
+#define TYPE_FLAT   0
+#define TYPE_BORDER 1
+
+#include "food.h"
 #include "snake.h"
 
 void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color);
@@ -8,7 +12,7 @@ void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color);
  * Paint a pixel of color in the screen
  */
 
-void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color);
+void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color, int type);
 /*
  * Draw a block of color in the screen
  */
@@ -27,5 +31,7 @@ void drawSurface(SDL_Surface* screenSurface);
 /*
  * Draw the blocks of the surface
  */
+
+void drawFood(SDL_Surface* screenSurface, struct food* food);
 
 #endif //SNAKE_DRAW_H
