@@ -2,4 +2,4 @@
 CMakeLists.txt
 cmake-build-debug/
 *.o
-snake
+snaking

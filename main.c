@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <time.h>
 
 #include "block.h"
 #include "color.h"
@@ -6,7 +7,7 @@
 #include "food.h"
 #include "window.h"
 
-#define DELAY_IN_MS 50
+#define DELAY_IN_MS 30
 
 int main(int argc, char* args[])
 {
@@ -45,7 +46,12 @@ int main(int argc, char* args[])
     int quit = 0;
     int score = 0;
 
+    int frames = 0;
+    float seconds = 0;
+
     while(!quit) {
+      clock_t start = clock();
+
       // Draw the blocks of the level
       drawSurface(screenSurface);
 
@@ -92,9 +98,19 @@ int main(int argc, char* args[])
 
       // Update the changes in window
       SDL_UpdateWindowSurface(window);
+      frames++;
 
       // Wait
       SDL_Delay(DELAY_IN_MS);
+
+      clock_t end = clock();
+      seconds = seconds + (float)(end - start) / CLOCKS_PER_SEC;
+
+      if(seconds >= 0.5) {
+        printf("FPS: %d\n", frames);
+        frames = 0;
+        seconds = 0;
+      }
     }
   }
 
