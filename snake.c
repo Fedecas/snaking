@@ -104,7 +104,7 @@ void snakeIncrease(struct snake* snake)
   end:;
 }
 
-int snakeIsColliding(struct snake* snake) {
+int snakeIsColliding(struct snake* snake) { // TODO
   return 0;
 }
 

@@ -6,13 +6,13 @@
 #define DIRECTION_UP    3
 #define DIRECTION_DOWN  4
 
-#define SNAKE_DIRECTION 1 //(1 + ((int)random() % 4))
-#define SNAKE_SIZE      3
-#define SNAKE_HUNGER    10
-#define SNAKE_SPAWNX    (BLOCKS_X / 2)
-#define SNAKE_SPAWNY    (BLOCKS_Y / 2)
+#define SNAKE_DIRECTION (1 + ((int)random() % 4)) // Pick a direction to snake by default
+#define SNAKE_SIZE      3 // Size of the snake in blocks
+#define SNAKE_HUNGER    10 // Number of calories to have to eat the snake for increase
+#define SNAKE_SPAWNX    (BLOCKS_X / 2) // Default block X to spawn a snake
+#define SNAKE_SPAWNY    (BLOCKS_Y / 2) // Default block Y to spawn a snake
 
-#define SNAKE_MAX_BLOCKS  20
+#define SNAKE_MAX_BLOCKS  20 // Maximum of blocks of a snake
 
 struct snake {
     int direction;
@@ -24,12 +24,12 @@ struct snake {
 
 struct snake* snakeCreate();
 /*
- * Initialize the snake
+ * Initialize the snake and set the parameters in default values
  */
 
 void snakeMove(struct snake* snake, int direction);
 /*
- * Move the snake one block in a direction
+ * Move the snake one block to the entered direction
  */
 
 void snakeIncrease(struct snake* snake);

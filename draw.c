@@ -5,6 +5,11 @@
 #include "food.h"
 #include "window.h"
 
+#define WALLCOLOR         COLOR_YELLOW
+#define FOODCOLOR         COLOR_DRED
+#define SURFACECOLOR      COLOR_DGREEN
+#define SNAKEHEADCOLOR    COLOR_ORANGE
+
 void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color)
 {
   // Color convert
@@ -46,6 +51,7 @@ void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color, 
           }
         }
       } break;
+    default: break;
   }
 
   // Unlock the surface after painting it
@@ -54,7 +60,7 @@ void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color, 
 
 void drawSnake(SDL_Surface* screenSurface, struct snake* snake, SDL_Color color)
 {
-  drawBlock(screenSurface, snake->blocksX[0], snake->blocksY[0], COLOR_ORANGE, 1);
+  drawBlock(screenSurface, snake->blocksX[0], snake->blocksY[0], SNAKEHEADCOLOR, 1);
 
   for(unsigned int i = 1; i < snake->size; i++) {
     drawBlock(screenSurface, snake->blocksX[i], snake->blocksY[i], color, 1);
@@ -64,16 +70,16 @@ void drawSnake(SDL_Surface* screenSurface, struct snake* snake, SDL_Color color)
 void drawLimits(SDL_Surface* screenSurface)
 {
   for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
-    drawBlock(screenSurface, WINDOW_LIMIT_LEFT, y, COLOR_BLUE, 1);
+    drawBlock(screenSurface, WINDOW_LIMIT_LEFT, y, WALLCOLOR, 1);
   }
   for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
-    drawBlock(screenSurface, WINDOW_LIMIT_RIGHT, y, COLOR_BLUE, 1);
+    drawBlock(screenSurface, WINDOW_LIMIT_RIGHT, y, WALLCOLOR, 1);
   }
   for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-    drawBlock(screenSurface, x, WINDOW_LIMIT_UP, COLOR_BLUE, 1);
+    drawBlock(screenSurface, x, WINDOW_LIMIT_UP, WALLCOLOR, 1);
   }
   for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-    drawBlock(screenSurface, x, WINDOW_LIMIT_DOWN, COLOR_BLUE, 1);
+    drawBlock(screenSurface, x, WINDOW_LIMIT_DOWN, WALLCOLOR, 1);
   }
 }
 
@@ -81,12 +87,12 @@ void drawSurface(SDL_Surface* screenSurface)
 {
   for(unsigned int y = WINDOW_LIMIT_UP + 1; y < WINDOW_LIMIT_DOWN; y++) {
     for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-      drawBlock(screenSurface, x, y, COLOR_WHITE, 0);
+      drawBlock(screenSurface, x, y, SURFACECOLOR, 0);
     }
   }
 }
 
 void drawFood(SDL_Surface* screenSurface, struct food* food)
 {
-  drawBlock(screenSurface, food->x, food->y, COLOR_GREEN, 1);
+  drawBlock(screenSurface, food->x, food->y, FOODCOLOR, 1);
 }

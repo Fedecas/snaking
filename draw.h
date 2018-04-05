@@ -1,11 +1,11 @@
 #ifndef SNAKE_DRAW_H
 #define SNAKE_DRAW_H
 
-#define TYPE_FLAT   0
-#define TYPE_BORDER 1
-
 #include "food.h"
 #include "snake.h"
+
+#define TYPE_FLAT   0
+#define TYPE_BORDER 1
 
 void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color);
 /*

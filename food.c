@@ -9,8 +9,8 @@ struct food* foodCreate()
 
   food = malloc(sizeof(struct food));
 
-  food->x = 1 + ((int)random() % (BLOCKS_X - 2));
-  food->y = 1 + ((int)random() % (BLOCKS_Y - 2));
+  food->x = FOOD_SPAWNX;
+  food->y = FOOD_SPAWNY;
   food->calories = FOOD_CALORIES;
 
   return food;

@@ -106,7 +106,7 @@ int main(int argc, char* args[])
       clock_t end = clock();
       seconds = seconds + (float)(end - start) / CLOCKS_PER_SEC;
 
-      if(seconds >= 0.5) {
+      if(seconds >= 1) {
         printf("FPS: %d\n", frames);
         frames = 0;
         seconds = 0;

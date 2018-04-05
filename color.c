@@ -13,4 +13,3 @@ SDL_Color colorBuild(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 
   return color;
 }
-
