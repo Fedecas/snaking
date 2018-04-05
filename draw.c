@@ -43,37 +43,34 @@ void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color)
 
 void drawSnake(SDL_Surface* screenSurface, struct snake* snake, SDL_Color color)
 {
-  for(unsigned int i = 0; i < snake->size; i++) {
-    drawBlock(screenSurface, snake->blocksX[i], snake->blocksY[i], color);
-  }
-}
+  drawBlock(screenSurface, snake->blocksX[0], snake->blocksY[0], COLOR_ORANGE);
 
-void drawLevelBlocks(SDL_Surface* screenSurface)
-{
-  for(unsigned int i = 0; i < WINDOW_WIDTH; i++) {
-    for(unsigned int j = 0; j < WINDOW_HEIGHT; j++) {
-      if((j % BLOCK_SIZE) == 0) {
-        drawPixel(screenSurface, i, j, COLOR_BLACK);
-      }
-      if((i % BLOCK_SIZE) == 0) {
-        drawPixel(screenSurface, i, j, COLOR_BLACK);
-      }
-    }
+  for(unsigned int i = 1; i < snake->size; i++) {
+    drawBlock(screenSurface, snake->blocksX[i], snake->blocksY[i], color);
   }
 }
 
 void drawLimits(SDL_Surface* screenSurface)
 {
-  for(unsigned int y = WINDOW_LIMIT_UP; y < BLOCKS_Y; y++) {
+  for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
     drawBlock(screenSurface, WINDOW_LIMIT_LEFT, y, COLOR_BLUE);
   }
-  for(unsigned int y = WINDOW_LIMIT_UP; y < BLOCKS_Y; y++) {
-    drawBlock(screenSurface, BLOCKS_X - 1, y, COLOR_BLUE);
+  for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
+    drawBlock(screenSurface, WINDOW_LIMIT_RIGHT, y, COLOR_BLUE);
   }
-  for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < BLOCKS_X - 1; x++) {
+  for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
     drawBlock(screenSurface, x, WINDOW_LIMIT_UP, COLOR_GREEN);
   }
-  for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < BLOCKS_X - 1; x++) {
-    drawBlock(screenSurface, x, BLOCKS_Y - 1, COLOR_GREEN);
+  for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
+    drawBlock(screenSurface, x, WINDOW_LIMIT_DOWN, COLOR_GREEN);
+  }
+}
+
+void drawSurface(SDL_Surface* screenSurface)
+{
+  for(unsigned int y = WINDOW_LIMIT_UP + 1; y < WINDOW_LIMIT_DOWN; y++) {
+    for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
+      drawBlock(screenSurface, x, y, COLOR_WHITE);
+    }
   }
 }

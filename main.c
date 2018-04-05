@@ -37,6 +37,9 @@ int main(int argc, char* args[])
     int arrow = 0;
     int quit = 0;
 
+    // Set the surface color to white
+    screenSurface = windowSurfaceColor(screenSurface, window, COLOR_WHITE);
+
     while(!quit) {
       // Wait events in window/keyboard
       while(SDL_PollEvent(&event)) {
@@ -44,7 +47,7 @@ int main(int argc, char* args[])
           case SDL_QUIT: quit = 1; break;
           case SDL_WINDOWEVENT:
             switch (event.window.event) {
-              case SDL_WINDOWEVENT_CLOSE: quit = 0; break;
+              case SDL_WINDOWEVENT_CLOSE: quit = 1; break;
               default: break;
             } break;
           case SDL_KEYDOWN:
@@ -60,20 +63,17 @@ int main(int argc, char* args[])
         }
       }
 
-      // Set the surface color to white
-      screenSurface = windowSurfaceColor(screenSurface, window, COLOR_WHITE);
-
       // Draw the blocks of the level
-      drawLevelBlocks(screenSurface);
+      drawSurface(screenSurface);
 
       // Draw the limits of the level
       drawLimits(screenSurface);
 
-      // Draw the snake in the screen
-      drawSnake(screenSurface, snake, COLOR_RED);
-
       // Move the snake according the last key pressed
       snakeMove(snake, arrow);
+
+      // Draw the snake in the screen
+      drawSnake(screenSurface, snake, COLOR_RED);
 
       // Update the changes in window
       SDL_UpdateWindowSurface(window);
