@@ -2,7 +2,7 @@ OBJS = window.c draw.c color.c snake.c food.c block.c
 CFLAGS = -Wall -Werror -Wextra -pedantic -std=c99
 PROGRAM = snaking
 COMPILER = gcc
-SDL = -lSDL2
+SDL = -lSDL2 -lSDL2_ttf
 
 test: $(OBJS)
 	$(COMPILER) -c $(OBJS) $(SDL)

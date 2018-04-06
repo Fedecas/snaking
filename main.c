@@ -31,7 +31,7 @@ int main(int argc, char* args[])
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else {
     // Create a window
-    window = windowCreate(window, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
+    window = windowCreate(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Initialize the surface of the window
     screenSurface = SDL_GetWindowSurface(window);
@@ -120,6 +120,7 @@ int main(int argc, char* args[])
   // Destroy the snake
   snake = snakeDestroy(snake);
 
+  // Free the surface
   SDL_FreeSurface(screenSurface);
 
   // Destroy the window
