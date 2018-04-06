@@ -32,9 +32,32 @@ void drawSurface(SDL_Surface* screenSurface);
  * Draw the blocks of the surface
  */
 
+void drawExtra(SDL_Surface* screenSurface);
+/*
+ * Draw the extra blocks below the game level
+ */
+
 void drawFood(SDL_Surface* screenSurface, struct food* food);
 /*
  * Draw the actual food in screen
+ */
+
+void drawText(SDL_Surface* screenSurface, char* string,
+              int size, int x, int y,
+              SDL_Color foregroundcolor,
+              SDL_Color backgroundcolor);
+/*
+ * Draw a text in the screen
+ */
+
+void drawScore(SDL_Surface* screenSurface, int score);
+/*
+ * Draw the player score
+ */
+
+void drawFPS(SDL_Surface* screenSurface, int fps);
+/*
+ * Draw the frames per second
  */
 
 #endif //SNAKE_DRAW_H

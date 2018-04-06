@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <time.h>
 
 #include "block.h"
@@ -30,8 +31,10 @@ int main(int argc, char* args[])
   if(SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else {
+    TTF_Init();
+
     // Create a window
-    window = windowCreate(window, WINDOW_WIDTH, WINDOW_HEIGHT);
+    window = windowCreate(window);
 
     // Initialize the surface of the window
     screenSurface = SDL_GetWindowSurface(window);
@@ -48,12 +51,15 @@ int main(int argc, char* args[])
 
     int frames = 0;
     float seconds = 0;
+    int FPS = 0;
 
     while(!quit) {
       clock_t start = clock();
 
       // Draw the blocks of the level
       drawSurface(screenSurface);
+
+      drawExtra(screenSurface);
 
       // Draw the limits of the level
       drawLimits(screenSurface);
@@ -90,11 +96,24 @@ int main(int argc, char* args[])
       if(foodInCollision(food, snake)) {
         food = foodEat(food, snake);
         score++;
-        printf("SCORE: %d\n", score);
       }
 
       // Draw the actual food in the screen
       drawFood(screenSurface, food);
+
+      // Draw the score
+      drawScore(screenSurface, score);
+
+      clock_t end = clock();
+      seconds = seconds + (float)(end - start) / CLOCKS_PER_SEC;
+
+      if(seconds >= 1) {
+        FPS = frames;
+        frames = 0;
+        seconds = 0;
+      }
+
+      drawFPS(screenSurface, FPS);
 
       // Update the changes in window
       SDL_UpdateWindowSurface(window);
@@ -102,15 +121,6 @@ int main(int argc, char* args[])
 
       // Wait
       SDL_Delay(DELAY_IN_MS);
-
-      clock_t end = clock();
-      seconds = seconds + (float)(end - start) / CLOCKS_PER_SEC;
-
-      if(seconds >= 1) {
-        printf("FPS: %d\n", frames);
-        frames = 0;
-        seconds = 0;
-      }
     }
   }
 
@@ -125,6 +135,8 @@ int main(int argc, char* args[])
 
   // Destroy the window
   SDL_DestroyWindow(window);
+
+  TTF_Quit();
 
   // Quit SDL subsystems
   SDL_Quit();

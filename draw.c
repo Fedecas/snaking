@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <stdio.h>
 
 #include "color.h"
 #include "draw.h"
@@ -10,6 +12,9 @@
 #define SURFACECOLOR      COLOR_DGREEN
 #define SNAKEHEADCOLOR    COLOR_ORANGE
 #define SNAKEBODYCOLOR    COLOR_RED
+#define EXTRACOLOR        COLOR_WHITE
+#define SCORECOLOR        COLOR_RED
+#define FPSCOLOR          COLOR_BLACK
 
 void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color)
 {
@@ -96,4 +101,65 @@ void drawSurface(SDL_Surface* screenSurface)
 void drawFood(SDL_Surface* screenSurface, struct food* food)
 {
   drawBlock(screenSurface, food->x, food->y, FOODCOLOR, 1);
+}
+
+void drawExtra(SDL_Surface* screenSurface)
+{
+  int drawed = 0;
+  for(unsigned int y = WINDOW_LIMIT_DOWN + 1; y < WINDOW_LIMIT_DOWN + WINDOW_EXTRA + 1; y++) {
+    for(unsigned int x = WINDOW_LIMIT_LEFT; x < WINDOW_LIMIT_RIGHT + 1; x++) {
+      drawBlock(screenSurface, x, y, EXTRACOLOR, 0);
+      drawed++;
+    }
+  }
+}
+
+void drawText(SDL_Surface* screenSurface, char* string,
+   int size, int x, int y,
+   SDL_Color foregroundcolor,
+   SDL_Color backgroundcolor)
+{
+  TTF_Font* font = TTF_OpenFont("assets/Capture_it.ttf", size);
+
+  SDL_Surface* textSurface = TTF_RenderText_Shaded(font, string, foregroundcolor, backgroundcolor);
+
+  SDL_Rect textLocation = {x, y, 0, 0};
+
+  SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
+
+  SDL_FreeSurface(textSurface);
+
+  TTF_CloseFont(font);
+}
+
+void drawScore(SDL_Surface* screenSurface, int score)
+{
+  int posX = (WINDOW_LIMIT_LEFT + (BLOCK_SIZE / 4));
+  int posY = ((BLOCKS_Y * BLOCK_SIZE) + (BLOCK_SIZE / 2));
+
+  drawText(screenSurface, "SCORE:", 25, posX, posY, SCORECOLOR, EXTRACOLOR);
+
+  posX += ((BLOCK_SIZE * 4) + BLOCK_SIZE);
+  posY -= (BLOCK_SIZE / 4);
+
+  char str[12];
+  sprintf(str, "%d", score); // Integer to string
+
+  drawText(screenSurface, str, 30, posX, posY, SCORECOLOR, EXTRACOLOR);
+}
+
+void drawFPS(SDL_Surface* screenSurface, int fps)
+{
+  int posX = (((WINDOW_LIMIT_RIGHT - 1) * BLOCK_SIZE) - (BLOCK_SIZE / 2));
+  int posY = ((BLOCKS_Y * BLOCK_SIZE) + (BLOCK_SIZE / 2));
+
+  drawText(screenSurface, "FPS", 25, posX, posY, FPSCOLOR, EXTRACOLOR);
+
+  posX -= ((BLOCK_SIZE * 2) + (BLOCK_SIZE / 4));
+  posY -= (BLOCK_SIZE / 4);
+
+  char str[12];
+  sprintf(str, "%d", fps); // Integer to string
+
+  drawText(screenSurface, str, 30, posX, posY, FPSCOLOR, EXTRACOLOR);
 }
