@@ -1,48 +1,34 @@
 #ifndef SNAKE_DRAW_H
 #define SNAKE_DRAW_H
 
-#include "food.h"
-#include "snake.h"
+static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
+{
+  SDL_Color color = {red, green, blue, alpha};
+  return color;
+}
+
+#define COLOR_WHITE   mk_SDL_Color(255, 255, 255, 255)
+#define COLOR_DRED    mk_SDL_Color(128, 0, 0, 255)
+#define COLOR_RED     mk_SDL_Color(255, 0, 0, 255)
+#define COLOR_ORANGE  mk_SDL_Color(255, 128, 0, 255)
+#define COLOR_YELLOW  mk_SDL_Color(255, 255, 0, 255)
+#define COLOR_BLACK   mk_SDL_Color(0, 0, 0, 255)
+
+#define WALLCOLOR         COLOR_YELLOW
+#define TERRAINCOLOR      COLOR_WHITE
+#define EXTRACOLOR        COLOR_BLACK
+#define SCORECOLOR        COLOR_RED
 
 #define TYPE_FLAT   0 // Draw flat block
 #define TYPE_BORDER 1 // Draw block with black border
+#define TYPE_VOLUME 2 // Draw block with shadow
 
-void drawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color);
-/*
- * Paint a pixel of color in the screen
- */
-
-void drawBlock(SDL_Surface* screenSurface, int posX, int posY, SDL_Color color, int type);
+void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type);
 /*
  * Draw a block of color in the screen
  */
 
-void drawSnake(SDL_Surface* screenSurface, struct snake* snake);
-/*
- * Draw a snake of color in the screen
- */
-
-void drawLimits(SDL_Surface* screenSurface);
-/*
- * Draw the limits of the level
- */
-
-void drawSurface(SDL_Surface* screenSurface);
-/*
- * Draw the blocks of the surface
- */
-
-void drawExtra(SDL_Surface* screenSurface);
-/*
- * Draw the extra blocks below the game level
- */
-
-void drawFood(SDL_Surface* screenSurface, struct food* food);
-/*
- * Draw the actual food in screen
- */
-
-void drawText(SDL_Surface* screenSurface, char* string,
+void DrawText(SDL_Surface* screen, char* string,
               int size, int x, int y,
               SDL_Color foregroundcolor,
               SDL_Color backgroundcolor);
@@ -50,14 +36,30 @@ void drawText(SDL_Surface* screenSurface, char* string,
  * Draw a text in the screen
  */
 
-void drawScore(SDL_Surface* screenSurface, int score);
+void DrawCircle(SDL_Surface* screen, int x0, int y0, SDL_Color color);
+
+void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color);
+
+
+// -- Refactor -- //
+void DrawWalls(SDL_Surface* screen);
 /*
- * Draw the player score
+ * Draw the limits of the level
  */
 
-void drawFPS(SDL_Surface* screenSurface, int fps);
+void DrawTerrain(SDL_Surface* screen);
 /*
- * Draw the frames per second
+ * Draw the blocks of the surface
+ */
+
+void DrawExtra(SDL_Surface* screen);
+/*
+ * Draw the extra blocks below the game level
+ */
+
+void DrawScore(SDL_Surface* screen, int score);
+/*
+ * Draw the player score
  */
 
 #endif //SNAKE_DRAW_H

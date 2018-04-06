@@ -2,11 +2,13 @@
 
 #include "window.h"
 
-SDL_Window* windowCreate (SDL_Window* window)
+SDL_Window* WindowCreate()
 {
+  SDL_Window* window = NULL;
+
   window = SDL_CreateWindow(WINDOW_TITLE,
                             WINDOW_POSX, WINDOW_POSY,
-                            WINDOW_WIDTH, (WINDOW_HEIGHT + (BLOCK_SIZE * WINDOW_EXTRA)),
+                            WINDOW_WIDTH, (WINDOW_HEIGHT + (BLOCK_SIZE * WINDOW_EXTRA)), // TODO extra space
                             SDL_WINDOW_SHOWN);
 
   if(window == NULL) {

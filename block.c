@@ -1,8 +1,7 @@
 #include "block.h"
 
-int blockInCollision(int block1X, int block1Y, int block2X, int block2Y)
+int BlockInCollision(int x1, int y1, int x2, int y2)
 {
-  if(block1X == block2X && block1Y == block2Y) return 1;
-  else return 0;
+  return (x1 == x2 && y1 == y2) ? 1 : 0;
 }
 

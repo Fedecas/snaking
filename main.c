@@ -1,9 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <time.h>
 
-#include "block.h"
-#include "color.h"
 #include "draw.h"
 #include "food.h"
 #include "window.h"
@@ -12,57 +9,41 @@
 
 int main(int argc, char* args[])
 {
-  // The window we'll be rendering to
-  SDL_Window* window = NULL;
+  // Initialize TTF
+  TTF_Init();
 
-  // Surface of the window
-  SDL_Surface* screenSurface = NULL;
-
-  // For events on window
-  SDL_Event event;
-
-  // The snakes to play
-  struct snake* snake = NULL;
-
-  // The snakes to play
-  struct food* food = NULL;
-
-  //Initialize SDL
-  if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+  // Initialize SDL
+  if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else {
-    TTF_Init();
+    // The window we'll be rendering to
+    SDL_Window* window = WindowCreate();
 
-    // Create a window
-    window = windowCreate(window);
+    // Surface of the window
+    SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
 
-    // Initialize the surface of the window
-    screenSurface = SDL_GetWindowSurface(window);
+    // The snakes to play
+    struct snake* snake = SnakeCreate();
 
-    // Create a snake
-    snake = snakeCreate();
+    // The snakes to play
+    struct food* food = FoodCreate();
 
-    // Create first food
-    food = foodCreate();
+    // For events on window
+    SDL_Event event;
 
+    /* - Game running loop - */
     int arrow = 0;
     int quit = 0;
     int score = 0;
 
-    int frames = 0;
-    float seconds = 0;
-    int FPS = 0;
-
     while(!quit) {
-      clock_t start = clock();
-
       // Draw the blocks of the level
-      drawSurface(screenSurface);
+      DrawTerrain(screenSurface);
 
-      drawExtra(screenSurface);
+      DrawExtra(screenSurface);
 
       // Draw the limits of the level
-      drawLimits(screenSurface);
+      DrawWalls(screenSurface);
 
       // Wait events in window/keyboard
       while(SDL_PollEvent(&event)) {
@@ -87,55 +68,44 @@ int main(int argc, char* args[])
       }
 
       // Move the snake according the last key pressed
-      snakeMove(snake, arrow);
+      SnakeMove(snake, arrow);
 
       // Draw the snake in the screen
-      drawSnake(screenSurface, snake);
+      SnakeDraw(screenSurface, snake);
 
       // If snake eat the food
-      if(foodInCollision(food, snake)) {
-        food = foodEat(food, snake);
+      if(FoodInCollision(food, snake)) {
+        food = FoodEat(food, snake);
         score++;
       }
 
       // Draw the actual food in the screen
-      drawFood(screenSurface, food);
+      FoodDraw(screenSurface, food);
 
       // Draw the score
-      drawScore(screenSurface, score);
-
-      clock_t end = clock();
-      seconds = seconds + (float)(end - start) / CLOCKS_PER_SEC;
-
-      if(seconds >= 1) {
-        FPS = frames;
-        frames = 0;
-        seconds = 0;
-      }
-
-      drawFPS(screenSurface, FPS);
+      DrawScore(screenSurface, score);
 
       // Update the changes in window
       SDL_UpdateWindowSurface(window);
-      frames++;
 
       // Wait
       SDL_Delay(DELAY_IN_MS);
     }
+
+    // Destroy the food
+    food = FoodDestroy(food);
+
+    // Destroy the snake
+    snake = SnakeDestroy(snake);
+
+    // Free the surface
+    SDL_FreeSurface(screenSurface);
+
+    // Destroy the window
+    SDL_DestroyWindow(window);
   }
 
-  // Destroy the food
-  food = foodDestroy(food);
-
-  // Destroy the snake
-  snake = snakeDestroy(snake);
-
-  // Free the surface
-  SDL_FreeSurface(screenSurface);
-
-  // Destroy the window
-  SDL_DestroyWindow(window);
-
+  // Exit TTF
   TTF_Quit();
 
   // Quit SDL subsystems

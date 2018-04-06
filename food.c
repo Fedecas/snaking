@@ -1,9 +1,10 @@
 #include <SDL2/SDL.h>
 
 #include "block.h"
+#include "draw.h"
 #include "food.h"
 
-struct food* foodCreate()
+struct food* FoodCreate()
 {
   struct food* food = NULL;
 
@@ -16,7 +17,7 @@ struct food* foodCreate()
   return food;
 }
 
-int foodInCollision(struct food* food, struct snake* snake)
+int FoodInCollision(struct food* food, struct snake* snake)
 {
   int foodX = food->x;
   int foodY = food->y;
@@ -28,32 +29,40 @@ int foodInCollision(struct food* food, struct snake* snake)
     snakeblockX = snake->blocksX[i];
     snakeblockY = snake->blocksY[i];
 
-    if(blockInCollision(foodX, foodY, snakeblockX, snakeblockY)) return 1;
+    if(BlockInCollision(foodX, foodY, snakeblockX, snakeblockY)) return 1;
   }
 
   return 0;
 }
 
-struct food* foodEat(struct food* food, struct snake* snake)
+struct food* FoodEat(struct food* food, struct snake* snake)
 {
   int newsnakehunger = snake->hunger - food->calories;
 
   if(newsnakehunger <= 0) {
-    snakeIncrease(snake);
+    SnakeIncrease(snake);
 
     newsnakehunger = newsnakehunger + SNAKE_HUNGER;
   }
 
   snake->hunger = newsnakehunger;
 
-  food = foodDestroy(food);
+  FoodDestroy(food);
 
-  food = foodCreate();
+  food = FoodCreate();
 
   return food;
 }
 
-struct food* foodDestroy(struct food* food)
+void FoodDraw(SDL_Surface* screen, struct food* food)
+{
+  int posX = food->x;
+  int posY = food->y;
+
+  DrawBlock(screen, posX, posY, FOOD_COLOR, 1);
+}
+
+struct food* FoodDestroy(struct food* food)
 {
   free(food);
   food = NULL;
