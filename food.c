@@ -25,7 +25,7 @@ int FoodInCollision(struct food* food, struct snake* snake)
   int snakeblockX;
   int snakeblockY;
 
-  for(unsigned int i = 0; i < snake->size; i++) {
+  for(int i = 0; i < snake->size; i++) {
     snakeblockX = snake->blocksX[i];
     snakeblockY = snake->blocksY[i];
 

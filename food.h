@@ -7,7 +7,7 @@
 #define FOOD_SPAWNY   (1 + ((int)random() % (BLOCKS_Y - 2))) // Pick a block Y in the usable area
 #define FOOD_CALORIES 5 // (SNAKE_HUNGER / FOOD_CALORIES) = nº of food to eat for increase the snake
 
-#define FOOD_COLOR  mk_SDL_Color(109, 76, 65)
+#define FOOD_COLOR  mk_SDL_Color(109, 76, 65, 255)
 
 struct food {
     int x;

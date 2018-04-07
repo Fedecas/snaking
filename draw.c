@@ -4,6 +4,23 @@
 #include "draw.h"
 #include "window.h"
 
+// TODO use renders ***
+TTF_Font* DrawTextInit()
+{
+  TTF_Font* font = NULL;
+
+  font = TTF_OpenFont(FONT_DIR, FONT_SIZE);
+
+  if(font == NULL) {
+    printf("Font could not be loaded! TTF_Error: %p\n", TTF_GetError);
+  }
+
+  TTF_SetFontStyle(font, FONT_STYLE);
+  TTF_SetFontOutline(font, FONT_OUTLINE);
+
+  return font;
+}
+
 void DrawPixel(SDL_Surface *screen, int x, int y, SDL_Color sdlcolor)
 {
   Uint32 color = SDL_MapRGBA(screen->format, sdlcolor.r, sdlcolor.g, sdlcolor.b, sdlcolor.a);
@@ -76,19 +93,15 @@ void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type) // 
   if(SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
 }
 
-void DrawText(SDL_Surface* screen, char* text, int size, int x, int y, SDL_Color textcolor, SDL_Color bgcolor)
+void DrawText(SDL_Surface* screenSurface, SDL_Surface* textSurface,
+              TTF_Font* font, char* text, int x, int y,
+              SDL_Color textcolor, SDL_Color bgcolor)
 {
-  TTF_Font* font = TTF_OpenFont("assets/Capture_it.ttf", size); // TODO view fonts
-
-  SDL_Surface* textSurface = TTF_RenderText_Shaded(font, text, textcolor, bgcolor);
+  textSurface = TTF_RenderText_Shaded(font, text, textcolor, bgcolor);
 
   SDL_Rect textLocation = {x, y, 0, 0};
 
-  SDL_BlitSurface(textSurface, NULL, screen, &textLocation);
-
-  SDL_FreeSurface(textSurface);
-
-  TTF_CloseFont(font);
+  SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
 }
 
 void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color) // TODO
@@ -98,44 +111,6 @@ void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color col
     while(x0 + 1 < x1) {
       DrawPixel(screen, x0 + 1, y0, color);
       x0++;
-    }
-  }
-}
-
-void DrawCircle(SDL_Surface* screen, int x0, int y0, SDL_Color color) // TODO draw complete circle
-{
-  int radius = (BLOCK_SIZE/2);
-  x0 = ((x0 * BLOCK_SIZE) + radius);
-  y0 = ((y0 * BLOCK_SIZE) + radius);
-
-  int x = (radius - 1);
-  int y = 0;
-  int dx = 1;
-  int dy = 1;
-  int err = (dx - (radius << 1));
-
-  while (x >= y)
-  {
-    DrawPixel(screen, x0 + x, y0 + y, color);
-    DrawPixel(screen, x0 - x, y0 + y, color);
-    DrawLine(screen, x0 - x, y0 + y, x0 + x, y0 + y, color);
-    DrawPixel(screen, x0 - y, y0 + x, color);
-    DrawPixel(screen, x0 + y, y0 + x, color);
-    DrawPixel(screen, x0 - x, y0 - y, color);
-    DrawPixel(screen, x0 + x, y0 - y, color);
-    DrawLine(screen, x0 - x, y0 - y, x0 + x, y0 - y, color);
-    DrawPixel(screen, x0 - y, y0 - x, color);
-    DrawPixel(screen, x0 + y, y0 - x, color);
-
-    if (err <= 0)
-    {
-      y++;
-      err += dy;
-      dy += 2;
-    } else {
-      x--;
-      dx += 2;
-      err += dx - (radius << 1);
     }
   }
 }
@@ -175,34 +150,17 @@ void DrawExtra(SDL_Surface* screen)
   }
 }
 
-void DrawScore(SDL_Surface* screen, int score)
+void DrawScore(SDL_Surface* screen, SDL_Surface* text, TTF_Font* font, int score)
 {
   int posX = (WINDOW_LIMIT_LEFT + (BLOCK_SIZE / 4));
   int posY = ((BLOCKS_Y * BLOCK_SIZE) + (BLOCK_SIZE / 2));
 
-  DrawText(screen, "SCORE:", 25, posX, posY, SCORECOLOR, EXTRACOLOR);
+  DrawText(screen, text, font, "SCORE:", posX, posY, SCORECOLOR, EXTRACOLOR);
 
-  posX += ((BLOCK_SIZE * 4) + BLOCK_SIZE);
-  posY -= (BLOCK_SIZE / 4);
+  posX += ((BLOCK_SIZE * 5) + (BLOCK_SIZE / 2);
 
   char str[12];
   sprintf(str, "%d", score);
 
-  DrawText(screen, str, 30, posX, posY, SCORECOLOR, EXTRACOLOR);
+  DrawText(screen, text, font, str, posX, posY, SCORECOLOR, EXTRACOLOR);
 }
-
-/*void DrawFPS(SDL_Surface* screen, int fps)
-{
-  int posX = (((WINDOW_LIMIT_RIGHT - 1) * BLOCK_SIZE) - (BLOCK_SIZE / 2));
-  int posY = ((BLOCKS_Y * BLOCK_SIZE) + (BLOCK_SIZE / 2));
-
-  DrawText(screen, "FPS", 25, posX, posY, FPSCOLOR, EXTRACOLOR);
-
-  posX -= ((BLOCK_SIZE * 2) + (BLOCK_SIZE / 4));
-  posY -= (BLOCK_SIZE / 4);
-
-  char str[12];
-  sprintf(str, "%d", fps);
-
-  DrawText(screen, str, 30, posX, posY, FPSCOLOR, EXTRACOLOR);
-}*/

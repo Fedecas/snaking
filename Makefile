@@ -6,7 +6,7 @@ SDL = -lSDL2 -lSDL2_ttf
 
 test: $(OBJS)
 	$(COMPILER) -c $(OBJS) $(SDL)
-	$(COMPILER) -o $(PROGRAM) *.o main.c $(SDL)
+	$(COMPILER) main.c *.o $(SDL) -o $(PROGRAM)
 	./$(PROGRAM)
 
 clean: 
@@ -14,4 +14,4 @@ clean:
 
 compile: $(OBJS)
 	$(COMPILER) $(CFLAGS) -c $(OBJS) $(SDL)
-	$(COMPILER) $(CFLAGS) -o $(PROGRAM) *.o main.c $(SDL)
+	$(COMPILER) $(CFLAGS) main.c *.o $(SDL) -o $(PROGRAM)

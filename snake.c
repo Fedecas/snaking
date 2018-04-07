@@ -8,7 +8,7 @@ static void SnakeBodyMove(struct snake* snake, int copyX, int copyY)
 {
   int auxX, auxY;
 
-  for(unsigned int i = 1; i < snake->size; i++) {
+  for(int i = 1; i < snake->size; i++) {
     auxX = snake->blocksX[i];
     auxY = snake->blocksY[i];
 
@@ -32,7 +32,7 @@ struct snake* SnakeCreate()
   snake->blocksX[0] = SNAKE_SPAWNX;
   snake->blocksY[0] = SNAKE_SPAWNY;
 
-  for(unsigned int i = 1; i < SNAKE_SIZE; i++) {
+  for(int i = 1; i < SNAKE_SIZE; i++) {
     SnakeIncrease(snake);
   }
 
@@ -201,7 +201,7 @@ void SnakeDraw(SDL_Surface* screen, struct snake* snake)
   DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
   DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
 
-  for(unsigned int i = 1; i < snake->size; i++) {
+  for(int i = 1; i < snake->size; i++) {
     DrawBlock(screen, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
   }
 }

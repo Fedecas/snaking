@@ -5,29 +5,35 @@
 #include "food.h"
 #include "window.h"
 
-
-// TODO makefile
+// TODO chau extra
+// TODO clion config
 #define DELAY_IN_MS 50
 
 int main(int argc, char* args[])
 {
-  // Initialize TTF
+  // Initialize TTF module
   TTF_Init();
 
-  // Initialize SDL
-  if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+  // Initialize SDL module
+  if(SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else {
     // The window we'll be rendering to
     SDL_Window* window = WindowCreate();
 
-    // Surface of the window
+    // Surface of the screen
     SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
 
-    // The snakes to play
+    // Surface of the text score
+    SDL_Surface* scoreSurface = NULL;
+
+    // Initialize the font for texts
+    TTF_Font* font = DrawTextInit();
+
+    // Create the snake for use
     struct snake* snake = SnakeCreate();
 
-    // The snakes to play
+    // Create first food
     struct food* food = FoodCreate();
 
     // For events on window
@@ -86,7 +92,7 @@ int main(int argc, char* args[])
       FoodDraw(screenSurface, food);
 
       // Draw the score
-      DrawScore(screenSurface, score);
+      DrawScore(screenSurface, scoreSurface, font, score);
 
       // Update the changes in window
       SDL_UpdateWindowSurface(window);
@@ -101,7 +107,13 @@ int main(int argc, char* args[])
     // Destroy the snake
     snake = SnakeDestroy(snake);
 
-    // Free the surface
+    // Close the font opened
+    TTF_CloseFont(font);
+
+    // Free the score surface
+    SDL_FreeSurface(scoreSurface);
+
+    // Free the screen surface
     SDL_FreeSurface(screenSurface);
 
     // Destroy the window
