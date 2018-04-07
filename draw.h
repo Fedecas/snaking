@@ -1,27 +1,31 @@
 #ifndef SNAKE_DRAW_H
 #define SNAKE_DRAW_H
 
-static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
+static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue)
 {
-  SDL_Color color = {red, green, blue, alpha};
+  SDL_Color color = {red, green, blue};
   return color;
 }
 
-#define COLOR_WHITE   mk_SDL_Color(255, 255, 255, 255)
-#define COLOR_DRED    mk_SDL_Color(128, 0, 0, 255)
-#define COLOR_RED     mk_SDL_Color(255, 0, 0, 255)
-#define COLOR_ORANGE  mk_SDL_Color(255, 128, 0, 255)
-#define COLOR_YELLOW  mk_SDL_Color(255, 255, 0, 255)
-#define COLOR_BLACK   mk_SDL_Color(0, 0, 0, 255)
+#define COLOR_RED       mk_SDL_Color(255, 0, 0)
+#define COLOR_BLACK     mk_SDL_Color(0, 0, 0)
+#define COLOR_LBROWN    mk_SDL_Color(255, 249, 196)
+#define COLOR_BGREY     mk_SDL_Color(96, 125, 139)
 
-#define WALLCOLOR         COLOR_YELLOW
-#define TERRAINCOLOR      COLOR_WHITE
-#define EXTRACOLOR        COLOR_BLACK
-#define SCORECOLOR        COLOR_RED
+#define TERRAINCOLOR    COLOR_LBROWN
+#define WALLCOLOR       COLOR_BGREY
+
+#define EXTRACOLOR      COLOR_BLACK
+#define SCORECOLOR      COLOR_RED
 
 #define TYPE_FLAT   0 // Draw flat block
 #define TYPE_BORDER 1 // Draw block with black border
-#define TYPE_VOLUME 2 // Draw block with shadow
+#define TYPE_VOLUME 2 // Draw block simulating volume
+
+void DrawPixel(SDL_Surface *screen, int x, int y, SDL_Color sdlcolor);
+/*
+ * Paint a pixel of color in the screen
+ */
 
 void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type);
 /*

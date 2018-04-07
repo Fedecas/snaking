@@ -5,7 +5,9 @@
 #include "food.h"
 #include "window.h"
 
-#define DELAY_IN_MS 30
+
+// TODO makefile
+#define DELAY_IN_MS 50
 
 int main(int argc, char* args[])
 {
@@ -37,14 +39,6 @@ int main(int argc, char* args[])
     int score = 0;
 
     while(!quit) {
-      // Draw the blocks of the level
-      DrawTerrain(screenSurface);
-
-      DrawExtra(screenSurface);
-
-      // Draw the limits of the level
-      DrawWalls(screenSurface);
-
       // Wait events in window/keyboard
       while(SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -70,14 +64,23 @@ int main(int argc, char* args[])
       // Move the snake according the last key pressed
       SnakeMove(snake, arrow);
 
-      // Draw the snake in the screen
-      SnakeDraw(screenSurface, snake);
-
       // If snake eat the food
       if(FoodInCollision(food, snake)) {
         food = FoodEat(food, snake);
         score++;
       }
+
+      // Draw the blocks of the level
+      DrawTerrain(screenSurface);
+
+      // Draw the limits of the level
+      DrawWalls(screenSurface);
+
+      // Draw the extra blocks below level
+      DrawExtra(screenSurface);
+
+      // Draw the snake in the screen
+      SnakeDraw(screenSurface, snake);
 
       // Draw the actual food in the screen
       FoodDraw(screenSurface, food);

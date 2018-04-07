@@ -4,7 +4,7 @@
 #include "draw.h"
 #include "window.h"
 
-static void PaintPixel(SDL_Surface* screen, int x, int y, SDL_Color sdlcolor)
+void DrawPixel(SDL_Surface *screen, int x, int y, SDL_Color sdlcolor)
 {
   Uint32 color = SDL_MapRGBA(screen->format, sdlcolor.r, sdlcolor.g, sdlcolor.b, sdlcolor.a);
 
@@ -15,10 +15,12 @@ static void PaintPixel(SDL_Surface* screen, int x, int y, SDL_Color sdlcolor)
   pixels[thispixel] = color;
 }
 
-void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
+void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type) // TODO move to block.c
 {
   int drawposX = (x * BLOCK_SIZE);
   int drawposY = (y * BLOCK_SIZE);
+
+  int asd = 0;
 
   if(SDL_MUSTLOCK(screen)) SDL_LockSurface(screen);
 
@@ -26,7 +28,7 @@ void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
     case TYPE_FLAT:
       for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
         for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
-          PaintPixel(screen, posX, posY, color);
+          DrawPixel(screen, posX, posY, color);
         }
       } break;
     case TYPE_BORDER:
@@ -34,13 +36,40 @@ void DrawBlock(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
         for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
           if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
              || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
-            PaintPixel(screen, posX, posY, COLOR_BLACK);
+            DrawPixel(screen, posX, posY, COLOR_BLACK);
           } else {
-            PaintPixel(screen, posX, posY, color);
+            DrawPixel(screen, posX, posY, color);
           }
         }
       } break;
-    case TYPE_VOLUME: break; // TODO
+    case TYPE_VOLUME:
+      for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
+        for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
+          if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
+             || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
+            DrawPixel(screen, posX, posY, COLOR_BLACK);
+          } else {
+            DrawPixel(screen, posX, posY, color);
+          }
+        }
+      }
+
+      color.r = color.r / 2;
+      color.g = color.g / 2;
+      color.b = color.b / 2;
+
+      for (int posY = drawposY + BLOCK_SIZE - 1; posY > drawposY + 1; posY--) {
+        asd++;
+        for(int posX = drawposX + asd; posX < drawposX + BLOCK_SIZE - 1; posX++) {
+          DrawPixel(screen, posX, posY, color);
+        }
+      }
+
+      for(int posX = drawposX + BLOCK_SIZE/4 + 1; posX < drawposX + BLOCK_SIZE - BLOCK_SIZE/4; posX++) {
+        for (int posY = drawposY + BLOCK_SIZE - BLOCK_SIZE/4 - 1; posY > drawposY + BLOCK_SIZE/4; posY--) {
+          DrawPixel(screen, posX, posY, color);
+        }
+      } break;
     default: break;
   }
 
@@ -67,7 +96,7 @@ void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color col
   // TODO function compare with return GT - EQ - LT
   if(y0 == y1) {
     while(x0 + 1 < x1) {
-      PaintPixel(screen, x0 + 1, y0, color);
+      DrawPixel(screen, x0 + 1, y0, color);
       x0++;
     }
   }
@@ -87,16 +116,16 @@ void DrawCircle(SDL_Surface* screen, int x0, int y0, SDL_Color color) // TODO dr
 
   while (x >= y)
   {
-    PaintPixel(screen, x0 + x, y0 + y, color);
-    PaintPixel(screen, x0 - x, y0 + y, color);
+    DrawPixel(screen, x0 + x, y0 + y, color);
+    DrawPixel(screen, x0 - x, y0 + y, color);
     DrawLine(screen, x0 - x, y0 + y, x0 + x, y0 + y, color);
-    PaintPixel(screen, x0 - y, y0 + x, color);
-    PaintPixel(screen, x0 + y, y0 + x, color);
-    PaintPixel(screen, x0 - x, y0 - y, color);
-    PaintPixel(screen, x0 + x, y0 - y, color);
+    DrawPixel(screen, x0 - y, y0 + x, color);
+    DrawPixel(screen, x0 + y, y0 + x, color);
+    DrawPixel(screen, x0 - x, y0 - y, color);
+    DrawPixel(screen, x0 + x, y0 - y, color);
     DrawLine(screen, x0 - x, y0 - y, x0 + x, y0 - y, color);
-    PaintPixel(screen, x0 - y, y0 - x, color);
-    PaintPixel(screen, x0 + y, y0 - x, color);
+    DrawPixel(screen, x0 - y, y0 - x, color);
+    DrawPixel(screen, x0 + y, y0 - x, color);
 
     if (err <= 0)
     {
@@ -112,23 +141,23 @@ void DrawCircle(SDL_Surface* screen, int x0, int y0, SDL_Color color) // TODO dr
 }
 
 // -- Refactor -- //
-void DrawWalls(SDL_Surface* screen)
+void DrawWalls(SDL_Surface* screen) // TODO walls
 {
   for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
-    DrawBlock(screen, WINDOW_LIMIT_LEFT, y, WALLCOLOR, 1);
+    DrawBlock(screen, WINDOW_LIMIT_LEFT, y, WALLCOLOR, 0);
   }
   for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
-    DrawBlock(screen, WINDOW_LIMIT_RIGHT, y, WALLCOLOR, 1);
+    DrawBlock(screen, WINDOW_LIMIT_RIGHT, y, WALLCOLOR, 0);
   }
   for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-    DrawBlock(screen, x, WINDOW_LIMIT_UP, WALLCOLOR, 1);
+    DrawBlock(screen, x, WINDOW_LIMIT_UP, WALLCOLOR, 0);
   }
   for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-    DrawBlock(screen, x, WINDOW_LIMIT_DOWN, WALLCOLOR, 1);
+    DrawBlock(screen, x, WINDOW_LIMIT_DOWN, WALLCOLOR, 0);
   }
 }
 
-void DrawTerrain(SDL_Surface* screen)
+void DrawTerrain(SDL_Surface* screen) // TODO terrain
 {
   for(unsigned int y = WINDOW_LIMIT_UP + 1; y < WINDOW_LIMIT_DOWN; y++) {
     for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
