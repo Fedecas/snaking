@@ -5,7 +5,6 @@
 #include "food.h"
 #include "window.h"
 
-// TODO subir assets
 #define DELAY_IN_MS 50
 
 int main(int argc, char* args[])
@@ -41,7 +40,7 @@ int main(int argc, char* args[])
     /* - Game running loop - */
     int arrow = 0;
     int quit = 0;
-    int score = 10000;
+    int score = 0;
 
     while(!quit) {
       // Wait events in window/keyboard

@@ -4,7 +4,6 @@
 #include "draw.h"
 #include "window.h"
 
-// TODO use renders to draw ***
 TTF_Font* DrawTextInit()
 {
   TTF_Font* font = NULL;
@@ -50,18 +49,11 @@ void DrawText(SDL_Surface* screenSurface, SDL_Surface* textSurface,
   SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
 }
 
-void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color) // TODO DrawLine
+void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color)
 {
-  // TODO function to compare with return GT - EQ - LT
-  if(y0 == y1) {
-    while(x0 + 1 < x1) {
-      DrawPixel(screen, x0 + 1, y0, color);
-      x0++;
-    }
-  }
 }
 
-void DrawWalls(SDL_Surface* screen) // TODO walls module
+void DrawWalls(SDL_Surface* screen)
 {
   for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
     BlockDraw(screen, WINDOW_LIMIT_LEFT, y, WALLCOLOR, 0);
@@ -77,7 +69,7 @@ void DrawWalls(SDL_Surface* screen) // TODO walls module
   }
 }
 
-void DrawTerrain(SDL_Surface* screen) // TODO terrain module
+void DrawTerrain(SDL_Surface* screen)
 {
   for(unsigned int y = WINDOW_LIMIT_UP + 1; y < WINDOW_LIMIT_DOWN; y++) {
     for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {

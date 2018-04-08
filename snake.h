@@ -8,9 +8,9 @@
 #define DIRECTION_UP    3
 #define DIRECTION_DOWN  4
 
-#define SNAKE_DIRECTION 1 // Pick a direction to snake by default
-#define SNAKE_SIZE      3 // Size of the snake in blocks
-#define SNAKE_HUNGER    10 // Number of calories to have to eat the snake for increase
+#define SNAKE_DIRECTION 1   // Pick a direction to snake by default
+#define SNAKE_SIZE      3   // Size of the snake in blocks
+#define SNAKE_HUNGER    10  // Number of calories to have to eat the snake for increase
 #define SNAKE_SPAWNX    (BLOCKS_X / 2) // Default block X to spawn a snake
 #define SNAKE_SPAWNY    (BLOCKS_Y / 2) // Default block Y to spawn a snake
 
