@@ -39,7 +39,7 @@ struct snake* SnakeCreate()
   return snake;
 }
 
-void SnakeMove(struct snake* snake, int direction) // TODO improve the movebody
+void SnakeMove(struct snake* snake, int direction)
 {
   snake->direction = direction;
 
@@ -73,7 +73,7 @@ void SnakeMove(struct snake* snake, int direction) // TODO improve the movebody
   }
 }
 
-void SnakeIncrease(struct snake* snake) // TODO direction in each snake block
+void SnakeIncrease(struct snake* snake)
 {
   if(snake->size == SNAKE_MAX_BLOCKS) goto end;
 
@@ -105,13 +105,13 @@ void SnakeIncrease(struct snake* snake) // TODO direction in each snake block
   end:;
 }
 
-int SnakeIsColliding(struct snake* snake) { // TODO
+int SnakeIsColliding(struct snake* snake) {
   return 0;
 }
 
 void SnakeDraw(SDL_Surface* screen, struct snake* snake)
 {
-  DrawBlock(screen, snake->blocksX[0], snake->blocksY[0], SNAKE_HEAD_COLOR, 0);
+  BlockDraw(screen, snake->blocksX[0], snake->blocksY[0], SNAKE_HEAD_COLOR, 0);
 
   // First eye
   DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
@@ -202,7 +202,7 @@ void SnakeDraw(SDL_Surface* screen, struct snake* snake)
   DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
 
   for(int i = 1; i < snake->size; i++) {
-    DrawBlock(screen, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
+    BlockDraw(screen, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
   }
 }
 

@@ -1,7 +1,80 @@
 #include "block.h"
+#include "draw.h"
+#include "window.h"
 
 int BlockInCollision(int x1, int y1, int x2, int y2)
 {
   return (x1 == x2 && y1 == y2) ? 1 : 0;
 }
 
+int BlockOutOfLimits(int x, int y)
+{
+  int x_outoflimits = (x < WINDOW_LIMIT_LEFT) || (x > WINDOW_LIMIT_RIGHT);
+  int y_outoflimits = (y < WINDOW_LIMIT_UP) || (y > WINDOW_LIMIT_DOWN);
+
+  return (x_outoflimits || y_outoflimits) ? 1 : 0;
+}
+
+void BlockDraw(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
+{
+  if(x < WINDOW_LIMIT_LEFT || x > WINDOW_LIMIT_RIGHT || y < WINDOW_LIMIT_UP || y > WINDOW_LIMIT_DOWN) {
+    printf("[warning] Block out of the screen! (x: %d, y: %d)\n", x, y);
+  }
+  int drawposX = (x * BLOCK_SIZE);
+  int drawposY = (y * BLOCK_SIZE);
+
+  if(SDL_MUSTLOCK(screen)) SDL_LockSurface(screen);
+
+  switch (type) {
+    case BLOCK_FLAT:
+      for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
+        for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
+          DrawPixel(screen, posX, posY, color);
+        }
+      } break;
+    case BLOCK_BORDER:
+      for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
+        for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
+          if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
+             || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
+            DrawPixel(screen, posX, posY, COLOR_BLACK);
+          } else {
+            DrawPixel(screen, posX, posY, color);
+          }
+        }
+      } break;
+    case BLOCK_VOLUME: // Beta (?)
+      for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
+        for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
+          if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
+             || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
+            DrawPixel(screen, posX, posY, COLOR_BLACK);
+          } else {
+            DrawPixel(screen, posX, posY, color);
+          }
+        }
+      }
+
+      color.r = color.r / 2;
+      color.g = color.g / 2;
+      color.b = color.b / 2;
+
+      int pivot = 0;
+
+      for (int posY = drawposY + (BLOCK_SIZE - 1); posY > drawposY + 1; posY--) {
+        pivot++;
+        for(int posX = drawposX + pivot; posX < drawposX + (BLOCK_SIZE - 1); posX++) {
+          DrawPixel(screen, posX, posY, color);
+        }
+      }
+
+      for(int posX = drawposX + ((BLOCK_SIZE / 4) + 1); posX < drawposX + (BLOCK_SIZE - (BLOCK_SIZE / 4)); posX++) {
+        for (int posY = drawposY + (BLOCK_SIZE - (BLOCK_SIZE / 4) - 1); posY > drawposY + (BLOCK_SIZE / 4); posY--) {
+          DrawPixel(screen, posX, posY, color);
+        }
+      } break;
+    default: break;
+  }
+
+  if(SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
+}

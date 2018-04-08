@@ -59,7 +59,7 @@ void FoodDraw(SDL_Surface* screen, struct food* food)
   int posX = food->x;
   int posY = food->y;
 
-  DrawBlock(screen, posX, posY, FOOD_COLOR, 0);
+  BlockDraw(screen, posX, posY, FOOD_COLOR, 0);
 }
 
 struct food* FoodDestroy(struct food* food)

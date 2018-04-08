@@ -5,8 +5,7 @@
 #include "food.h"
 #include "window.h"
 
-// TODO chau extra
-// TODO clion config
+// TODO subir assets
 #define DELAY_IN_MS 50
 
 int main(int argc, char* args[])
@@ -42,7 +41,7 @@ int main(int argc, char* args[])
     /* - Game running loop - */
     int arrow = 0;
     int quit = 0;
-    int score = 0;
+    int score = 10000;
 
     while(!quit) {
       // Wait events in window/keyboard
@@ -81,9 +80,6 @@ int main(int argc, char* args[])
 
       // Draw the limits of the level
       DrawWalls(screenSurface);
-
-      // Draw the extra blocks below level
-      DrawExtra(screenSurface);
 
       // Draw the snake in the screen
       SnakeDraw(screenSurface, snake);
