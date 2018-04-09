@@ -109,100 +109,100 @@ int SnakeIsColliding(struct snake* snake) {
   return 0;
 }
 
-void SnakeDraw(SDL_Surface* screen, struct snake* snake)
+void SnakeDraw(SDL_Renderer* renderer, SDL_Surface* surface, struct snake* snake)
 {
-  BlockDraw(screen, snake->blocksX[0], snake->blocksY[0], SNAKE_HEAD_COLOR, 0);
+  BlockDraw(renderer, surface, snake->blocksX[0], snake->blocksY[0], SNAKE_HEAD_COLOR, 0);
 
   // First eye
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
 
   // Second eye
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
 
   // Mouth
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 12, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 13, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 14, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 15, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
 
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 8, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 9, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 10, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 11, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
 
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(screen, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 4, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  DrawPixel(renderer, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
 
   for(int i = 1; i < snake->size; i++) {
-    BlockDraw(screen, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
+    BlockDraw(renderer, surface, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
   }
 }
 

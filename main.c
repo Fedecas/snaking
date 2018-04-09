@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <time.h>
+
 #include "draw.h"
 #include "food.h"
 #include "window.h"
@@ -16,11 +18,14 @@ int main(int argc, char* args[])
   if(SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else {
-    // The window we'll be rendering to
+    // Init the window to render
     SDL_Window* window = WindowCreate();
 
-    // Surface of the screen
-    SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
+    // Init the surface of window
+    SDL_Surface* surface = SDL_GetWindowSurface(window);
+
+    // Init the renderer for draw
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 
     // Surface of the text score
     SDL_Surface* scoreSurface = NULL;
@@ -38,6 +43,7 @@ int main(int argc, char* args[])
     SDL_Event event;
 
     /* - Game running loop - */
+    int frames = 0;
     int arrow = 0;
     int quit = 0;
     int score = 0;
@@ -74,23 +80,30 @@ int main(int argc, char* args[])
         score++;
       }
 
+      clock_t start = clock();
       // Draw the blocks of the level
-      DrawTerrain(screenSurface);
+      DrawTerrain(renderer, surface);
 
       // Draw the limits of the level
-      DrawWalls(screenSurface);
+      DrawWalls(renderer, surface);
 
       // Draw the snake in the screen
-      SnakeDraw(screenSurface, snake);
+      SnakeDraw(renderer, surface, snake);
 
       // Draw the actual food in the screen
-      FoodDraw(screenSurface, food);
+      FoodDraw(renderer, surface, food);
+      frames++;
 
       // Draw the score
-      DrawScore(screenSurface, scoreSurface, font, score);
+      DrawScore(surface, scoreSurface, font, score);
+      float diff = clock() - start;
+      printf("time: %f\n", diff / CLOCKS_PER_SEC);
 
-      // Update the changes in window
+      // Update the changes in surface
       SDL_UpdateWindowSurface(window);
+
+      // Update the changes in the renderer
+      SDL_RenderPresent(renderer);
 
       // Wait
       SDL_Delay(DELAY_IN_MS);
@@ -109,7 +122,7 @@ int main(int argc, char* args[])
     SDL_FreeSurface(scoreSurface);
 
     // Free the screen surface
-    SDL_FreeSurface(screenSurface);
+    SDL_FreeSurface(surface);
 
     // Destroy the window
     SDL_DestroyWindow(window);

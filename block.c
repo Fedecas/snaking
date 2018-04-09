@@ -15,7 +15,7 @@ int BlockOutOfLimits(int x, int y)
   return (x_outoflimits || y_outoflimits) ? 1 : 0;
 }
 
-void BlockDraw(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
+void BlockDraw(SDL_Renderer* renderer, SDL_Surface* surface, int x, int y, SDL_Color color, int type)
 {
   if(x < WINDOW_LIMIT_LEFT || x > WINDOW_LIMIT_RIGHT || y < WINDOW_LIMIT_UP || y > WINDOW_LIMIT_DOWN) {
     printf("[warning] Block out of the screen! (x: %d, y: %d)\n", x, y);
@@ -23,23 +23,17 @@ void BlockDraw(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
   int drawposX = (x * BLOCK_SIZE);
   int drawposY = (y * BLOCK_SIZE);
 
-  if(SDL_MUSTLOCK(screen)) SDL_LockSurface(screen);
-
   switch (type) {
     case BLOCK_FLAT:
-      for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
-        for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
-          DrawPixel(screen, posX, posY, color);
-        }
-      } break;
+      DrawBox(surface, drawposX, drawposY, color);
     case BLOCK_BORDER:
       for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
         for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
           if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
              || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
-            DrawPixel(screen, posX, posY, COLOR_BLACK);
+            DrawPixel(renderer, posX, posY, COLOR_BLACK);
           } else {
-            DrawPixel(screen, posX, posY, color);
+            DrawPixel(renderer, posX, posY, color);
           }
         }
       } break;
@@ -48,9 +42,9 @@ void BlockDraw(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
         for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
           if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
              || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
-            DrawPixel(screen, posX, posY, COLOR_BLACK);
+            DrawPixel(renderer, posX, posY, COLOR_BLACK);
           } else {
-            DrawPixel(screen, posX, posY, color);
+            DrawPixel(renderer, posX, posY, color);
           }
         }
       }
@@ -64,17 +58,15 @@ void BlockDraw(SDL_Surface* screen, int x, int y, SDL_Color color, int type)
       for (int posY = drawposY + (BLOCK_SIZE - 1); posY > drawposY + 1; posY--) {
         pivot++;
         for(int posX = drawposX + pivot; posX < drawposX + (BLOCK_SIZE - 1); posX++) {
-          DrawPixel(screen, posX, posY, color);
+          DrawPixel(renderer, posX, posY, color);
         }
       }
 
       for(int posX = drawposX + ((BLOCK_SIZE / 4) + 1); posX < drawposX + (BLOCK_SIZE - (BLOCK_SIZE / 4)); posX++) {
         for (int posY = drawposY + (BLOCK_SIZE - (BLOCK_SIZE / 4) - 1); posY > drawposY + (BLOCK_SIZE / 4); posY--) {
-          DrawPixel(screen, posX, posY, color);
+          DrawPixel(renderer, posX, posY, color);
         }
       } break;
     default: break;
   }
-
-  if(SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
 }

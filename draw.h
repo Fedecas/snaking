@@ -34,14 +34,16 @@ TTF_Font* DrawTextInit();
  * Init the assets for write in screen
  */
 
-void DrawPixel(SDL_Surface *screen, int x, int y, SDL_Color sdlcolor);
+void DrawPixel(SDL_Renderer* renderer, int x, int y, SDL_Color color);
 /*
  * Paint a pixel of color in the screen
  */
 
+void DrawBox(SDL_Surface* surface, int x, int y, SDL_Color color);
+
 void DrawText(SDL_Surface* screenSurface, SDL_Surface* textSurface,
               TTF_Font* font, char* text, int x, int y,
-              SDL_Color textcolor, SDL_Color bgcolor);
+              SDL_Color textcolor);
 /*
  * Draw a text in the screen
  */
@@ -51,12 +53,12 @@ void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color col
  * Draw a line of pixels from pos (x0, y0) to (x1, y1)
  */
 
-void DrawWalls(SDL_Surface* screen);
+void DrawWalls(SDL_Renderer* renderer, SDL_Surface* surface);
 /*
  * Draw the limits of the level
  */
 
-void DrawTerrain(SDL_Surface* screen);
+void DrawTerrain(SDL_Renderer* renderer, SDL_Surface* surface);
 /*
  * Draw the blocks of the surface
  */
