@@ -7,7 +7,7 @@
 #include "food.h"
 #include "window.h"
 
-#define DELAY_IN_MS 50
+#define DELAY_IN_MS 75
 
 int main(int argc, char* args[])
 {
@@ -24,12 +24,6 @@ int main(int argc, char* args[])
     // Init the surface of window
     SDL_Surface* surface = SDL_GetWindowSurface(window);
 
-    // Init the renderer for draw
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
-
-    // Surface of the text score
-    SDL_Surface* scoreSurface = NULL;
-
     // Initialize the font for texts
     TTF_Font* font = DrawTextInit();
 
@@ -42,8 +36,12 @@ int main(int argc, char* args[])
     // For events on window
     SDL_Event event;
 
+    // Time to wait
+    struct timespec timespec;
+    timespec.tv_nsec = DELAY_IN_MS * (1000 * 1000);
+    timespec.tv_sec = 0;
+
     /* - Game running loop - */
-    int frames = 0;
     int arrow = 0;
     int quit = 0;
     int score = 0;
@@ -80,46 +78,36 @@ int main(int argc, char* args[])
         score++;
       }
 
-      clock_t start = clock();
       // Draw the blocks of the level
-      DrawTerrain(renderer, surface);
+      DrawTerrain(surface);
 
       // Draw the limits of the level
-      DrawWalls(renderer, surface);
-
-      // Draw the snake in the screen
-      SnakeDraw(renderer, surface, snake);
+      DrawWalls(surface);
 
       // Draw the actual food in the screen
-      FoodDraw(renderer, surface, food);
-      frames++;
+      FoodDraw(surface, food);
+
+      // Draw the snake in the screen
+      SnakeDraw(surface, snake);
 
       // Draw the score
-      DrawScore(surface, scoreSurface, font, score);
-      float diff = clock() - start;
-      printf("time: %f\n", diff / CLOCKS_PER_SEC);
+      DrawScore(surface, font, score);
 
       // Update the changes in surface
       SDL_UpdateWindowSurface(window);
 
-      // Update the changes in the renderer
-      SDL_RenderPresent(renderer);
-
       // Wait
-      SDL_Delay(DELAY_IN_MS);
+      nanosleep(&timespec, NULL);
     }
 
     // Destroy the food
-    food = FoodDestroy(food);
+    FoodDestroy(food);
 
     // Destroy the snake
-    snake = SnakeDestroy(snake);
+    SnakeDestroy(snake);
 
     // Close the font opened
     TTF_CloseFont(font);
-
-    // Free the score surface
-    SDL_FreeSurface(scoreSurface);
 
     // Free the screen surface
     SDL_FreeSurface(surface);

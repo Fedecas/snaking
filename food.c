@@ -54,12 +54,12 @@ struct food* FoodEat(struct food* food, struct snake* snake)
   return food;
 }
 
-void FoodDraw(SDL_Renderer* renderer, SDL_Surface* surface, struct food* food)
+void FoodDraw(SDL_Surface* surface, struct food* food)
 {
   int posX = food->x;
   int posY = food->y;
 
-  BlockDraw(renderer, surface, posX, posY, FOOD_COLOR, 0);
+  BlockDraw(surface, posX, posY, FOOD_COLOR, 0);
 }
 
 struct food* FoodDestroy(struct food* food)

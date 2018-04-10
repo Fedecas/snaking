@@ -20,22 +20,22 @@ TTF_Font* DrawTextInit()
   return font;
 }
 
-void DrawPixel(SDL_Renderer* renderer, int x, int y, SDL_Color color)
+void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color)
 {
-  SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-  SDL_RenderDrawPoint(renderer, x, y);
+  SDL_Rect pixel = {x, y, 1, 1};
+  Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
+  SDL_FillRect(surface, &pixel, col);
 }
 
-void DrawBox(SDL_Surface* surface, int x, int y, SDL_Color color)
+void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Color color)
 {
   Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
-  SDL_Rect rect = {x, y, BLOCK_SIZE, BLOCK_SIZE};
+  SDL_Rect rect = {x, y, width, height};
   SDL_FillRect(surface, &rect, col);
 }
 
-void DrawText(SDL_Surface* screenSurface, SDL_Surface* textSurface,
-              TTF_Font* font, char* text, int x, int y,
-              SDL_Color textcolor)
+void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
+              char* text, int x, int y, SDL_Color textcolor)
 {
   int blockX = (x / BLOCK_SIZE);
   int blockY = (y / BLOCK_SIZE);
@@ -44,7 +44,7 @@ void DrawText(SDL_Surface* screenSurface, SDL_Surface* textSurface,
     printf("[warning] Text out of the screen! (x: %d, y: %d)\n", x, y);
   }
 
-  textSurface = TTF_RenderText_Solid(font, text, textcolor);
+  SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, textcolor);
 
   SDL_Rect textLocation = {x, y, 0, 0};
 
@@ -55,42 +55,30 @@ void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color col
 {
 }
 
-void DrawWalls(SDL_Renderer* renderer, SDL_Surface* surface)
+void DrawWalls(SDL_Surface* surface)
 {
-  for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
-    BlockDraw(renderer, surface, WINDOW_LIMIT_LEFT, y, WALLCOLOR, 0);
-  }
-  for(unsigned int y = WINDOW_LIMIT_UP; y < WINDOW_LIMIT_DOWN + 1; y++) {
-    BlockDraw(renderer, surface, WINDOW_LIMIT_RIGHT, y, WALLCOLOR, 0);
-  }
-  for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-    BlockDraw(renderer, surface, x, WINDOW_LIMIT_UP, WALLCOLOR, 0);
-  }
-  for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-    BlockDraw(renderer, surface, x, WINDOW_LIMIT_DOWN, WALLCOLOR, 0);
-  }
+  DrawBox(surface, 0, 0, BLOCK_SIZE, WINDOW_HEIGHT, WALLCOLOR);
+  DrawBox(surface, BLOCK_SIZE, 0, WINDOW_WIDTH - (BLOCK_SIZE * 2), BLOCK_SIZE, WALLCOLOR);
+  DrawBox(surface, WINDOW_LIMIT_RIGHT * BLOCK_SIZE, 0, BLOCK_SIZE, WINDOW_HEIGHT, WALLCOLOR);
+  DrawBox(surface, BLOCK_SIZE, WINDOW_LIMIT_DOWN * BLOCK_SIZE, WINDOW_WIDTH - (BLOCK_SIZE * 2), BLOCK_SIZE, WALLCOLOR);
 }
 
-void DrawTerrain(SDL_Renderer* renderer, SDL_Surface* surface)
+void DrawTerrain(SDL_Surface* surface)
 {
-  for(unsigned int y = WINDOW_LIMIT_UP + 1; y < WINDOW_LIMIT_DOWN; y++) {
-    for(unsigned int x = WINDOW_LIMIT_LEFT + 1; x < WINDOW_LIMIT_RIGHT; x++) {
-      BlockDraw(renderer, surface, x, y, TERRAINCOLOR, 0);
-    }
-  }
+  DrawBox(surface, BLOCK_SIZE, BLOCK_SIZE, (BLOCKS_X - 2) * BLOCK_SIZE, (BLOCKS_Y - 2) * BLOCK_SIZE, TERRAINCOLOR);
 }
 
-void DrawScore(SDL_Surface* screen, SDL_Surface* text, TTF_Font* font, int score)
+void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)
 {
   int posX = (((BLOCKS_X - 1) * BLOCK_SIZE) / 2) - (2 * BLOCK_SIZE);
   int posY = (BLOCKS_Y - 1) * BLOCK_SIZE;
 
-  DrawText(screen, text, font, "SCORE", posX, posY, SCORECOLOR);
+  DrawText(screen, font, "SCORE", posX, posY, SCORECOLOR);
 
   posX += (BLOCK_SIZE * 2) + 25;
 
   char str[12];
   sprintf(str, "%d", score);
 
-  DrawText(screen, text, font, str, posX, posY, SCORECOLOR);
+  DrawText(screen, font, str, posX, posY, SCORECOLOR);
 }

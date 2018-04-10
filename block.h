@@ -18,7 +18,7 @@ int BlockOutOfLimits(int x, int y);
  * Check if the block in pos (x, y) is inside or outside of the window
  */
 
-void BlockDraw(SDL_Renderer* renderer, SDL_Surface* surface, int x, int y, SDL_Color color, int type);
+void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type);
 /*
  * Draw a block of color in the screen
  */

@@ -13,7 +13,7 @@ struct food {
     int x;
     int y;
     int calories;
-};
+} food;
 
 struct food* FoodCreate();
 /*
@@ -30,7 +30,7 @@ struct food* FoodEat(struct food* food, struct snake* snake);
  * Increase the entered snake if correspond, set the new hunger, destroy the actual food and return a new one
  */
 
-void FoodDraw(SDL_Renderer* renderer, SDL_Surface* surface, struct food* food);
+void FoodDraw(SDL_Surface* surface, struct food* food);
 /*
  * Draw the actual food in screen
  */

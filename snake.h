@@ -47,7 +47,7 @@ int SnakeIsColliding(struct snake* snake);
  * Verify if the snake is colliding with a wall/other snakes
  */
 
-void SnakeDraw(SDL_Renderer* renderer, SDL_Surface* surface, struct snake* snake);
+void SnakeDraw(SDL_Surface* surface, struct snake* snake);
 /*
  * Draw a snake of color in the screen
  */
