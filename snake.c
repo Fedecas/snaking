@@ -24,7 +24,7 @@ struct snake* SnakeCreate()
 {
   struct snake* snake = NULL;
 
-  snake = malloc(sizeof(struct snake)); // TODO
+  snake = malloc(sizeof(struct snake));
 
   snake->direction = SNAKE_DIRECTION;
   snake->size = 1;

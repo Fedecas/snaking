@@ -9,6 +9,16 @@
 
 #define DELAY_IN_MS 75
 
+static void sleepms(int timeinms)
+{
+  struct timespec timetosleep;
+
+  timetosleep.tv_nsec = timeinms * (1000 * 1000);
+  timetosleep.tv_sec = 0;
+
+  nanosleep(&timetosleep, NULL);
+}
+
 int main(int argc, char* args[])
 {
   // Initialize TTF module
@@ -35,11 +45,6 @@ int main(int argc, char* args[])
 
     // For events on window
     SDL_Event event;
-
-    // Time to wait
-    struct timespec timespec;
-    timespec.tv_nsec = DELAY_IN_MS * (1000 * 1000);
-    timespec.tv_sec = 0;
 
     /* - Game running loop - */
     int arrow = 0;
@@ -97,7 +102,7 @@ int main(int argc, char* args[])
       SDL_UpdateWindowSurface(window);
 
       // Wait
-      nanosleep(&timespec, NULL);
+      sleepms(DELAY_IN_MS);
     }
 
     // Destroy the food

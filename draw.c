@@ -34,6 +34,10 @@ void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Colo
   SDL_FillRect(surface, &rect, col);
 }
 
+void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color)
+{
+}
+
 void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
               char* text, int x, int y, SDL_Color textcolor)
 {
@@ -51,10 +55,7 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
   SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
 }
 
-void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color)
-{
-}
-
+// *
 void DrawWalls(SDL_Surface* surface)
 {
   DrawBox(surface, 0, 0, BLOCK_SIZE, WINDOW_HEIGHT, WALLCOLOR);

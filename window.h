@@ -8,8 +8,8 @@
 #define WINDOW_POSX   SDL_WINDOWPOS_UNDEFINED // The X position where create a window
 #define WINDOW_POSY   SDL_WINDOWPOS_UNDEFINED // The Y position where create a window
 
-#define WINDOW_WIDTH    (BLOCKS_X * BLOCK_SIZE) // The X size of the window
-#define WINDOW_HEIGHT   (BLOCKS_Y * BLOCK_SIZE) // The Y size of the window
+#define WINDOW_WIDTH    (BLOCKS_X * BLOCK_SIZE) // The X size of the window in pixels
+#define WINDOW_HEIGHT   (BLOCKS_Y * BLOCK_SIZE) // The Y size of the window in pixels
 
 #define WINDOW_LIMIT_LEFT   0               // The minimum block X
 #define WINDOW_LIMIT_RIGHT  (BLOCKS_X - 1)  // The maximum block X

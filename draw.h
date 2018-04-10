@@ -40,11 +40,14 @@ void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color);
  */
 
 void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Color color);
+/*
+ * Draw a box of color in the screen
+ */
 
 void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
               char* text, int x, int y, SDL_Color textcolor);
 /*
- * Draw a text in the screen
+ * Draw text in the screen
  */
 
 void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color);
