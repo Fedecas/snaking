@@ -20,7 +20,8 @@
 #define SNAKE_BODY_COLOR  mk_SDL_Color(211, 47, 47, 255)
 
 typedef struct snake {
-    int direction;
+    int headDirection;
+    int tailDirection;
     int size;
     int hunger;
     int blocksX[SNAKE_MAX_BLOCKS];

@@ -8,11 +8,11 @@
 
 #define DELAY_IN_MS 75
 
-static void sleepms(int timeinms)
+static void SleepMS(int timeinms)
 {
   struct timespec timetosleep;
 
-  timetosleep.tv_nsec = timeinms * (1000 * 1000);
+  timetosleep.tv_nsec = 1000 * 1000 * timeinms;
   timetosleep.tv_sec = 0;
 
   nanosleep(&timetosleep, NULL);
@@ -101,7 +101,7 @@ int main(int argc, char* args[])
       SDL_UpdateWindowSurface(window);
 
       // Wait
-      sleepms(DELAY_IN_MS);
+      SleepMS(DELAY_IN_MS);
     }
 
     // Destroy the food

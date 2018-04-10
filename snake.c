@@ -4,19 +4,34 @@
 #include "snake.h"
 #include "window.h"
 
-static void SnakeBodyMove(snake* snake, int copyX, int copyY)
+static void SnakeBodyMove(snake* snake)
 {
-  int auxX, auxY;
+  for (int i = snake->size - 1; i > 0; i--) {
+    snake->blocksX[i] = snake->blocksX[i - 1];
+    snake->blocksY[i] = snake->blocksY[i - 1];
+  }
+}
 
-  for(int i = 1; i < snake->size; i++) {
-    auxX = snake->blocksX[i];
-    auxY = snake->blocksY[i];
+static void SnakeTailDirectionUpdate(snake* snake)
+{
+  int prevIsUpOrDown = snake->blocksX[snake->size - 2] == snake->blocksX[snake->size - 1];
 
-    snake->blocksX[i] = copyX;
-    snake->blocksY[i] = copyY;
+  if(prevIsUpOrDown) {
+    int prevIsUp = snake->blocksY[snake->size - 2] == snake->blocksY[snake->size - 1] - 1;
 
-    copyX = auxX;
-    copyY = auxY;
+    if(prevIsUp) {
+      snake->tailDirection = DIRECTION_UP;
+    } else {
+      snake->tailDirection = DIRECTION_DOWN;
+    }
+  } else {
+    int prevIsLeft = snake->blocksX[snake->size - 2] == snake->blocksX[snake->size - 1] - 1;
+
+    if(prevIsLeft) {
+      snake->tailDirection = DIRECTION_LEFT;
+    } else {
+      snake->tailDirection = DIRECTION_RIGHT;
+    }
   }
 }
 
@@ -24,9 +39,10 @@ snake* SnakeCreate()
 {
   snake* snake = NULL;
 
-  snake = malloc(sizeof(snake));
+  snake = malloc(sizeof(struct snake));
 
-  snake->direction = SNAKE_DIRECTION;
+  snake->headDirection = SNAKE_DIRECTION;
+  snake->tailDirection = snake->headDirection;
   snake->size = 1;
   snake->hunger = SNAKE_HUNGER;
   snake->blocksX[0] = SNAKE_SPAWNX;
@@ -41,41 +57,40 @@ snake* SnakeCreate()
 
 void SnakeMove(snake* snake, int direction)
 {
-  snake->direction = direction;
-
-  int copyX = snake->blocksX[0];
-  int copyY = snake->blocksY[0];
+  snake->headDirection = direction;
 
   int futureheadpos;
 
-  switch (direction) {
+  switch (snake->headDirection) {
     case DIRECTION_LEFT:
       futureheadpos = snake->blocksX[0] - 1;
-      if(futureheadpos < WINDOW_LIMIT_LEFT + 1) break;
-      snake->blocksX[0] = futureheadpos;
-      SnakeBodyMove(snake, copyX, copyY); break;
+      if(futureheadpos < WINDOW_LIMIT_LEFT + 1) return;
+      SnakeBodyMove(snake);
+      snake->blocksX[0] = futureheadpos; break;
     case DIRECTION_RIGHT:
       futureheadpos = snake->blocksX[0] + 1;
-      if(futureheadpos > WINDOW_LIMIT_RIGHT - 1) break;
-      snake->blocksX[0] = futureheadpos;
-      SnakeBodyMove(snake, copyX, copyY); break;
+      if(futureheadpos > WINDOW_LIMIT_RIGHT - 1) return;
+      SnakeBodyMove(snake);
+      snake->blocksX[0] = futureheadpos; break;
     case DIRECTION_UP:
       futureheadpos = snake->blocksY[0] - 1;
-      if(futureheadpos < WINDOW_LIMIT_UP + 1) break;
-      snake->blocksY[0] = futureheadpos;
-      SnakeBodyMove(snake, copyX, copyY); break;
+      if(futureheadpos < WINDOW_LIMIT_UP + 1) return;
+      SnakeBodyMove(snake);
+      snake->blocksY[0] = futureheadpos; break;
     case DIRECTION_DOWN:
       futureheadpos = snake->blocksY[0] + 1;
-      if(futureheadpos > WINDOW_LIMIT_DOWN - 1) break;
-      snake->blocksY[0] = futureheadpos;
-      SnakeBodyMove(snake, copyX, copyY); break;
+      if(futureheadpos > WINDOW_LIMIT_DOWN - 1) return;
+      SnakeBodyMove(snake);
+      snake->blocksY[0] = futureheadpos; break;
     default: break;
   }
+
+  SnakeTailDirectionUpdate(snake);
 }
 
 void SnakeIncrease(snake* snake)
 {
-  if(snake->size == SNAKE_MAX_BLOCKS) goto end;
+  if(snake->size == SNAKE_MAX_BLOCKS) return;
 
   int oldlastblock = snake->size - 1;
 
@@ -83,26 +98,63 @@ void SnakeIncrease(snake* snake)
 
   int newlastblock = snake->size - 1;
 
-  switch (snake->direction) {
+  switch (snake->tailDirection) {
     case DIRECTION_LEFT:
-      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] - 1;
-      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
-      break;
+      if(snake->blocksX[oldlastblock] < WINDOW_LIMIT_RIGHT - 1) {
+        snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] + 1;
+        snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
+      } else {
+        if(snake->blocksY[oldlastblock] == WINDOW_LIMIT_UP + 1) {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] + 1;
+        } else {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] - 1;
+        }
+      } break;
     case DIRECTION_RIGHT:
-      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] + 1;
-      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
-      break;
+      if(snake->blocksX[oldlastblock] > WINDOW_LIMIT_LEFT + 1) {
+        snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] - 1;
+        snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
+      } else {
+        if(snake->blocksY[oldlastblock] == WINDOW_LIMIT_UP + 1) {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] + 1;
+        } else {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] - 1;
+        }
+      } break;
     case DIRECTION_UP:
-      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
-      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] - 1;
-      break;
+      if(snake->blocksY[oldlastblock] < WINDOW_LIMIT_DOWN - 1) {
+        snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
+        snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] + 1;
+      } else {
+        if(snake->blocksX[oldlastblock] == WINDOW_LIMIT_LEFT + 1) {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] + 1;
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
+        } else {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] - 1;
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
+        }
+      } break;
     case DIRECTION_DOWN:
-      snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
-      snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] + 1;
-      break;
+      if(snake->blocksY[oldlastblock] > WINDOW_LIMIT_UP + 1) {
+        snake->blocksX[newlastblock] = snake->blocksX[oldlastblock];
+        snake->blocksY[newlastblock] = snake->blocksY[oldlastblock] - 1;
+      } else {
+        if(snake->blocksX[oldlastblock] == WINDOW_LIMIT_LEFT + 1) {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] + 1;
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
+        } else {
+          snake->blocksX[newlastblock] = snake->blocksX[oldlastblock] - 1;
+          snake->blocksY[newlastblock] = snake->blocksY[oldlastblock];
+        }
+      } break;
     default: break;
   }
-  end:;
+
+  SnakeTailDirectionUpdate(snake);
 }
 
 int SnakeIsColliding(snake* snake) {
@@ -111,6 +163,10 @@ int SnakeIsColliding(snake* snake) {
 
 void SnakeDraw(SDL_Surface* surface, snake* snake)
 {
+  for(int i = 1; i < snake->size; i++) {
+    BlockDraw(surface, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
+  }
+
   BlockDraw(surface, snake->blocksX[0], snake->blocksY[0], SNAKE_HEAD_COLOR, 0);
 
   // First eye
@@ -200,10 +256,6 @@ void SnakeDraw(SDL_Surface* surface, snake* snake)
   DrawPixel(surface, snake->blocksX[0]*BLOCK_SIZE + 5, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
   DrawPixel(surface, snake->blocksX[0]*BLOCK_SIZE + 6, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
   DrawPixel(surface, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-
-  for(int i = 1; i < snake->size; i++) {
-    BlockDraw(surface, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
-  }
 }
 
 snake* SnakeDestroy(snake* snake)

@@ -8,7 +8,7 @@ food* FoodCreate()
 {
   food* food = NULL;
 
-  food = malloc(sizeof(food));
+  food = malloc(sizeof(struct food));
 
   food->x = FOOD_SPAWNX;
   food->y = FOOD_SPAWNY;
