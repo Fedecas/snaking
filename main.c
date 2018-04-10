@@ -77,7 +77,7 @@ int main(int argc, char* args[])
       SnakeMove(snake, arrow);
 
       // If snake eat the food
-      if(FoodInCollision(food, snake)) {
+      if(SnakeIsColliding(snake, food->x, food->y)) {
         food = FoodEat(food, snake);
         score++;
       }

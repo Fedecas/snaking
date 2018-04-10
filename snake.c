@@ -157,7 +157,12 @@ void SnakeIncrease(snake* snake)
   SnakeTailDirectionUpdate(snake);
 }
 
-int SnakeIsColliding(snake* snake) {
+int SnakeIsColliding(snake* snake, int x, int y)
+{
+  for (int i = 0; i < snake->size; i++) {
+    if(BlockInCollision(snake->blocksX[i], snake->blocksY[i], x, y)) return 1;
+  }
+
   return 0;
 }
 

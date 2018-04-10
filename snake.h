@@ -43,7 +43,7 @@ void SnakeIncrease(snake* snake);
  * Increase the large of the snake in one block
  */
 
-int SnakeIsColliding(snake* snake);
+int SnakeIsColliding(snake* snake, int x, int y);
 /*
  * Verify if the snake is colliding with a wall/other snakes
  */
