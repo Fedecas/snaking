@@ -4,11 +4,11 @@
 #include "draw.h"
 #include "food.h"
 
-struct food* FoodCreate()
+food* FoodCreate()
 {
-  struct food* food = NULL;
+  food* food = NULL;
 
-  food = malloc(sizeof(struct food));
+  food = malloc(sizeof(food));
 
   food->x = FOOD_SPAWNX;
   food->y = FOOD_SPAWNY;
@@ -17,7 +17,7 @@ struct food* FoodCreate()
   return food;
 }
 
-int FoodInCollision(struct food* food, struct snake* snake)
+int FoodInCollision(food* food, snake* snake)
 {
   int foodX = food->x;
   int foodY = food->y;
@@ -35,7 +35,7 @@ int FoodInCollision(struct food* food, struct snake* snake)
   return 0;
 }
 
-struct food* FoodEat(struct food* food, struct snake* snake)
+food* FoodEat(food* food, snake* snake)
 {
   int newsnakehunger = snake->hunger - food->calories;
 
@@ -54,7 +54,7 @@ struct food* FoodEat(struct food* food, struct snake* snake)
   return food;
 }
 
-void FoodDraw(SDL_Surface* surface, struct food* food)
+void FoodDraw(SDL_Surface* surface, food* food)
 {
   int posX = food->x;
   int posY = food->y;
@@ -62,7 +62,7 @@ void FoodDraw(SDL_Surface* surface, struct food* food)
   BlockDraw(surface, posX, posY, FOOD_COLOR, 0);
 }
 
-struct food* FoodDestroy(struct food* food)
+food* FoodDestroy(food* food)
 {
   free(food);
   food = NULL;

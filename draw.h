@@ -50,11 +50,6 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
  * Draw text in the screen
  */
 
-void DrawLine(SDL_Surface* screen, int x0, int y0, int x1, int y1, SDL_Color color);
-/*
- * Draw a line of pixels from pos (x0, y0) to (x1, y1)
- */
-
 void DrawWalls(SDL_Surface* surface);
 /*
  * Draw the limits of the level

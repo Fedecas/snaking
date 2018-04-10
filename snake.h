@@ -19,40 +19,40 @@
 #define SNAKE_HEAD_COLOR  mk_SDL_Color(192, 202, 51, 255)
 #define SNAKE_BODY_COLOR  mk_SDL_Color(211, 47, 47, 255)
 
-struct snake {
+typedef struct snake {
     int direction;
     int size;
     int hunger;
     int blocksX[SNAKE_MAX_BLOCKS];
     int blocksY[SNAKE_MAX_BLOCKS];
-};
+} snake;
 
-struct snake* SnakeCreate();
+snake* SnakeCreate();
 /*
  * Initialize the snake and set the parameters in default values
  */
 
-void SnakeMove(struct snake* snake, int direction);
+void SnakeMove(snake* snake, int direction);
 /*
  * Move the snake one block to the entered direction
  */
 
-void SnakeIncrease(struct snake* snake);
+void SnakeIncrease(snake* snake);
 /*
  * Increase the large of the snake in one block
  */
 
-int SnakeIsColliding(struct snake* snake);
+int SnakeIsColliding(snake* snake);
 /*
  * Verify if the snake is colliding with a wall/other snakes
  */
 
-void SnakeDraw(SDL_Surface* surface, struct snake* snake);
+void SnakeDraw(SDL_Surface* surface, snake* snake);
 /*
  * Draw a snake of color in the screen
  */
 
-struct snake* SnakeDestroy(struct snake* snake);
+snake* SnakeDestroy(snake* snake);
 /*
  * Free the snake's memory
  */

@@ -1,6 +1,5 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-
 #include <time.h>
 
 #include "draw.h"
@@ -38,10 +37,10 @@ int main(int argc, char* args[])
     TTF_Font* font = DrawTextInit();
 
     // Create the snake for use
-    struct snake* snake = SnakeCreate();
+    snake* snake = SnakeCreate();
 
     // Create first food
-    struct food* food = FoodCreate();
+    food* food = FoodCreate();
 
     // For events on window
     SDL_Event event;

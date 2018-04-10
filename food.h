@@ -9,33 +9,33 @@
 
 #define FOOD_COLOR  mk_SDL_Color(109, 76, 65, 255)
 
-struct food {
+typedef struct food {
     int x;
     int y;
     int calories;
 } food;
 
-struct food* FoodCreate();
+food* FoodCreate();
 /*
  * Initialize the food and set the parameters in default values
  */
 
-int FoodInCollision(struct food* food, struct snake* snake);
+int FoodInCollision(food* food, snake* snake);
 /*
  * Check if the entered food is in collision with the entered snake
  */
 
-struct food* FoodEat(struct food* food, struct snake* snake);
+food* FoodEat(food* food, snake* snake);
 /*
  * Increase the entered snake if correspond, set the new hunger, destroy the actual food and return a new one
  */
 
-void FoodDraw(SDL_Surface* surface, struct food* food);
+void FoodDraw(SDL_Surface* surface, food* food);
 /*
  * Draw the actual food in screen
  */
 
-struct food* FoodDestroy(struct food* food);
+food* FoodDestroy(food* food);
 /*
  * Free the food's memory
  */

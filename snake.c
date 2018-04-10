@@ -4,7 +4,7 @@
 #include "snake.h"
 #include "window.h"
 
-static void SnakeBodyMove(struct snake* snake, int copyX, int copyY)
+static void SnakeBodyMove(snake* snake, int copyX, int copyY)
 {
   int auxX, auxY;
 
@@ -20,11 +20,11 @@ static void SnakeBodyMove(struct snake* snake, int copyX, int copyY)
   }
 }
 
-struct snake* SnakeCreate()
+snake* SnakeCreate()
 {
-  struct snake* snake = NULL;
+  snake* snake = NULL;
 
-  snake = malloc(sizeof(struct snake));
+  snake = malloc(sizeof(snake));
 
   snake->direction = SNAKE_DIRECTION;
   snake->size = 1;
@@ -39,7 +39,7 @@ struct snake* SnakeCreate()
   return snake;
 }
 
-void SnakeMove(struct snake* snake, int direction)
+void SnakeMove(snake* snake, int direction)
 {
   snake->direction = direction;
 
@@ -73,7 +73,7 @@ void SnakeMove(struct snake* snake, int direction)
   }
 }
 
-void SnakeIncrease(struct snake* snake)
+void SnakeIncrease(snake* snake)
 {
   if(snake->size == SNAKE_MAX_BLOCKS) goto end;
 
@@ -105,11 +105,11 @@ void SnakeIncrease(struct snake* snake)
   end:;
 }
 
-int SnakeIsColliding(struct snake* snake) {
+int SnakeIsColliding(snake* snake) {
   return 0;
 }
 
-void SnakeDraw(SDL_Surface* surface, struct snake* snake)
+void SnakeDraw(SDL_Surface* surface, snake* snake)
 {
   BlockDraw(surface, snake->blocksX[0], snake->blocksY[0], SNAKE_HEAD_COLOR, 0);
 
@@ -206,7 +206,7 @@ void SnakeDraw(SDL_Surface* surface, struct snake* snake)
   }
 }
 
-struct snake* SnakeDestroy(struct snake* snake)
+snake* SnakeDestroy(snake* snake)
 {
   free(snake);
   snake = NULL;
