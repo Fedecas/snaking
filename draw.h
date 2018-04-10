@@ -20,7 +20,7 @@ static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 #define SCORECOLOR      COLOR_RED
 
 #define FONT_TYPE     "RobotoMono-Light"       // Type of font to use
-#define FONT_SIZE     BLOCK_SIZE               // Size of letter
+#define FONT_SIZE     (BLOCK_SIZE * 2)               // Size of letter
 #define FONT_STYLE    TTF_STYLE_NORMAL         // Style of font (NORMAL, BOLD, ITALIC)
 #define FONT_OUTLINE  0                        // Size of the font outline
 #define FONT_DIR      "assets/"FONT_TYPE".ttf" // Path of a TrueType font for write

@@ -3,10 +3,10 @@
 
 #include <SDL2/SDL.h>
 
-#define BLOCK_SIZE  20 // Size in pixels of each block
+#define BLOCK_SIZE  25 // Size in pixels of each block
 
-#define BLOCKS_X    50 // Number of blocks in X
-#define BLOCKS_Y    30 // Number of blocks in Y
+#define BLOCKS_X    48 // Number of blocks in X
+#define BLOCKS_Y    27 // Number of blocks in Y
 
 int BlockInCollision(int x1, int y1, int x2, int y2);
 /*

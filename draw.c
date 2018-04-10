@@ -67,12 +67,8 @@ void DrawTerrain(SDL_Surface* surface)
 
 void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)
 {
-  int posX = (((BLOCKS_X - 1) * BLOCK_SIZE) / 2) - (2 * BLOCK_SIZE);
-  int posY = (BLOCKS_Y - 1) * BLOCK_SIZE;
-
-  DrawText(screen, font, "SCORE", posX, posY, SCORECOLOR);
-
-  posX += (BLOCK_SIZE * 2) + 25;
+  int posX = (((BLOCKS_X - 1) * BLOCK_SIZE) / 2) - (BLOCK_SIZE / 10);
+  int posY = ((BLOCKS_Y - 3) * BLOCK_SIZE);
 
   char str[12];
   sprintf(str, "%d", score);
