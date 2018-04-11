@@ -1,3 +1,4 @@
+#include "draw.h"
 #include "terrain.h"
 
 terrain* TerrainCreate()

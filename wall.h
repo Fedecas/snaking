@@ -1,10 +1,7 @@
 #ifndef SNAKE_WALL_H
 #define SNAKE_WALL_H
 
-#include <SDL2/SDL_surface.h>
-
 #include "block.h"
-#include "draw.h"
 
 #define WALL_SIZE   ((BLOCKS_X * 2) + (BLOCKS_Y * 2))
 

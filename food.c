@@ -1,6 +1,3 @@
-#include <SDL2/SDL.h>
-
-#include "block.h"
 #include "draw.h"
 #include "food.h"
 
@@ -17,7 +14,7 @@ food* FoodCreate()
   return food;
 }
 
-int FoodInCollision(food* food, snake* snake)
+int FoodIsColliding(food* food, snake* snake)
 {
   int foodX = food->x;
   int foodY = food->y;

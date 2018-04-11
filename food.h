@@ -20,7 +20,7 @@ food* FoodCreate();
  * Initialize the food and set the parameters in default values
  */
 
-int FoodInCollision(food* food, snake* snake);
+int FoodIsColliding(food* food, snake* snake);
 /*
  * Check if the entered food is in collision with the entered snake
  */

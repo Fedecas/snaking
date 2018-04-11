@@ -16,11 +16,21 @@
 #define WINDOW_LIMIT_UP     0               // The minimum block Y
 #define WINDOW_LIMIT_DOWN   (BLOCKS_Y - 1)  // The maximum block Y
 
-SDL_Window* WindowCreate();
+typedef struct window {
+    SDL_Window* context;
+    SDL_Surface* surface;
+} window;
+
+window* WindowInit();
 /*
  * Create a window in WINDOW_POSX and WINDOW_POSY,
  * of size (WINDOW_WIDTH * WINDOW_HEIGHT),
  * with title WINDOW_TITLE
+ */
+
+window* WindowQuit(window* window);
+/*
+ * Free the surface and destroy the window
  */
 
 #endif //SNAKE_WINDOW_H

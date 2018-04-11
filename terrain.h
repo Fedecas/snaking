@@ -1,10 +1,7 @@
 #ifndef SNAKE_TERRAIN_H
 #define SNAKE_TERRAIN_H
 
-#include <SDL2/SDL_surface.h>
-
 #include "block.h"
-#include "draw.h"
 
 #define TERRAIN_X       BLOCK_SIZE
 #define TERRAIN_Y       BLOCK_SIZE

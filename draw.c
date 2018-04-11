@@ -1,11 +1,10 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-
+#include "block.h"
 #include "draw.h"
-#include "window.h"
 
 TTF_Font* DrawTextInit()
 {
+  TTF_Init();
+
   TTF_Font* font = NULL;
 
   font = TTF_OpenFont(FONT_DIR, FONT_SIZE);
@@ -22,8 +21,8 @@ TTF_Font* DrawTextInit()
 
 void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color)
 {
-  SDL_Rect pixel = {x, y, 1, 1};
   Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
+  SDL_Rect pixel = {x, y, 1, 1};
   SDL_FillRect(surface, &pixel, col);
 }
 
@@ -62,4 +61,14 @@ void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)
   sprintf(str, "%d", score);
 
   DrawText(screen, font, str, posX, posY, SCORECOLOR);
+}
+
+TTF_Font* DrawTextQuit(TTF_Font* font)
+{
+  TTF_CloseFont(font);
+  font = NULL;
+
+  TTF_Quit();
+
+  return font;
 }

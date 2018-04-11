@@ -1,5 +1,5 @@
+#include "draw.h"
 #include "wall.h"
-#include "window.h"
 
 wall* WallCreate()
 {

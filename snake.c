@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-
 #include "draw.h"
 #include "snake.h"
 #include "window.h"

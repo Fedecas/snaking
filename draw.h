@@ -50,4 +50,6 @@ void DrawScore(SDL_Surface* screen, TTF_Font* font, int score);
  * Draw the player score
  */
 
+TTF_Font* DrawTextQuit(TTF_Font* font);
+
 #endif //SNAKE_DRAW_H

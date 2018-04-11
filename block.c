@@ -1,5 +1,3 @@
-#include <time.h>
-
 #include "block.h"
 #include "draw.h"
 #include "window.h"
