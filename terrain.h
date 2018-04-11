@@ -11,7 +11,7 @@
 #define TERRAIN_WIDTH   ((BLOCKS_X - 2) * BLOCK_SIZE)
 #define TERRAIN_HEIGHT  ((BLOCKS_Y - 2) * BLOCK_SIZE)
 
-#define TERRAIN_COLOR   COLOR_LBROWN
+#define TERRAIN_COLOR   mk_SDL_Color(255, 249, 196, 255)
 
 typedef struct terrain {
     int x;

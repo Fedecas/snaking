@@ -51,14 +51,6 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
   SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
 }
 
-void DrawWalls(SDL_Surface* surface)
-{
-  DrawBox(surface, 0, 0, BLOCK_SIZE, WINDOW_HEIGHT, WALLCOLOR);
-  DrawBox(surface, BLOCK_SIZE, 0, WINDOW_WIDTH - (BLOCK_SIZE * 2), BLOCK_SIZE, WALLCOLOR);
-  DrawBox(surface, WINDOW_LIMIT_RIGHT * BLOCK_SIZE, 0, BLOCK_SIZE, WINDOW_HEIGHT, WALLCOLOR);
-  DrawBox(surface, BLOCK_SIZE, WINDOW_LIMIT_DOWN * BLOCK_SIZE, WINDOW_WIDTH - (BLOCK_SIZE * 2), BLOCK_SIZE, WALLCOLOR);
-}
-
 void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)
 {
   int posX = (((BLOCKS_X - 1) * BLOCK_SIZE) / 2) - (BLOCK_SIZE / 10);

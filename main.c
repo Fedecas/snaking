@@ -5,6 +5,7 @@
 #include "draw.h"
 #include "food.h"
 #include "terrain.h"
+#include "wall.h"
 #include "window.h"
 
 #define DELAY_IN_MS 75
@@ -40,6 +41,9 @@ int main(int argc, char* args[])
     // Create the terrain to move
     terrain* terrain = TerrainCreate();
 
+    // Create the limits
+    wall* wall = WallCreate();
+
     // Create the snake for use
     snake* snake = SnakeCreate();
 
@@ -55,6 +59,7 @@ int main(int argc, char* args[])
     int score = 0;
 
     while(!quit) {
+      clock_t start = clock();
       // Wait events in window/keyboard
       while(SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -90,7 +95,7 @@ int main(int argc, char* args[])
       TerrainDraw(surface, terrain);
 
       // Draw the limits of the level
-      DrawWalls(surface);
+      WallDraw(surface, wall);
 
       // Draw the actual food in the screen
       FoodDraw(surface, food);
@@ -104,8 +109,10 @@ int main(int argc, char* args[])
       // Update the changes in surface
       SDL_UpdateWindowSurface(window);
 
+      float diff = (float)(clock() - start) * 1000 / CLOCKS_PER_SEC;
+
       // Wait
-      SleepMS(DELAY_IN_MS);
+      SleepMS(DELAY_IN_MS - (int)diff);
     }
 
     // Destroy the food

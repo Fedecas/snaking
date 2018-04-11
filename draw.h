@@ -11,10 +11,6 @@ static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 
 #define COLOR_RED       mk_SDL_Color(255, 0, 0, 255)
 #define COLOR_BLACK     mk_SDL_Color(0, 0, 0, 255)
-#define COLOR_LBROWN    mk_SDL_Color(255, 249, 196, 255)
-#define COLOR_BGREY     mk_SDL_Color(96, 125, 139, 255)
-
-#define WALLCOLOR       COLOR_BGREY
 
 #define SCORECOLOR      COLOR_RED
 
@@ -47,11 +43,6 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
               char* text, int x, int y, SDL_Color textcolor);
 /*
  * Draw text in the screen
- */
-
-void DrawWalls(SDL_Surface* surface);
-/*
- * Draw the limits of the level
  */
 
 void DrawScore(SDL_Surface* screen, TTF_Font* font, int score);
