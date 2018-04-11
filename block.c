@@ -43,17 +43,8 @@ void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type)
       DrawBox(surface, drawposX + 1, drawposY + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2, color);
       break;
     case BLOCK_VOLUME: // Beta (?)
-      /*
-      for(int posX = drawposX; posX < drawposX + BLOCK_SIZE; posX++) {
-        for (int posY = drawposY; posY < drawposY + BLOCK_SIZE; posY++) {
-          if(posX == drawposX || posX == drawposX + (BLOCK_SIZE - 1)
-             || posY == drawposY || posY == drawposY + (BLOCK_SIZE - 1)) {
-            DrawPixel(renderer, posX, posY, COLOR_BLACK);
-          } else {
-            DrawPixel(renderer, posX, posY, color);
-          }
-        }
-      }
+      DrawBox(surface, drawposX, drawposY, BLOCK_SIZE, BLOCK_SIZE, COLOR_BLACK);
+      DrawBox(surface, drawposX + 1, drawposY + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2, color);
 
       color.r = color.r / 2;
       color.g = color.g / 2;
@@ -64,16 +55,15 @@ void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type)
       for (int posY = drawposY + (BLOCK_SIZE - 1); posY > drawposY + 1; posY--) {
         pivot++;
         for(int posX = drawposX + pivot; posX < drawposX + (BLOCK_SIZE - 1); posX++) {
-          DrawPixel(renderer, posX, posY, color);
+          DrawPixel(surface, posX, posY, color);
         }
       }
 
-      for(int posX = drawposX + ((BLOCK_SIZE / 4) + 1); posX < drawposX + (BLOCK_SIZE - (BLOCK_SIZE / 4)); posX++) {
-        for (int posY = drawposY + (BLOCK_SIZE - (BLOCK_SIZE / 4) - 1); posY > drawposY + (BLOCK_SIZE / 4); posY--) {
-          DrawPixel(renderer, posX, posY, color);
-        }
-      } break;
-      */
+      drawposX += (BLOCK_SIZE / 4) + 1;
+      drawposY += (BLOCK_SIZE / 4) + 1;
+
+      DrawBox(surface, drawposX, drawposY, (BLOCK_SIZE / 2), (BLOCK_SIZE / 2), color);
+      break;
     default: break;
   }
 }

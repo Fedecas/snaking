@@ -11,7 +11,7 @@ wall* WallCreate()
 
   int index = 0;
 
-  // left wall
+  // Left wall
   for (int i = 0; i < BLOCKS_Y; i++) {
     wall->blocksX[i] = 0;
     wall->blocksY[i] = i;
@@ -19,7 +19,7 @@ wall* WallCreate()
 
   index += BLOCKS_Y;
 
-  // top wall
+  // Top wall
   for (int i = 0; i < BLOCKS_X; i++) {
     wall->blocksX[i + index] = i;
     wall->blocksY[i + index] = 0;
@@ -27,7 +27,7 @@ wall* WallCreate()
 
   index += BLOCKS_X;
 
-  // bottom wall
+  // Bottom wall
   for (int i = 0; i < BLOCKS_X; i++) {
     wall->blocksX[i + index] = i;
     wall->blocksY[i + index] = BLOCKS_Y - 1;
@@ -35,7 +35,7 @@ wall* WallCreate()
 
   index += BLOCKS_X;
 
-  // right wall
+  // Right wall
   for (int i = 0; i < BLOCKS_Y; i++) {
     wall->blocksX[i + index] = BLOCKS_X - 1;
     wall->blocksY[i + index] = i;
@@ -47,7 +47,7 @@ wall* WallCreate()
 void WallDraw(SDL_Surface* surface, wall* wall)
 {
   for(int i = 0; i < wall->size; i++) {
-    BlockDraw(surface, wall->blocksX[i], wall->blocksY[i], WALL_COLOR, 0);
+    BlockDraw(surface, wall->blocksX[i], wall->blocksY[i], WALL_COLOR, 2);
   }
 }
 
