@@ -4,6 +4,7 @@
 
 #include "draw.h"
 #include "food.h"
+#include "terrain.h"
 #include "window.h"
 
 #define DELAY_IN_MS 75
@@ -35,6 +36,9 @@ int main(int argc, char* args[])
 
     // Initialize the font for texts
     TTF_Font* font = DrawTextInit();
+
+    // Create the terrain to move
+    terrain* terrain = TerrainCreate();
 
     // Create the snake for use
     snake* snake = SnakeCreate();
@@ -83,7 +87,7 @@ int main(int argc, char* args[])
       }
 
       // Draw the blocks of the level
-      DrawTerrain(surface);
+      TerrainDraw(surface, terrain);
 
       // Draw the limits of the level
       DrawWalls(surface);

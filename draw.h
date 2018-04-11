@@ -14,7 +14,6 @@ static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 #define COLOR_LBROWN    mk_SDL_Color(255, 249, 196, 255)
 #define COLOR_BGREY     mk_SDL_Color(96, 125, 139, 255)
 
-#define TERRAINCOLOR    COLOR_LBROWN
 #define WALLCOLOR       COLOR_BGREY
 
 #define SCORECOLOR      COLOR_RED
@@ -53,11 +52,6 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
 void DrawWalls(SDL_Surface* surface);
 /*
  * Draw the limits of the level
- */
-
-void DrawTerrain(SDL_Surface* surface);
-/*
- * Draw the blocks of the surface
  */
 
 void DrawScore(SDL_Surface* screen, TTF_Font* font, int score);
