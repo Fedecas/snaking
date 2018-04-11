@@ -14,8 +14,6 @@
 #define SNAKE_SPAWNX    (BLOCKS_X / 2) // Default block X to spawn a snake
 #define SNAKE_SPAWNY    (BLOCKS_Y / 2) // Default block Y to spawn a snake
 
-#define SNAKE_MAX_BLOCKS  ((BLOCKS_X - 2) * (BLOCKS_Y - 2)) // Maximum of blocks of a snake
-
 #define SNAKE_HEAD_COLOR  mk_SDL_Color(192, 202, 51, 255)
 #define SNAKE_BODY_COLOR  mk_SDL_Color(211, 47, 47, 255)
 
@@ -24,8 +22,8 @@ typedef struct snake {
     int tailDirection;
     int size;
     int hunger;
-    int blocksX[SNAKE_MAX_BLOCKS];
-    int blocksY[SNAKE_MAX_BLOCKS];
+    int* blocksX;
+    int* blocksY;
 } snake;
 
 snake* SnakeCreate();

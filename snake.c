@@ -43,7 +43,11 @@ snake* SnakeCreate()
   snake->tailDirection = snake->headDirection;
   snake->size = 1;
   snake->hunger = SNAKE_HUNGER;
+
+  snake->blocksX = malloc(sizeof(int));
   snake->blocksX[0] = SNAKE_SPAWNX;
+
+  snake->blocksY = malloc(sizeof(int));
   snake->blocksY[0] = SNAKE_SPAWNY;
 
   for(int i = 1; i < SNAKE_SIZE; i++) {
@@ -88,11 +92,12 @@ void SnakeMove(snake* snake, int direction)
 
 void SnakeIncrease(snake* snake)
 {
-  if(snake->size == SNAKE_MAX_BLOCKS) return;
-
   int oldlastblock = snake->size - 1;
 
   snake->size++;
+
+  snake->blocksX = realloc(snake->blocksX, sizeof(int) * snake->size);
+  snake->blocksY = realloc(snake->blocksY, sizeof(int) * snake->size);
 
   int newlastblock = snake->size - 1;
 
@@ -263,6 +268,12 @@ void SnakeDraw(SDL_Surface* surface, snake* snake)
 
 snake* SnakeDestroy(snake* snake)
 {
+  free(snake->blocksX);
+  snake->blocksX = NULL;
+
+  free(snake->blocksY);
+  snake->blocksY = NULL;
+
   free(snake);
   snake = NULL;
 
