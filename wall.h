@@ -26,4 +26,9 @@ void WallDraw(SDL_Surface* surface, wall* wall);
  * Draw the walls of the level
  */
 
+wall* WallDestroy(wall* wall);
+/*
+ * Free the wall's memory
+ */
+
 #endif //SNAKE_WALL_H

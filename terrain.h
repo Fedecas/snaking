@@ -30,4 +30,9 @@ void TerrainDraw(SDL_Surface* surface, terrain* terrain);
  * Draw the space between the walls
  */
 
+terrain* TerrainDestroy(terrain* terrain);
+/*
+ * Free the terrain's memory
+ */
+
 #endif //SNAKE_TERRAIN_H

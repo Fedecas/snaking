@@ -9,7 +9,7 @@ SDL_Window* WindowCreate()
   window = SDL_CreateWindow(WINDOW_TITLE,
                             WINDOW_POSX, WINDOW_POSY,
                             WINDOW_WIDTH, WINDOW_HEIGHT,
-                            SDL_WINDOW_SHOWN);
+                            SDL_WINDOW_BORDERLESS);
 
   if(window == NULL) {
     printf("[error] Window could not be created! SDL_Error: %s\n", SDL_GetError());

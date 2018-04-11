@@ -18,3 +18,11 @@ void TerrainDraw(SDL_Surface* surface, terrain* terrain)
 {
   DrawBox(surface, terrain->x, terrain->y, terrain->width, terrain->height, TERRAIN_COLOR);
 }
+
+terrain* TerrainDestroy(terrain* terrain)
+{
+  free(terrain);
+  terrain = NULL;
+
+  return terrain;
+}

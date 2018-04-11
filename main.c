@@ -121,6 +121,12 @@ int main(int argc, char* args[])
     // Destroy the snake
     SnakeDestroy(snake);
 
+    // Destroy the walls
+    WallDestroy(wall);
+
+    // Destroy the terrain
+    TerrainDestroy(terrain);
+
     // Close the font opened
     TTF_CloseFont(font);
 
