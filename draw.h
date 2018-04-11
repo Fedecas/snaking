@@ -51,5 +51,8 @@ void DrawScore(SDL_Surface* screen, TTF_Font* font, int score);
  */
 
 TTF_Font* DrawTextQuit(TTF_Font* font);
+/*
+ * Close the font opened and exit TTF module
+ */
 
 #endif //SNAKE_DRAW_H

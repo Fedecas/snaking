@@ -25,7 +25,7 @@ int main(int argc, char* args[])
   // Init SDL, create the window and her surface
   window* window = WindowInit();
 
-  // Initialize the font for texts
+  // Initialize TTF module and the font for texts
   TTF_Font* font = DrawTextInit();
 
   // Create the terrain to move
@@ -97,7 +97,7 @@ int main(int argc, char* args[])
     DrawScore(window->surface, font, score);
 
     // Update the changes in surface
-    SDL_UpdateWindowSurface(window->context);
+    WindowUpdate(window);
 
     float diff = (float)(clock() - start) * 1000 / CLOCKS_PER_SEC;
 

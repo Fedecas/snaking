@@ -28,6 +28,11 @@ window* WindowInit();
  * with title WINDOW_TITLE
  */
 
+void WindowUpdate(window* window);
+/*
+ * Update the surface of the window
+ */
+
 window* WindowQuit(window* window);
 /*
  * Free the surface and destroy the window

@@ -35,6 +35,11 @@ window* WindowInit()
   return window;
 }
 
+void WindowUpdate(window* window)
+{
+  SDL_UpdateWindowSurface(window->context);
+}
+
 window* WindowQuit(window* window)
 {
   SDL_FreeSurface(window->surface);
