@@ -35,7 +35,7 @@ void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Colo
 }
 
 void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
-              char* text, int x, int y, SDL_Color textcolor)
+              char* text, int x, int y, SDL_Color color)
 {
   int blockX = (x / BLOCK_SIZE);
   int blockY = (y / BLOCK_SIZE);
@@ -44,11 +44,13 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
     printf("[warning] Text out of the screen! (x: %d, y: %d)\n", x, y);
   }
 
-  SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, textcolor);
+  SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, color);
 
   SDL_Rect textLocation = {x, y, 0, 0};
 
   SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
+
+  SDL_FreeSurface(textSurface);
 }
 
 void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)

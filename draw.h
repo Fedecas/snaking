@@ -40,7 +40,7 @@ void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Colo
  */
 
 void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
-              char* text, int x, int y, SDL_Color textcolor);
+              char* text, int x, int y, SDL_Color color);
 /*
  * Draw text in the screen
  */
