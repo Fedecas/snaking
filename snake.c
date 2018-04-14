@@ -2,7 +2,12 @@
 #include "snake.h"
 #include "window.h"
 
-static void SnakeBodyMove(snake* snake)
+static int SnakeIsColliding(snake snake, int x, int y)
+{
+  return BlockInCollision(snake->blocksX[0], snake->blocksY[0], x, y);
+}
+
+static void SnakeBodyMove(snake snake)
 {
   for (int i = snake->size - 1; i > 0; i--) {
     snake->blocksX[i] = snake->blocksX[i - 1];
@@ -10,7 +15,7 @@ static void SnakeBodyMove(snake* snake)
   }
 }
 
-static void SnakeTailDirectionUpdate(snake* snake)
+static void SnakeTailDirectionUpdate(snake snake)
 {
   int prevIsUpOrDown = snake->blocksX[snake->size - 2] == snake->blocksX[snake->size - 1];
 
@@ -33,11 +38,25 @@ static void SnakeTailDirectionUpdate(snake* snake)
   }
 }
 
-snake* SnakeCreate()
+static int SnakeContraryDirection(int direction)
 {
-  snake* snake = NULL;
+  switch (direction) {
+    case DIRECTION_LEFT:
+      return 2;
+    case DIRECTION_RIGHT:
+      return 1;
+    case DIRECTION_UP:
+      return 4;
+    case DIRECTION_DOWN:
+      return 3;
+    default:
+      return 0;
+  }
+}
 
-  snake = malloc(sizeof(struct snake));
+snake SnakeCreate()
+{
+  snake snake = malloc(sizeof(struct snake));
 
   snake->headDirection = SNAKE_DIRECTION;
   snake->tailDirection = snake->headDirection;
@@ -57,40 +76,32 @@ snake* SnakeCreate()
   return snake;
 }
 
-void SnakeMove(snake* snake, int direction)
+void SnakeMove(snake snake, int direction)
 {
-  snake->headDirection = direction;
-
-  int futureheadpos;
+  if(direction != SnakeContraryDirection(snake->headDirection)) {
+    snake->headDirection = direction;
+  }
 
   switch (snake->headDirection) {
     case DIRECTION_LEFT:
-      futureheadpos = snake->blocksX[0] - 1;
-      if(futureheadpos < WINDOW_LIMIT_LEFT + 1) return;
       SnakeBodyMove(snake);
-      snake->blocksX[0] = futureheadpos; break;
+      snake->blocksX[0] -= 1; break;
     case DIRECTION_RIGHT:
-      futureheadpos = snake->blocksX[0] + 1;
-      if(futureheadpos > WINDOW_LIMIT_RIGHT - 1) return;
       SnakeBodyMove(snake);
-      snake->blocksX[0] = futureheadpos; break;
+      snake->blocksX[0] += 1; break;
     case DIRECTION_UP:
-      futureheadpos = snake->blocksY[0] - 1;
-      if(futureheadpos < WINDOW_LIMIT_UP + 1) return;
       SnakeBodyMove(snake);
-      snake->blocksY[0] = futureheadpos; break;
+      snake->blocksY[0] -= 1; break;
     case DIRECTION_DOWN:
-      futureheadpos = snake->blocksY[0] + 1;
-      if(futureheadpos > WINDOW_LIMIT_DOWN - 1) return;
       SnakeBodyMove(snake);
-      snake->blocksY[0] = futureheadpos; break;
+      snake->blocksY[0] += 1; break;
     default: break;
   }
 
   SnakeTailDirectionUpdate(snake);
 }
 
-void SnakeIncrease(snake* snake)
+void SnakeIncrease(snake snake)
 {
   int oldlastblock = snake->size - 1;
 
@@ -160,16 +171,47 @@ void SnakeIncrease(snake* snake)
   SnakeTailDirectionUpdate(snake);
 }
 
-int SnakeIsColliding(snake* snake, int x, int y)
+int SnakeIsCollidingWithFood(snake snake, food food)
 {
-  for (int i = 0; i < snake->size; i++) {
-    if(BlockInCollision(snake->blocksX[i], snake->blocksY[i], x, y)) return 1;
+  return SnakeIsColliding(snake, food->x, food->y);
+}
+
+int SnakeIsCollidingWithHerself(snake snake)
+{
+  for (int i = 1; i < snake->size; ++i) {
+    if(SnakeIsColliding(snake, snake->blocksX[i], snake->blocksY[i]))
+      return 1;
   }
 
   return 0;
 }
 
-void SnakeDraw(SDL_Surface* surface, snake* snake)
+int SnakeIsCollidingWithWall(snake snake, wall wall1, wall wall2, wall wall3, wall wall4)
+{
+  for(int i = 0; i < wall1->size; i++) {
+    if(SnakeIsColliding(snake, wall1->blocksX[i], wall1->blocksY[i]))
+      return 1;
+  }
+
+  for(int i = 0; i < wall2->size; i++) {
+    if(SnakeIsColliding(snake, wall2->blocksX[i], wall2->blocksY[i]))
+      return 2;
+  }
+
+  for(int i = 0; i < wall3->size; i++) {
+    if(SnakeIsColliding(snake, wall3->blocksX[i], wall3->blocksY[i]))
+      return 3;
+  }
+
+  for(int i = 0; i < wall4->size; i++) {
+    if(SnakeIsColliding(snake, wall4->blocksX[i], wall4->blocksY[i]))
+      return 4;
+  }
+
+  return 0;
+}
+
+void SnakeDraw(SDL_Surface* surface, snake snake)
 {
   for(int i = 1; i < snake->size; i++) {
     BlockDraw(surface, snake->blocksX[i], snake->blocksY[i], SNAKE_BODY_COLOR, 0);
@@ -266,7 +308,7 @@ void SnakeDraw(SDL_Surface* surface, snake* snake)
   DrawPixel(surface, snake->blocksX[0]*BLOCK_SIZE + 7, snake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
 }
 
-snake* SnakeDestroy(snake* snake)
+snake SnakeDestroy(snake snake)
 {
   free(snake->blocksX);
   snake->blocksX = NULL;

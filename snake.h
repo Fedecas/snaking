@@ -2,6 +2,8 @@
 #define SNAKE_SNAKE_H
 
 #include "block.h"
+#include "food.h"
+#include "wall.h"
 
 #define DIRECTION_LEFT  1
 #define DIRECTION_RIGHT 2
@@ -24,34 +26,44 @@ typedef struct snake {
     int hunger;
     int* blocksX;
     int* blocksY;
-} snake;
+} *snake;
 
-snake* SnakeCreate();
+snake SnakeCreate();
 /*
  * Initialize the snake and set the parameters in default values
  */
 
-void SnakeMove(snake* snake, int direction);
+void SnakeMove(snake snake, int direction);
 /*
  * Move the snake one block to the entered direction
  */
 
-void SnakeIncrease(snake* snake);
+void SnakeIncrease(snake snake);
 /*
  * Increase the large of the snake in one block
  */
 
-int SnakeIsColliding(snake* snake, int x, int y);
+int SnakeIsCollidingWithWall(snake snake, wall wall1, wall wall2, wall wall3, wall wall4);
 /*
- * Verify if the snake is colliding with a wall/other snakes
+ * Check if the snake is colliding with a wall
  */
 
-void SnakeDraw(SDL_Surface* surface, snake* snake);
+int SnakeIsCollidingWithFood(snake snake, food food);
+/*
+ * Check if the snake is colliding with food
+ */
+
+int SnakeIsCollidingWithHerself(snake snake);
+/*
+ * Check if the snake is colliding with her body
+ */
+
+void SnakeDraw(SDL_Surface* surface, snake snake);
 /*
  * Draw a snake of color in the screen
  */
 
-snake* SnakeDestroy(snake* snake);
+snake SnakeDestroy(snake snake);
 /*
  * Free the snake's memory
  */

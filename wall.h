@@ -3,27 +3,29 @@
 
 #include "block.h"
 
-#define WALL_SIZE   ((BLOCKS_X * 2) + (BLOCKS_Y * 2))
+#define WALL_HORIZONTAL   0
+#define WALL_VERTICAL     1
 
 #define WALL_COLOR   mk_SDL_Color(96, 125, 139, 255)
 
 typedef struct wall{
     int size;
-    int blocksX[WALL_SIZE];
-    int blocksY[WALL_SIZE];
-} wall;
+    int* blocksX;
+    int* blocksY;
+    int rotation;
+} *wall;
 
-wall* WallCreate();
+wall WallCreate(int size, int x, int y, int rotation);
 /*
  * Initialize the walls and set the parameters in default values
  */
 
-void WallDraw(SDL_Surface* surface, wall* wall);
+void WallDraw(SDL_Surface* surface, wall wall);
 /*
  * Draw the walls of the level
  */
 
-wall* WallDestroy(wall* wall);
+wall WallDestroy(wall wall);
 /*
  * Free the wall's memory
  */

@@ -4,17 +4,7 @@
 
 int BlockInCollision(int x1, int y1, int x2, int y2)
 {
-  int posX1 = x1 * BLOCK_SIZE;
-  int posY1 = y1 * BLOCK_SIZE;
-  SDL_Rect A = {posX1, posY1, BLOCK_SIZE, BLOCK_SIZE};
-
-  int posX2 = x2 * BLOCK_SIZE;
-  int posY2 = y2 * BLOCK_SIZE;
-  SDL_Rect B = {posX2, posY2, BLOCK_SIZE, BLOCK_SIZE};
-
-  SDL_bool hasCollision = SDL_HasIntersection(&A, &B);
-
-  return hasCollision;
+  return ((x1 == x2) && (y1 == y2));
 }
 
 int BlockOutOfLimits(int x, int y)

@@ -21,19 +21,19 @@ typedef struct window {
     SDL_Surface* surface;
 } window;
 
-window* WindowInit();
+window* WindowAndSurfaceInit();
 /*
  * Create a window in WINDOW_POSX and WINDOW_POSY,
  * of size (WINDOW_WIDTH * WINDOW_HEIGHT),
  * with title WINDOW_TITLE
  */
 
-void WindowUpdate(window* window);
+void WindowSurfaceUpdate(window* window);
 /*
  * Update the surface of the window
  */
 
-window* WindowQuit(window* window);
+window* WindowAndSurfaceQuit(window* window);
 /*
  * Free the surface and destroy the window
  */
