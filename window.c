@@ -1,6 +1,6 @@
 #include "window.h"
 
-window* WindowAndSurfaceInit()
+window WindowAndSurfaceInit()
 {
   if(SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -21,7 +21,7 @@ window* WindowAndSurfaceInit()
     printf("[error] Window could not be created! SDL_Error: %s\n", SDL_GetError());
   }
 
-  window* window = malloc(sizeof(struct window));
+  window window = malloc(sizeof(struct window));
 
   window->context = context;
   window->surface = surface;
@@ -29,12 +29,12 @@ window* WindowAndSurfaceInit()
   return window;
 }
 
-void WindowSurfaceUpdate(window* window)
+void WindowSurfaceUpdate(window window)
 {
   SDL_UpdateWindowSurface(window->context);
 }
 
-window* WindowAndSurfaceQuit(window* window)
+window WindowAndSurfaceQuit(window window)
 {
   SDL_FreeSurface(window->surface);
   window->surface = NULL;

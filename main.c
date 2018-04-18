@@ -10,8 +10,6 @@
 
 #define DELAY_IN_MS 75
 
-// TODO terminar tipos
-
 static void SleepMS(int timeinms)
 {
   struct timespec timetosleep;
@@ -22,7 +20,7 @@ static void SleepMS(int timeinms)
   nanosleep(&timetosleep, NULL);
 }
 
-static int youlose(window* GameWindow)
+static int youlose(window GameWindow)
 {
   int textposX = (BLOCKS_X * BLOCK_SIZE) / 2 - 125;
   int textposY = (BLOCKS_Y * BLOCK_SIZE) / 2 - 25;
@@ -110,13 +108,13 @@ static void restart(food food, snake snake)
 int main(int argc, char* args[])
 {
   // Init SDL, create the window and her surface
-  window* window = WindowAndSurfaceInit();
+  window GameWindow = WindowAndSurfaceInit();
 
   // Initialize TTF module and the font for texts
   TTF_Font* font = DrawTextInit();
 
   // Create the terrain to move
-  terrain* terrain = TerrainCreate();
+  terrain LevelTerrain = TerrainCreate();
 
   // Create the limits
   wall wall1 = WallCreate(BLOCKS_Y - 1, 0, 0, WALL_VERTICAL);
@@ -186,13 +184,12 @@ int main(int argc, char* args[])
 
     // If snake hit herself
     if(SnakeIsCollidingWithHerself(PlayerSnake)) {
-      printf("YOU LOSE\n");
+      quit = youlose(GameWindow);
     }
 
     // If snake collide with some wall
     if(arrow > 0 && arrow == SnakeIsCollidingWithWall(PlayerSnake, wall1, wall2, wall3, wall4)) {
-      printf("YOU LOSE\n");
-      quit = youlose(window, ActualFood, font, terrain);
+      quit = youlose(GameWindow);
     }
 
     if(quit == 1) {
@@ -206,25 +203,25 @@ int main(int argc, char* args[])
     }
 
     // Draw the blocks of the level
-    TerrainDraw(window->surface, terrain);
+    TerrainDraw(GameWindow->surface, LevelTerrain);
 
     // Draw the limits of the level
-    WallDraw(window->surface, wall1);
-    WallDraw(window->surface, wall2);
-    WallDraw(window->surface, wall3);
-    WallDraw(window->surface, wall4);
+    WallDraw(GameWindow->surface, wall1);
+    WallDraw(GameWindow->surface, wall2);
+    WallDraw(GameWindow->surface, wall3);
+    WallDraw(GameWindow->surface, wall4);
 
     // Draw the actual food in the screen
-    FoodDraw(window->surface, ActualFood);
+    FoodDraw(GameWindow->surface, ActualFood);
 
     // Draw the snake in the screen
-    SnakeDraw(window->surface, PlayerSnake);
+    SnakeDraw(GameWindow->surface, PlayerSnake);
 
     // Draw the score
-    DrawScore(window->surface, font, score);
+    DrawScore(GameWindow->surface, font, score);
 
     // Update the changes in surface
-    WindowSurfaceUpdate(window);
+    WindowSurfaceUpdate(GameWindow);
 
     float diff = (float)(clock() - start) * 1000 / CLOCKS_PER_SEC;
 
@@ -245,13 +242,13 @@ int main(int argc, char* args[])
   WallDestroy(wall4);
 
   // Destroy the terrain
-  TerrainDestroy(terrain);
+  TerrainDestroy(LevelTerrain);
 
   // Close the font opened and exit TTF module
   DrawTextQuit(font);
 
   // Destroy the window and her surface, quit SDL module
-  WindowAndSurfaceQuit(window);
+  WindowAndSurfaceQuit(GameWindow);
 
   return 0;
 }

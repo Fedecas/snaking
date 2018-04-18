@@ -1,9 +1,9 @@
 #include "draw.h"
 #include "terrain.h"
 
-terrain* TerrainCreate()
+terrain TerrainCreate()
 {
-  terrain* terrain = NULL;
+  terrain terrain = NULL;
 
   terrain = malloc(sizeof(struct terrain));
 
@@ -15,12 +15,12 @@ terrain* TerrainCreate()
   return terrain;
 }
 
-void TerrainDraw(SDL_Surface* surface, terrain* terrain)
+void TerrainDraw(SDL_Surface* surface, terrain terrain)
 {
   DrawBox(surface, terrain->x, terrain->y, terrain->width, terrain->height, TERRAIN_COLOR);
 }
 
-terrain* TerrainDestroy(terrain* terrain)
+terrain TerrainDestroy(terrain terrain)
 {
   free(terrain);
   terrain = NULL;

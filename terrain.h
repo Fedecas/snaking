@@ -15,19 +15,19 @@ typedef struct terrain {
     int y;
     int width;
     int height;
-} terrain;
+} *terrain;
 
-terrain* TerrainCreate();
+terrain TerrainCreate();
 /*
  * Initialize the terrain and set the parameters in default values
  */
 
-void TerrainDraw(SDL_Surface* surface, terrain* terrain);
+void TerrainDraw(SDL_Surface* surface, terrain terrain);
 /*
  * Draw the space between the walls
  */
 
-terrain* TerrainDestroy(terrain* terrain);
+terrain TerrainDestroy(terrain terrain);
 /*
  * Free the terrain's memory
  */
