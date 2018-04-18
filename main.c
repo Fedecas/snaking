@@ -22,30 +22,31 @@ static void SleepMS(int timeinms)
   nanosleep(&timetosleep, NULL);
 }
 
-static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terrain)
+static int youlose(window* GameWindow)
 {
   int textposX = (BLOCKS_X * BLOCK_SIZE) / 2 - 125;
   int textposY = (BLOCKS_Y * BLOCK_SIZE) / 2 - 25;
 
   SDL_Rect button1 = {WINDOW_WIDTH / 2 - 300, textposY + 100, 200, 100};
-  SDL_FillRect(GameWindow->surface, &button1, SDL_MapRGBA(GameWindow->surface->format, 255, 0, 0, 127));
+  SDL_FillRect(GameWindow->surface, &button1, 0);
 
   SDL_Rect button2 = {WINDOW_WIDTH / 2 + 100, textposY + 100, 200, 100};
-  SDL_FillRect(GameWindow->surface, &button2, SDL_MapRGBA(GameWindow->surface->format, 0, 0, 255, 127));
+  SDL_FillRect(GameWindow->surface, &button2, 0);
 
   TTF_Font* losefont = TTF_OpenFont(FONT_DIR, FONT_SIZE);
   SDL_Surface* textSurface = TTF_RenderText_Solid(losefont, "YOU LOSE", COLOR_RED);
   SDL_Rect textLocation = {textposX, textposY, 0, 0};
   SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
 
-  textSurface = TTF_RenderText_Solid(losefont, "SALIR", COLOR_BLACK);
-  textLocation.x = button1.x;
-  textLocation.y = button1.y;
+  TTF_Font* buttonsfont = TTF_OpenFont(FONT_DIR, BLOCK_SIZE + BLOCK_SIZE / 4);
+  textSurface = TTF_RenderText_Solid(buttonsfont, "SALIR", mk_SDL_Color(255, 255, 255, 255));
+  textLocation.x = button1.x + button1.w / 2 - BLOCK_SIZE * 2;
+  textLocation.y = button1.y + BLOCK_SIZE + BLOCK_SIZE / 4;
   SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
 
-  textSurface = TTF_RenderText_Solid(losefont, "REINICIAR", COLOR_BLACK);
-  textLocation.x = button2.x;
-  textLocation.y = button2.y;
+  textSurface = TTF_RenderText_Solid(buttonsfont, "REINICIAR", mk_SDL_Color(255, 255, 255, 255));
+  textLocation.x = button2.x + BLOCK_SIZE / 2;
+  textLocation.y = button2.y + BLOCK_SIZE + BLOCK_SIZE / 4;
   SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
 
   WindowSurfaceUpdate(GameWindow);
@@ -56,6 +57,17 @@ static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terra
   while(!quit) {
     while(SDL_PollEvent(&event)) {
       switch (event.type) {
+        case SDL_QUIT: quit = 1; break;
+        case SDL_WINDOWEVENT:
+          switch (event.window.event) {
+            case SDL_WINDOWEVENT_CLOSE: quit = 1; break;
+            default: break;
+          } break;
+        case SDL_KEYDOWN:
+          switch (event.key.keysym.sym) {
+            case SDLK_ESCAPE: quit = 1; break;
+            default: break;
+          }
         case SDL_MOUSEBUTTONDOWN:
           if(event.button.button == SDL_BUTTON_LEFT) {
             int mouseX = event.button.x;
@@ -79,6 +91,7 @@ static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terra
   SDL_FreeSurface(textSurface);
 
   TTF_CloseFont(losefont);
+  TTF_CloseFont(buttonsfont);
 
   return quit;
 }
@@ -86,11 +99,11 @@ static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terra
 static void restart(food food, snake snake)
 {
   // Restart the food
-  food = FoodDestroy(food);
+  FoodDestroy(food);
   food = FoodCreate();
 
   // Restart the snake
-  snake = SnakeDestroy(snake);
+  SnakeDestroy(snake);
   snake = SnakeCreate();
 }
 
