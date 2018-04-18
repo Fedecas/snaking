@@ -10,6 +10,8 @@
 
 #define DELAY_IN_MS 75
 
+// TODO terminar tipos
+
 static void SleepMS(int timeinms)
 {
   struct timespec timetosleep;
@@ -22,15 +24,28 @@ static void SleepMS(int timeinms)
 
 static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terrain)
 {
-  SDL_Rect button_quit = {0, 0, 100, 100};
-  SDL_FillRect(GameWindow->surface, &button_quit, 0);
-  SDL_Rect button_restart = {WINDOW_WIDTH - 100, 0, 100, 100};
-  SDL_FillRect(GameWindow->surface, &button_restart, 0);
   int textposX = (BLOCKS_X * BLOCK_SIZE) / 2 - 125;
   int textposY = (BLOCKS_Y * BLOCK_SIZE) / 2 - 25;
+
+  SDL_Rect button1 = {WINDOW_WIDTH / 2 - 300, textposY + 100, 200, 100};
+  SDL_FillRect(GameWindow->surface, &button1, SDL_MapRGBA(GameWindow->surface->format, 255, 0, 0, 127));
+
+  SDL_Rect button2 = {WINDOW_WIDTH / 2 + 100, textposY + 100, 200, 100};
+  SDL_FillRect(GameWindow->surface, &button2, SDL_MapRGBA(GameWindow->surface->format, 0, 0, 255, 127));
+
   TTF_Font* losefont = TTF_OpenFont(FONT_DIR, FONT_SIZE);
   SDL_Surface* textSurface = TTF_RenderText_Solid(losefont, "YOU LOSE", COLOR_RED);
   SDL_Rect textLocation = {textposX, textposY, 0, 0};
+  SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
+
+  textSurface = TTF_RenderText_Solid(losefont, "SALIR", COLOR_BLACK);
+  textLocation.x = button1.x;
+  textLocation.y = button1.y;
+  SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
+
+  textSurface = TTF_RenderText_Solid(losefont, "REINICIAR", COLOR_BLACK);
+  textLocation.x = button2.x;
+  textLocation.y = button2.y;
   SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
 
   WindowSurfaceUpdate(GameWindow);
@@ -46,11 +61,11 @@ static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terra
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
-            printf("(%d, %d)\n", mouseX, mouseY);
-
-            if((mouseX >= 0) && (mouseX <= 100) && (mouseY >= 0) && (mouseY <= 100)) {
+            if((mouseX >= button1.x) && (mouseX <= button1.x + button1.w)
+               && (mouseY >= button1.y) && (mouseY <= button1.y + button1.h)) {
               quit = 1;
-            } else if((mouseX >= WINDOW_WIDTH - 100) && (mouseX <= WINDOW_WIDTH) && (mouseY >= 0) && (mouseY <= 100)) {
+            } else if((mouseX >= button2.x) && (mouseX <= button2.x + button2.w)
+                      && (mouseY >= button2.y) && (mouseY <= button2.y + button2.h)) {
               quit = 2;
             }
           } break;
@@ -68,12 +83,13 @@ static int youlose(window* GameWindow, food food, TTF_Font* font, terrain* terra
   return quit;
 }
 
-static void restart(food food, snake snake, wall wall1, wall wall2, wall wall3, wall wall4,
-                    terrain* terrain, TTF_Font* font, window* window)
+static void restart(food food, snake snake)
 {
+  // Restart the food
   food = FoodDestroy(food);
   food = FoodCreate();
 
+  // Restart the snake
   snake = SnakeDestroy(snake);
   snake = SnakeCreate();
 }
@@ -169,7 +185,7 @@ int main(int argc, char* args[])
     if(quit == 1) {
       break;
     } else if(quit == 2) {
-      restart(ActualFood, PlayerSnake, wall1, wall2, wall3, wall4, terrain, font, window);
+      restart(ActualFood, PlayerSnake);
       arrow = 0;
       quit = 0;
       score = 0;
