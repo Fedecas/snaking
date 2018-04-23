@@ -3,12 +3,10 @@
 
 #define FOOD_SPAWNX   (1 + ((int)random() % (BLOCKS_X - 2))) // Pick a block X in the usable area
 #define FOOD_SPAWNY   (1 + ((int)random() % (BLOCKS_Y - 2))) // Pick a block Y in the usable area
-#define FOOD_CALORIES 5 // (SNAKE_HUNGER / FOOD_CALORIES) = amount of food to eat for increase the snake
 
 typedef struct food {
     int x;
     int y;
-    int calories;
 } * food;
 
 food FoodCreate();

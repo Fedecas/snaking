@@ -11,7 +11,7 @@
 
 #define SNAKE_DIRECTION (1 + ((int)random() % 4)) // Pick a direction to snake by default
 #define SNAKE_SIZE      3   // Size of the snake in blocks
-#define SNAKE_HUNGER    10  // Number of calories to have to eat the snake for increase
+#define SNAKE_HUNGER    2   // Number of food the snake have to eat for increase
 #define SNAKE_SPAWNX    (SNAKE_SIZE + ((int)random() % (BLOCKS_X - (2 * SNAKE_SIZE)))) // Default block X to spawn a snake
 #define SNAKE_SPAWNY    (SNAKE_SIZE + ((int)random() % (BLOCKS_Y - (2 * SNAKE_SIZE)))) // Default block Y to spawn a snake
 

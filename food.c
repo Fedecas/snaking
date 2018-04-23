@@ -10,7 +10,6 @@ food FoodCreate()
 
   NewFood->x = FOOD_SPAWNX;
   NewFood->y = FOOD_SPAWNY;
-  NewFood->calories = FOOD_CALORIES;
 
   return NewFood;
 }

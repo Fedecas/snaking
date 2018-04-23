@@ -166,7 +166,7 @@ int main(int argc, char* args[])
 
     // If snake eat the food
     if(SnakeIsCollidingWithFood(PlayerSnake, ActualFood)) {
-      int newsnakehunger = PlayerSnake->hunger - ActualFood->calories;
+      int newsnakehunger = PlayerSnake->hunger - 1;
 
       if(newsnakehunger <= 0) {
         SnakeIncrease(PlayerSnake);
