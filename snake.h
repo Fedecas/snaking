@@ -1,7 +1,6 @@
 #ifndef SNAKE_SNAKE_H
 #define SNAKE_SNAKE_H
 
-#include "block.h"
 #include "food.h"
 #include "wall.h"
 
@@ -10,14 +9,11 @@
 #define DIRECTION_UP    3
 #define DIRECTION_DOWN  4
 
-#define SNAKE_DIRECTION 1   // Pick a direction to snake by default
+#define SNAKE_DIRECTION (1 + ((int)random() % 4)) // Pick a direction to snake by default
 #define SNAKE_SIZE      3   // Size of the snake in blocks
 #define SNAKE_HUNGER    10  // Number of calories to have to eat the snake for increase
-#define SNAKE_SPAWNX    (BLOCKS_X / 2) // Default block X to spawn a snake
-#define SNAKE_SPAWNY    (BLOCKS_Y / 2) // Default block Y to spawn a snake
-
-#define SNAKE_HEAD_COLOR  mk_SDL_Color(192, 202, 51, 255)
-#define SNAKE_BODY_COLOR  mk_SDL_Color(211, 47, 47, 255)
+#define SNAKE_SPAWNX    (SNAKE_SIZE + ((int)random() % (BLOCKS_X - (2 * SNAKE_SIZE)))) // Default block X to spawn a snake
+#define SNAKE_SPAWNY    (SNAKE_SIZE + ((int)random() % (BLOCKS_Y - (2 * SNAKE_SIZE)))) // Default block Y to spawn a snake
 
 typedef struct snake {
     int headDirection;
@@ -26,44 +22,44 @@ typedef struct snake {
     int hunger;
     int* blocksX;
     int* blocksY;
-} *snake;
+} * snake;
 
 snake SnakeCreate();
 /*
  * Initialize the snake and set the parameters in default values
  */
 
-void SnakeMove(snake snake, int direction);
+void SnakeMove(snake PlayerSnake, int direction);
 /*
  * Move the snake one block to the entered direction
  */
 
-void SnakeIncrease(snake snake);
+void SnakeIncrease(snake PlayerSnake);
 /*
  * Increase the large of the snake in one block
  */
 
-int SnakeIsCollidingWithWall(snake snake, wall wall1, wall wall2, wall wall3, wall wall4);
+int SnakeIsCollidingWithWall(snake PlayerSnake, wall wall1, wall wall2, wall wall3, wall wall4);
 /*
  * Check if the snake is colliding with a wall
  */
 
-int SnakeIsCollidingWithFood(snake snake, food food);
+int SnakeIsCollidingWithFood(snake PlayerSnake, food ActualFood);
 /*
  * Check if the snake is colliding with food
  */
 
-int SnakeIsCollidingWithHerself(snake snake);
+int SnakeIsCollidingWithHerself(snake PlayerSnake);
 /*
  * Check if the snake is colliding with her body
  */
 
-void SnakeDraw(SDL_Surface* surface, snake snake);
+void SnakeDraw(SDL_Surface* LevelSurface, snake PlayerSnake);
 /*
  * Draw a snake of color in the screen
  */
 
-snake SnakeDestroy(snake snake);
+snake SnakeDestroy(snake PlayerSnake);
 /*
  * Free the snake's memory
  */

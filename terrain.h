@@ -2,32 +2,31 @@
 #define SNAKE_TERRAIN_H
 
 #include "block.h"
+#include "window.h"
 
 #define TERRAIN_X       BLOCK_SIZE
 #define TERRAIN_Y       BLOCK_SIZE
-#define TERRAIN_WIDTH   ((BLOCKS_X - 2) * BLOCK_SIZE)
-#define TERRAIN_HEIGHT  ((BLOCKS_Y - 2) * BLOCK_SIZE)
-
-#define TERRAIN_COLOR   mk_SDL_Color(255, 249, 196, 255)
+#define TERRAIN_WIDTH   (WINDOW_WIDTH - (2 * BLOCK_SIZE))
+#define TERRAIN_HEIGHT  (WINDOW_HEIGHT - (2 * BLOCK_SIZE))
 
 typedef struct terrain {
     int x;
     int y;
     int width;
     int height;
-} *terrain;
+} * terrain;
 
 terrain TerrainCreate();
 /*
  * Initialize the terrain and set the parameters in default values
  */
 
-void TerrainDraw(SDL_Surface* surface, terrain terrain);
+void TerrainDraw(SDL_Surface* LevelSurface, terrain LevelTerrain);
 /*
  * Draw the space between the walls
  */
 
-terrain TerrainDestroy(terrain terrain);
+terrain TerrainDestroy(terrain LevelTerrain);
 /*
  * Free the terrain's memory
  */

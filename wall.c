@@ -1,46 +1,47 @@
+#include "block.h"
 #include "draw.h"
 #include "wall.h"
 
 wall WallCreate(int size, int x, int y, int rotation)
 {
-  wall wall = NULL;
+  wall LevelWall = NULL;
 
-  wall = malloc(sizeof(struct wall));
+  LevelWall = malloc(sizeof(struct wall));
 
-  wall->size = size;
-  wall->rotation = rotation;
+  LevelWall->size = size;
+  LevelWall->rotation = rotation;
 
-  wall->blocksX = malloc(sizeof(int) * wall->size);
-  wall->blocksY = malloc(sizeof(int) * wall->size);
+  LevelWall->blocksX = malloc(sizeof(int) * LevelWall->size);
+  LevelWall->blocksY = malloc(sizeof(int) * LevelWall->size);
 
-  switch (wall->rotation) {
+  switch (LevelWall->rotation) {
     case WALL_HORIZONTAL:
-      for(int i = 0; i < wall->size; i++) {
-        wall->blocksX[i] = x + i;
-        wall->blocksY[i] = y;
+      for(int i = 0; i < LevelWall->size; i++) {
+        LevelWall->blocksX[i] = x + i;
+        LevelWall->blocksY[i] = y;
       } break;
     case WALL_VERTICAL:
-      for(int i = 0; i < wall->size; i++) {
-        wall->blocksX[i] = x;
-        wall->blocksY[i] = y + i;
+      for(int i = 0; i < LevelWall->size; i++) {
+        LevelWall->blocksX[i] = x;
+        LevelWall->blocksY[i] = y + i;
       } break;
     default: break;
   }
 
-  return wall;
+  return LevelWall;
 }
 
-void WallDraw(SDL_Surface* surface, wall wall)
+void WallDraw(SDL_Surface* LevelSurface, wall LevelWall)
 {
-  for(int i = 0; i < wall->size; i++) {
-    BlockDraw(surface, wall->blocksX[i], wall->blocksY[i], WALL_COLOR, 2);
+  for(int i = 0; i < LevelWall->size; i++) {
+    BlockDraw(LevelSurface, LevelWall->blocksX[i], LevelWall->blocksY[i], COLOR_WALL, 2);
   }
 }
 
-wall WallDestroy(wall wall)
+wall WallDestroy(wall LevelWall)
 {
-  free(wall);
-  wall = NULL;
+  free(LevelWall);
+  LevelWall = NULL;
 
-  return wall;
+  return LevelWall;
 }

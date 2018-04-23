@@ -3,27 +3,28 @@
 
 terrain TerrainCreate()
 {
-  terrain terrain = NULL;
+  terrain LevelTerrain = NULL;
 
-  terrain = malloc(sizeof(struct terrain));
+  LevelTerrain = malloc(sizeof(struct terrain));
 
-  terrain->x = TERRAIN_X;
-  terrain->y = TERRAIN_Y;
-  terrain->width = TERRAIN_WIDTH;
-  terrain->height = TERRAIN_HEIGHT;
+  LevelTerrain->x = TERRAIN_X;
+  LevelTerrain->y = TERRAIN_Y;
+  LevelTerrain->width = TERRAIN_WIDTH;
+  LevelTerrain->height = TERRAIN_HEIGHT;
 
-  return terrain;
+  return LevelTerrain;
 }
 
-void TerrainDraw(SDL_Surface* surface, terrain terrain)
+void TerrainDraw(SDL_Surface* LevelSurface, terrain LevelTerrain)
 {
-  DrawBox(surface, terrain->x, terrain->y, terrain->width, terrain->height, TERRAIN_COLOR);
+  DrawBox(LevelSurface, LevelTerrain->x, LevelTerrain->y,
+          LevelTerrain->width, LevelTerrain->height, COLOR_TERRAIN);
 }
 
-terrain TerrainDestroy(terrain terrain)
+terrain TerrainDestroy(terrain LevelTerrain)
 {
-  free(terrain);
-  terrain = NULL;
+  free(LevelTerrain);
+  LevelTerrain = NULL;
 
-  return terrain;
+  return LevelTerrain;
 }

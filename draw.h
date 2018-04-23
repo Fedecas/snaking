@@ -3,19 +3,10 @@
 
 #include <SDL2/SDL_ttf.h>
 
-static SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
-{
-  SDL_Color color = {red, green, blue, alpha};
-  return color;
-}
-
-#define COLOR_RED       mk_SDL_Color(255, 0, 0, 255)
-#define COLOR_BLACK     mk_SDL_Color(0, 0, 0, 255)
-
-#define SCORECOLOR      COLOR_RED
+#include "colors.h"
 
 #define FONT_TYPE     "RobotoMono-Light"       // Type of font to use
-#define FONT_SIZE     (BLOCK_SIZE * 2)               // Size of letter
+#define FONT_SIZE     (BLOCK_SIZE * 2)         // Size of letter
 #define FONT_STYLE    TTF_STYLE_NORMAL         // Style of font (NORMAL, BOLD, ITALIC)
 #define FONT_OUTLINE  0                        // Size of the font outline
 #define FONT_DIR      "assets/"FONT_TYPE".ttf" // Path of a TrueType font for write

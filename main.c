@@ -32,7 +32,7 @@ static int youlose(window GameWindow)
   SDL_FillRect(GameWindow->surface, &button2, 0);
 
   TTF_Font* losefont = TTF_OpenFont(FONT_DIR, FONT_SIZE);
-  SDL_Surface* textSurface = TTF_RenderText_Solid(losefont, "YOU LOSE", COLOR_RED);
+  SDL_Surface* textSurface = TTF_RenderText_Solid(losefont, "YOU LOSE", COLOR_SCORE);
   SDL_Rect textLocation = {textposX, textposY, 0, 0};
   SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
 

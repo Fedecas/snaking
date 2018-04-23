@@ -1,37 +1,32 @@
+#include "block.h"
 #include "draw.h"
 #include "food.h"
-#include "snake.h"
 
 food FoodCreate()
 {
-  food food = NULL;
+  food NewFood = NULL;
 
-  food = malloc(sizeof(struct food));
+  NewFood = malloc(sizeof(struct food));
 
-  food->x = FOOD_SPAWNX;
-  food->y = FOOD_SPAWNY;
-  food->calories = FOOD_CALORIES;
+  NewFood->x = FOOD_SPAWNX;
+  NewFood->y = FOOD_SPAWNY;
+  NewFood->calories = FOOD_CALORIES;
 
-  return food;
+  return NewFood;
 }
 
-int FoodIsColliding(food food, int x, int y)
+void FoodDraw(SDL_Surface* LevelSurface, food ActualFood)
 {
-  return BlockInCollision(food->x, food->y, x, y);
+  int posX = ActualFood->x;
+  int posY = ActualFood->y;
+
+  BlockDraw(LevelSurface, posX, posY, COLOR_FOOD, 0);
 }
 
-void FoodDraw(SDL_Surface* surface, food food)
+food FoodDestroy(food ActualFood)
 {
-  int posX = food->x;
-  int posY = food->y;
+  free(ActualFood);
+  ActualFood = NULL;
 
-  BlockDraw(surface, posX, posY, FOOD_COLOR, 0);
-}
-
-food FoodDestroy(food food)
-{
-  free(food);
-  food = NULL;
-
-  return food;
+  return ActualFood;
 }

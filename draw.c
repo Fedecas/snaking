@@ -58,7 +58,7 @@ void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)
   char str[12];
   sprintf(str, "%d", score);
 
-  DrawText(screen, font, str, posX, posY, SCORECOLOR);
+  DrawText(screen, font, str, posX, posY, COLOR_SCORE);
 }
 
 TTF_Font* DrawTextQuit(TTF_Font* font)

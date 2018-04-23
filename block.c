@@ -12,7 +12,7 @@ int BlockOutOfLimits(int x, int y)
   int x_outoflimits = (x < WINDOW_LIMIT_LEFT) || (x > WINDOW_LIMIT_RIGHT);
   int y_outoflimits = (y < WINDOW_LIMIT_UP) || (y > WINDOW_LIMIT_DOWN);
 
-  return (x_outoflimits || y_outoflimits) ? 1 : 0;
+  return (x_outoflimits || y_outoflimits);
 }
 
 void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type)
@@ -32,13 +32,13 @@ void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type)
       DrawBox(surface, drawposX, drawposY, BLOCK_SIZE, BLOCK_SIZE, COLOR_BLACK);
       DrawBox(surface, drawposX + 1, drawposY + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2, color);
       break;
-    case BLOCK_VOLUME: // Beta (?)
+    case BLOCK_VOLUME:
       DrawBox(surface, drawposX, drawposY, BLOCK_SIZE, BLOCK_SIZE, COLOR_BLACK);
       DrawBox(surface, drawposX + 1, drawposY + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2, color);
 
-      color.r = color.r / 2;
-      color.g = color.g / 2;
-      color.b = color.b / 2;
+      color.r /= 2;
+      color.g /= 2;
+      color.b /= 2;
 
       int pivot = 0;
 
