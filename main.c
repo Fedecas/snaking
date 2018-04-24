@@ -161,8 +161,10 @@ int main(int argc, char* args[])
       }
     }
 
-    // Move the snake according the last key pressed
-    SnakeMove(PlayerSnake, arrow);
+    if(arrow > 0) {
+      // Move the snake according the last key pressed
+      SnakeMove(PlayerSnake, arrow);
+    }
 
     // If snake eat the food
     if(SnakeIsCollidingWithFood(PlayerSnake, ActualFood)) {
@@ -182,13 +184,13 @@ int main(int argc, char* args[])
       score++;
     }
 
-    // If snake hit herself
-    if(SnakeIsCollidingWithHerself(PlayerSnake)) {
+    // If snake collide with some wall
+    if(SnakeIsCollidingWithWall(PlayerSnake, wall1, wall2, wall3, wall4)) {
       quit = youlose(GameWindow);
     }
 
-    // If snake collide with some wall
-    if(arrow > 0 && arrow == SnakeIsCollidingWithWall(PlayerSnake, wall1, wall2, wall3, wall4)) {
+    // If snake hit herself
+    if(SnakeIsCollidingWithHerself(PlayerSnake)) {
       quit = youlose(GameWindow);
     }
 
@@ -211,11 +213,11 @@ int main(int argc, char* args[])
     WallDraw(GameWindow->surface, wall3);
     WallDraw(GameWindow->surface, wall4);
 
-    // Draw the actual food in the screen
-    FoodDraw(GameWindow->surface, ActualFood);
-
     // Draw the snake in the screen
     SnakeDraw(GameWindow->surface, PlayerSnake);
+
+    // Draw the actual food in the screen
+    FoodDraw(GameWindow->surface, ActualFood);
 
     // Draw the score
     DrawScore(GameWindow->surface, font, score);

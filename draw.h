@@ -8,7 +8,6 @@
 #define FONT_TYPE     "RobotoMono-Light"       // Type of font to use
 #define FONT_SIZE     (BLOCK_SIZE * 2)         // Size of letter
 #define FONT_STYLE    TTF_STYLE_NORMAL         // Style of font (NORMAL, BOLD, ITALIC)
-#define FONT_OUTLINE  0                        // Size of the font outline
 #define FONT_DIR      "assets/"FONT_TYPE".ttf" // Path of a TrueType font for write
 
 #define BLOCK_FLAT   0 // Draw flat block
