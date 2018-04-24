@@ -7,9 +7,8 @@ static inline SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 a
   return color;
 }
 
-#define COLOR_RED         mk_SDL_Color(255, 0, 0, 255)
-
 #define COLOR_BLACK       mk_SDL_Color(0, 0, 0, 255)
+#define COLOR_RED         mk_SDL_Color(255, 0, 0, 255)
 
 #define COLOR_FOOD        mk_SDL_Color(109, 76, 65, 255)
 

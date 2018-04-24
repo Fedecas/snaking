@@ -117,10 +117,7 @@ int main(int argc, char* args[])
   terrain LevelTerrain = TerrainCreate();
 
   // Create the limits
-  wall wall1 = WallCreate(BLOCKS_Y - 1, 0, 0, WALL_VERTICAL);
-  wall wall2 = WallCreate(BLOCKS_Y - 1, BLOCKS_X - 1, 1, WALL_VERTICAL);
-  wall wall3 = WallCreate(BLOCKS_X - 1, 1, 0, WALL_HORIZONTAL);
-  wall wall4 = WallCreate(BLOCKS_X - 1, 0, BLOCKS_Y - 1, WALL_HORIZONTAL);
+  wall* LevelWalls = WallsCreate();
 
   // Create the snake for use
   snake PlayerSnake = SnakeCreate();
@@ -185,7 +182,7 @@ int main(int argc, char* args[])
     }
 
     // If snake collide with some wall
-    if(SnakeIsCollidingWithWall(PlayerSnake, wall1, wall2, wall3, wall4)) {
+    if(SnakeIsCollidingWithWall(PlayerSnake, LevelWalls)) {
       quit = youlose(GameWindow);
     }
 
@@ -208,10 +205,7 @@ int main(int argc, char* args[])
     TerrainDraw(GameWindow->surface, LevelTerrain);
 
     // Draw the limits of the level
-    WallDraw(GameWindow->surface, wall1);
-    WallDraw(GameWindow->surface, wall2);
-    WallDraw(GameWindow->surface, wall3);
-    WallDraw(GameWindow->surface, wall4);
+    WallsDraw(GameWindow->surface, LevelWalls);
 
     // Draw the snake in the screen
     SnakeDraw(GameWindow->surface, PlayerSnake);
@@ -238,10 +232,7 @@ int main(int argc, char* args[])
   SnakeDestroy(PlayerSnake);
 
   // Destroy the walls
-  WallDestroy(wall1);
-  WallDestroy(wall2);
-  WallDestroy(wall3);
-  WallDestroy(wall4);
+  WallsDestroy(LevelWalls);
 
   // Destroy the terrain
   TerrainDestroy(LevelTerrain);

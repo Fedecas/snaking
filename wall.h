@@ -4,6 +4,8 @@
 #define WALL_HORIZONTAL   0 // Rotation of the wall
 #define WALL_VERTICAL     1 // Rotation of the wall
 
+#define WALLS_IN_LEVEL    4
+
 typedef struct wall{
     int size;
     int* blocksX;
@@ -11,17 +13,17 @@ typedef struct wall{
     int rotation;
 } * wall;
 
-wall WallCreate(int size, int x, int y, int rotation);
+wall* WallsCreate();
 /*
  * Initialize the walls and set the parameters in default values
  */
 
-void WallDraw(SDL_Surface* LevelSurface, wall LevelWall);
+void WallsDraw(SDL_Surface* LevelSurface, wall* LevelWalls);
 /*
  * Draw the walls of the level
  */
 
-wall WallDestroy(wall LevelWall);
+wall* WallsDestroy(wall* LevelWalls);
 /*
  * Free the wall's memory
  */

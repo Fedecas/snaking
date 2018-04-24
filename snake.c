@@ -148,26 +148,17 @@ int SnakeIsCollidingWithHerself(snake PlayerSnake)
   return 0;
 }
 
-int SnakeIsCollidingWithWall(snake PlayerSnake, wall wall1, wall wall2, wall wall3, wall wall4)
+int SnakeIsCollidingWithWall(snake PlayerSnake, wall* LevelWalls)
 {
-  for(int i = 0; i < wall1->size; i++) {
-    if(SnakeIsColliding(PlayerSnake, wall1->blocksX[i], wall1->blocksY[i]))
-      return 1;
-  }
+  for(int i = 0; i < WALLS_IN_LEVEL; i++) {
+    wall thiswall = LevelWalls[i];
+    for(int j = 0; j < thiswall->size; j++) {
+      int thiswallX = thiswall->blocksX[j];
+      int thiswallY = thiswall->blocksY[j];
 
-  for(int i = 0; i < wall2->size; i++) {
-    if(SnakeIsColliding(PlayerSnake, wall2->blocksX[i], wall2->blocksY[i]))
-      return 2;
-  }
-
-  for(int i = 0; i < wall3->size; i++) {
-    if(SnakeIsColliding(PlayerSnake, wall3->blocksX[i], wall3->blocksY[i]))
-      return 3;
-  }
-
-  for(int i = 0; i < wall4->size; i++) {
-    if(SnakeIsColliding(PlayerSnake, wall4->blocksX[i], wall4->blocksY[i]))
-      return 4;
+      if(SnakeIsColliding(PlayerSnake, thiswallX, thiswallY))
+        return 1;
+    }
   }
 
   return 0;

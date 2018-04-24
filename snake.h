@@ -39,7 +39,7 @@ void SnakeIncrease(snake PlayerSnake);
  * Increase the large of the snake in one block
  */
 
-int SnakeIsCollidingWithWall(snake PlayerSnake, wall wall1, wall wall2, wall wall3, wall wall4);
+int SnakeIsCollidingWithWall(snake PlayerSnake, wall* LevelWalls);
 /*
  * Check if the snake is colliding with a wall
  */
