@@ -114,61 +114,23 @@ void SnakeIncrease(snake PlayerSnake)
 
   switch (PlayerSnake->tailDirection) {
     case DIRECTION_LEFT:
-      if(PlayerSnake->blocksX[oldlastblock] < WINDOW_LIMIT_RIGHT - 1) {
-        PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] + 1;
-        PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
-      } else {
-        if(PlayerSnake->blocksY[oldlastblock] == WINDOW_LIMIT_UP + 1) {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] + 1;
-        } else {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] - 1;
-        }
-      } break;
+      PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] + 1;
+      PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
+      break;
     case DIRECTION_RIGHT:
-      if(PlayerSnake->blocksX[oldlastblock] > WINDOW_LIMIT_LEFT + 1) {
-        PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] - 1;
-        PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
-      } else {
-        if(PlayerSnake->blocksY[oldlastblock] == WINDOW_LIMIT_UP + 1) {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] + 1;
-        } else {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] - 1;
-        }
-      } break;
+      PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] - 1;
+      PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
+      break;
     case DIRECTION_UP:
-      if(PlayerSnake->blocksY[oldlastblock] < WINDOW_LIMIT_DOWN - 1) {
-        PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
-        PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] + 1;
-      } else {
-        if(PlayerSnake->blocksX[oldlastblock] == WINDOW_LIMIT_LEFT + 1) {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] + 1;
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
-        } else {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] - 1;
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
-        }
-      } break;
+      PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
+      PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] + 1;
+      break;
     case DIRECTION_DOWN:
-      if(PlayerSnake->blocksY[oldlastblock] > WINDOW_LIMIT_UP + 1) {
-        PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
-        PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] - 1;
-      } else {
-        if(PlayerSnake->blocksX[oldlastblock] == WINDOW_LIMIT_LEFT + 1) {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] + 1;
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
-        } else {
-          PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock] - 1;
-          PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock];
-        }
-      } break;
+      PlayerSnake->blocksX[newlastblock] = PlayerSnake->blocksX[oldlastblock];
+      PlayerSnake->blocksY[newlastblock] = PlayerSnake->blocksY[oldlastblock] - 1;
+      break;
     default: break;
   }
-
-  SnakeTailDirectionUpdate(PlayerSnake);
 }
 
 int SnakeIsCollidingWithFood(snake PlayerSnake, food ActualFood)
@@ -179,10 +141,8 @@ int SnakeIsCollidingWithFood(snake PlayerSnake, food ActualFood)
 int SnakeIsCollidingWithHerself(snake PlayerSnake)
 {
   for (int i = 1; i < PlayerSnake->size; ++i) {
-    if(SnakeIsColliding(PlayerSnake, PlayerSnake->blocksX[i], PlayerSnake->blocksY[i])) {
-      printf("block: %d\n", i);
+    if(SnakeIsColliding(PlayerSnake, PlayerSnake->blocksX[i], PlayerSnake->blocksY[i]))
       return 1;
-    }
   }
 
   return 0;
@@ -221,93 +181,17 @@ void SnakeDraw(SDL_Surface* LevelSurface, snake PlayerSnake)
 
   BlockDraw(LevelSurface, PlayerSnake->blocksX[0], PlayerSnake->blocksY[0], COLOR_SNAKE_HEAD, 0);
 
-  // First eye
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  int startfaceX = PlayerSnake->blocksX[0] * BLOCK_SIZE;
+  int startfaceY = PlayerSnake->blocksY[0] * BLOCK_SIZE;
 
-  // Second eye
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 4, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 5, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 6, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 7, COLOR_BLACK);
+  int eyesize = (BLOCK_SIZE / 6);
 
-  // Mouth
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 12, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 13, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 14, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 15, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  // The eyes
+  DrawBox(LevelSurface, startfaceX + eyesize, startfaceY + eyesize, eyesize, eyesize, COLOR_BLACK);
+  DrawBox(LevelSurface, startfaceX + 3 * eyesize, startfaceY + eyesize, eyesize, eyesize, COLOR_BLACK);
 
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 8, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 9, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 10, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 11, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 8, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 9, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 10, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 11, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 8, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 9, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 10, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 11, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 8, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 9, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 10, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 11, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 12, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 13, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 14, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 4, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 5, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 6, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
-  DrawPixel(LevelSurface, PlayerSnake->blocksX[0]*BLOCK_SIZE + 7, PlayerSnake->blocksY[0]*BLOCK_SIZE + 15, COLOR_RED);
+  // The mouth
+  DrawBox(LevelSurface, startfaceX + eyesize, startfaceY + 3 * eyesize, 3 * eyesize, eyesize, COLOR_RED);
 }
 
 snake SnakeDestroy(snake PlayerSnake)
