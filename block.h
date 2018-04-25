@@ -8,6 +8,10 @@
 #define BLOCKS_X    53 // Number of blocks in X
 #define BLOCKS_Y    30 // Number of blocks in Y
 
+#define BLOCK_FLAT   0 // Draw flat block
+#define BLOCK_BORDER 1 // Draw block with black border
+#define BLOCK_VOLUME 2 // Draw block simulating volume
+
 int BlockInCollision(int x1, int y1, int x2, int y2);
 /*
  * Check if the block (x1, y1) is colliding with (x2, y2)

@@ -62,6 +62,12 @@ void WallsDraw(SDL_Surface* LevelSurface, wall* LevelWalls)
 
 static wall WallDestroy(wall LevelWall)
 {
+  free(LevelWall->blocksX);
+  LevelWall->blocksX = NULL;
+
+  free(LevelWall->blocksY);
+  LevelWall->blocksY = NULL;
+
   free(LevelWall);
   LevelWall = NULL;
 
@@ -73,6 +79,9 @@ wall* WallsDestroy(wall* LevelWalls)
   for(int i = 0; i < WALLS_IN_LEVEL; i++) {
     LevelWalls[i] = WallDestroy(LevelWalls[i]);
   }
+
+  free(LevelWalls);
+  LevelWalls = NULL;
 
   return LevelWalls;
 }

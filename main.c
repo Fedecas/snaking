@@ -3,6 +3,7 @@
 #include "block.h"
 #include "draw.h"
 #include "food.h"
+#include "score.h"
 #include "snake.h"
 #include "terrain.h"
 #include "wall.h"
@@ -94,15 +95,19 @@ static int youlose(window GameWindow)
   return quit;
 }
 
-static void restart(food food, snake snake)
+static void restart(food ActualFood, snake PlayerSnake, score GameScore)
 {
   // Restart the food
-  FoodDestroy(food);
-  food = FoodCreate();
+  FoodDestroy(ActualFood);
+  ActualFood = FoodCreate();
 
   // Restart the snake
-  SnakeDestroy(snake);
-  snake = SnakeCreate();
+  SnakeDestroy(PlayerSnake);
+  PlayerSnake = SnakeCreate();
+
+  // Restart the score
+  ScoreDestroy(GameScore);
+  GameScore = ScoreInit();
 }
 
 int main(int argc, char* args[])
@@ -125,13 +130,15 @@ int main(int argc, char* args[])
   // Create first food
   food ActualFood = FoodCreate();
 
+  // Initialize the score
+  score GameScore = ScoreInit();
+
   // For events on window
   SDL_Event event;
 
   /* - Game running loop - */
   int arrow = 0;
   int quit = 0;
-  int score = 0;
 
   start:
   while(1) {
@@ -178,7 +185,7 @@ int main(int argc, char* args[])
       FoodDestroy(ActualFood);
       ActualFood = FoodCreate();
 
-      score++;
+      ScoreIncrease(GameScore);
     }
 
     // If snake collide with some wall
@@ -194,10 +201,9 @@ int main(int argc, char* args[])
     if(quit == 1) {
       break;
     } else if(quit == 2) {
-      restart(ActualFood, PlayerSnake);
+      restart(ActualFood, PlayerSnake, GameScore);
       arrow = 0;
       quit = 0;
-      score = 0;
       goto start;
     }
 
@@ -214,7 +220,7 @@ int main(int argc, char* args[])
     FoodDraw(GameWindow->surface, ActualFood);
 
     // Draw the score
-    DrawScore(GameWindow->surface, font, score);
+    ScoreDraw(GameWindow->surface, font, GameScore);
 
     // Update the changes in surface
     WindowSurfaceUpdate(GameWindow);
@@ -224,6 +230,9 @@ int main(int argc, char* args[])
     // Wait
     SleepMS(DELAY_IN_MS - (int)diff);
   }
+
+  // Destroy the score
+  ScoreDestroy(GameScore);
 
   // Destroy the food
   FoodDestroy(ActualFood);

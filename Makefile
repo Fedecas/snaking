@@ -1,4 +1,4 @@
-OBJS = block.c draw.c food.c snake.c terrain.c wall.c window.c
+OBJS = block.c draw.c food.c score.c snake.c terrain.c wall.c window.c
 CFLAGS = -Wall -Werror -Wextra -pedantic -std=c99
 PROGRAM = snaking
 COMPILER = gcc

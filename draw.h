@@ -10,10 +10,6 @@
 #define FONT_STYLE    TTF_STYLE_NORMAL         // Style of font (NORMAL, BOLD, ITALIC)
 #define FONT_DIR      "assets/"FONT_TYPE".ttf" // Path of a TrueType font for write
 
-#define BLOCK_FLAT   0 // Draw flat block
-#define BLOCK_BORDER 1 // Draw block with black border
-#define BLOCK_VOLUME 2 // Draw block simulating volume
-
 TTF_Font* DrawTextInit();
 /*
  * Init the assets for write in screen

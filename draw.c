@@ -49,17 +49,6 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
   SDL_FreeSurface(textSurface);
 }
 
-void DrawScore(SDL_Surface* screen, TTF_Font* font, int score)
-{
-  int posX = (((BLOCKS_X - 1) * BLOCK_SIZE) / 2) - (BLOCK_SIZE / 10);
-  int posY = ((BLOCKS_Y - 3) * BLOCK_SIZE);
-
-  char str[2];
-  sprintf(str, "%d", score);
-
-  DrawText(screen, font, str, posX, posY, COLOR_SCORE);
-}
-
 TTF_Font* DrawTextQuit(TTF_Font* font)
 {
   TTF_CloseFont(font);
