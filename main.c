@@ -9,6 +9,10 @@
 #include "wall.h"
 #include "window.h"
 
+#define OPTION_CONTINUE 0
+#define OPTION_QUIT     1
+#define OPTION_RESTART  2
+
 #define DELAY_IN_MS 75
 
 static void SleepMS(int timeinms)
@@ -21,81 +25,93 @@ static void SleepMS(int timeinms)
   nanosleep(&timetosleep, NULL);
 }
 
-static int youlose(window GameWindow)
+static int GameOver(window GameWindow, TTF_Font* font)
 {
-  int textposX = (BLOCKS_X * BLOCK_SIZE) / 2 - 125;
-  int textposY = (BLOCKS_Y * BLOCK_SIZE) / 2 - 25;
+  // Draw "game over" text
+  char* text = "GAME OVER";
 
-  SDL_Rect button1 = {WINDOW_WIDTH / 2 - 300, textposY + 100, 200, 100};
-  SDL_FillRect(GameWindow->surface, &button1, 0);
+  int fontwidth, fontheight;
+  TTF_SizeText(font, text, &fontwidth, &fontheight);
 
-  SDL_Rect button2 = {WINDOW_WIDTH / 2 + 100, textposY + 100, 200, 100};
-  SDL_FillRect(GameWindow->surface, &button2, 0);
+  int textposX = (WINDOW_WIDTH / 2) - (fontwidth / 2);
+  int textposY = (WINDOW_HEIGHT / 2) - fontheight;
 
-  TTF_Font* losefont = TTF_OpenFont(FONT_DIR, FONT_SIZE);
-  SDL_Surface* textSurface = TTF_RenderText_Solid(losefont, "YOU LOSE", COLOR_SCORE);
-  SDL_Rect textLocation = {textposX, textposY, 0, 0};
-  SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
+  DrawText(GameWindow->surface, font, text, textposX, textposY, COLOR_SCORE);
 
-  TTF_Font* buttonsfont = TTF_OpenFont(FONT_DIR, BLOCK_SIZE + BLOCK_SIZE / 4);
-  textSurface = TTF_RenderText_Solid(buttonsfont, "SALIR", mk_SDL_Color(255, 255, 255, 255));
-  textLocation.x = button1.x + button1.w / 2 - BLOCK_SIZE * 2;
-  textLocation.y = button1.y + BLOCK_SIZE + BLOCK_SIZE / 4;
-  SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
+  // Draw option quit button
+  text = "QUIT";
 
-  textSurface = TTF_RenderText_Solid(buttonsfont, "REINICIAR", mk_SDL_Color(255, 255, 255, 255));
-  textLocation.x = button2.x + BLOCK_SIZE / 2;
-  textLocation.y = button2.y + BLOCK_SIZE + BLOCK_SIZE / 4;
-  SDL_BlitSurface(textSurface, NULL, GameWindow->surface, &textLocation);
+  int buttonwidth = WINDOW_WIDTH / 6;
+  int buttonheight = buttonwidth / 2;
+
+  int buttonquitX = (WINDOW_WIDTH / 2) - (buttonwidth + buttonheight);
+  int buttonquitY = textposY + buttonheight;
+
+  DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
+             buttonwidth, buttonheight, COLOR_BLACK, text, COLOR_WHITE);
+
+  // Draw option restart button
+  text = "RESTART";
+
+  int buttonrestartX = buttonquitX + (2 * buttonwidth);
+  int buttonrestartY = textposY + buttonheight;
+
+  DrawButton(GameWindow->surface, buttonrestartX, buttonrestartY,
+             buttonwidth, buttonheight, COLOR_BLACK, text, COLOR_WHITE);
 
   WindowSurfaceUpdate(GameWindow);
 
-  int quit = 0;
+  int quit = OPTION_CONTINUE;
   SDL_Event event;
 
   while(!quit) {
     while(SDL_PollEvent(&event)) {
       switch (event.type) {
-        case SDL_QUIT: quit = 1; break;
+        case SDL_QUIT: quit = OPTION_QUIT; break;
         case SDL_WINDOWEVENT:
           switch (event.window.event) {
-            case SDL_WINDOWEVENT_CLOSE: quit = 1; break;
+            case SDL_WINDOWEVENT_CLOSE: quit = OPTION_QUIT; break;
             default: break;
           } break;
         case SDL_KEYDOWN:
           switch (event.key.keysym.sym) {
-            case SDLK_ESCAPE: quit = 1; break;
+            case SDLK_ESCAPE: quit = OPTION_QUIT; break;
             default: break;
           }
+        /*
+        case SDL_MOUSEMOTION: TODO ver drawinit, cambiar switch, funcion para la posicion del mouse
+          if((event.motion.x >= buttonquitX) && (event.motion.x <= buttonquitX + buttonwidth)
+            && (event.motion.y >= buttonquitY) && (event.motion.y <= buttonquitY + buttonheight)) {
+            DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
+                       buttonwidth, buttonheight, COLOR_WHITE, "QUIT", COLOR_BLACK);
+          } break;
+        */
         case SDL_MOUSEBUTTONDOWN:
           if(event.button.button == SDL_BUTTON_LEFT) {
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
-            if((mouseX >= button1.x) && (mouseX <= button1.x + button1.w)
-               && (mouseY >= button1.y) && (mouseY <= button1.y + button1.h)) {
-              quit = 1;
-            } else if((mouseX >= button2.x) && (mouseX <= button2.x + button2.w)
-                      && (mouseY >= button2.y) && (mouseY <= button2.y + button2.h)) {
-              quit = 2;
+            if((mouseX >= buttonquitX) && (mouseX <= buttonquitX + buttonwidth)
+               && (mouseY >= buttonquitY) && (mouseY <= buttonquitY + buttonheight)) {
+              quit = OPTION_QUIT;
+            } else if((mouseX >= buttonrestartX) && (mouseX <= buttonrestartX + buttonwidth)
+                      && (mouseY >= buttonrestartY) && (mouseY <= buttonrestartY + buttonheight)) {
+              quit = OPTION_RESTART;
             }
           } break;
         default: break;
       }
     }
 
+    WindowSurfaceUpdate(GameWindow);
+
     SleepMS(DELAY_IN_MS);
   }
-
-  SDL_FreeSurface(textSurface);
-
-  TTF_CloseFont(losefont);
-  TTF_CloseFont(buttonsfont);
 
   return quit;
 }
 
-static void restart(food ActualFood, snake PlayerSnake, score GameScore)
+static void GameRestart(food ActualFood, snake PlayerSnake, score GameScore)
 {
   // Restart the food
   FoodDestroy(ActualFood);
@@ -116,7 +132,7 @@ int main(int argc, char* args[])
   window GameWindow = WindowAndSurfaceInit();
 
   // Initialize TTF module and the font for texts
-  TTF_Font* font = DrawTextInit();
+  TTF_Font* ScoreFont = DrawTextInit();
 
   // Create the terrain to move
   terrain LevelTerrain = TerrainCreate();
@@ -137,8 +153,11 @@ int main(int argc, char* args[])
   SDL_Event event;
 
   /* - Game running loop - */
-  int arrow = 0;
-  int quit = 0;
+  int arrow = DIRECTION_NONE;
+  int quit = OPTION_CONTINUE;
+
+  // Draw the limits of the level
+  WallsDraw(GameWindow->surface, LevelWalls);
 
   start:
   while(1) {
@@ -146,15 +165,15 @@ int main(int argc, char* args[])
     // Wait events in window/keyboard
     while(SDL_PollEvent(&event)) {
       switch (event.type) {
-        case SDL_QUIT: quit = 1; break;
+        case SDL_QUIT: quit = OPTION_QUIT; break;
         case SDL_WINDOWEVENT:
           switch (event.window.event) {
-            case SDL_WINDOWEVENT_CLOSE: quit = 1; break;
+            case SDL_WINDOWEVENT_CLOSE: quit = OPTION_QUIT; break;
             default: break;
           } break;
         case SDL_KEYDOWN:
           switch (event.key.keysym.sym) {
-            case SDLK_ESCAPE: quit = 1; break;
+            case SDLK_ESCAPE: quit = OPTION_QUIT; break;
             case SDLK_LEFT: arrow = DIRECTION_LEFT; break;
             case SDLK_RIGHT: arrow = DIRECTION_RIGHT; break;
             case SDLK_UP: arrow = DIRECTION_UP; break;
@@ -165,7 +184,7 @@ int main(int argc, char* args[])
       }
     }
 
-    if(arrow > 0) {
+    if(arrow > DIRECTION_NONE) {
       // Move the snake according the last key pressed
       SnakeMove(PlayerSnake, arrow);
     }
@@ -190,28 +209,25 @@ int main(int argc, char* args[])
 
     // If snake collide with some wall
     if(SnakeIsCollidingWithWall(PlayerSnake, LevelWalls)) {
-      quit = youlose(GameWindow);
+      quit = GameOver(GameWindow, ScoreFont);
     }
 
     // If snake hit herself
     if(SnakeIsCollidingWithHerself(PlayerSnake)) {
-      quit = youlose(GameWindow);
+      quit = GameOver(GameWindow, ScoreFont);
     }
 
-    if(quit == 1) {
+    if(quit == OPTION_QUIT) {
       break;
-    } else if(quit == 2) {
-      restart(ActualFood, PlayerSnake, GameScore);
-      arrow = 0;
-      quit = 0;
+    } else if(quit == OPTION_RESTART) {
+      GameRestart(ActualFood, PlayerSnake, GameScore);
+      arrow = DIRECTION_NONE;
+      quit = OPTION_CONTINUE;
       goto start;
     }
 
     // Draw the blocks of the level
     TerrainDraw(GameWindow->surface, LevelTerrain);
-
-    // Draw the limits of the level
-    WallsDraw(GameWindow->surface, LevelWalls);
 
     // Draw the snake in the screen
     SnakeDraw(GameWindow->surface, PlayerSnake);
@@ -220,7 +236,7 @@ int main(int argc, char* args[])
     FoodDraw(GameWindow->surface, ActualFood);
 
     // Draw the score
-    ScoreDraw(GameWindow->surface, font, GameScore);
+    ScoreDraw(GameWindow->surface, ScoreFont, GameScore);
 
     // Update the changes in surface
     WindowSurfaceUpdate(GameWindow);
@@ -247,7 +263,7 @@ int main(int argc, char* args[])
   TerrainDestroy(LevelTerrain);
 
   // Close the font opened and exit TTF module
-  DrawTextQuit(font);
+  DrawTextQuit(ScoreFont);
 
   // Destroy the window and her surface, quit SDL module
   WindowAndSurfaceQuit(GameWindow);

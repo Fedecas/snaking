@@ -12,7 +12,7 @@
 
 TTF_Font* DrawTextInit();
 /*
- * Init the assets for write in screen
+ * Init the font for write in screen
  */
 
 void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color);
@@ -31,9 +31,11 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
  * Draw text in the screen
  */
 
-void DrawScore(SDL_Surface* screen, TTF_Font* font, int score);
+void DrawButton(SDL_Surface* screenSurface,
+                int boxX, int boxY, int boxW, int boxH, SDL_Color boxColor,
+                char* text, SDL_Color textColor);
 /*
- * Draw the player score
+ * Draw a box with text inside
  */
 
 TTF_Font* DrawTextQuit(TTF_Font* font);

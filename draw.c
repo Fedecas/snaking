@@ -16,11 +16,11 @@ TTF_Font* DrawTextInit()
   return font;
 }
 
-void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color)
+void DrawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color)
 {
-  Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
+  Uint32 col = SDL_MapRGBA(screenSurface->format, color.r, color.g, color.b, color.a);
   SDL_Rect pixel = {x, y, 1, 1};
-  SDL_FillRect(surface, &pixel, col);
+  SDL_FillRect(screenSurface, &pixel, col);
 }
 
 void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Color color)
@@ -30,8 +30,7 @@ void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Colo
   SDL_FillRect(surface, &rect, col);
 }
 
-void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
-              char* text, int x, int y, SDL_Color color)
+void DrawText(SDL_Surface* screenSurface, TTF_Font* font, char* text, int x, int y, SDL_Color color)
 {
   int blockX = (x / BLOCK_SIZE);
   int blockY = (y / BLOCK_SIZE);
@@ -47,6 +46,26 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
   SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
 
   SDL_FreeSurface(textSurface);
+}
+
+void DrawButton(SDL_Surface* screenSurface,
+                int boxX, int boxY, int boxW, int boxH, SDL_Color boxColor,
+                char* text, SDL_Color textColor)
+{
+  DrawBox(screenSurface, boxX, boxY, boxW, boxH, boxColor);
+
+  int fontsize = (boxW + boxH) / 10;
+  TTF_Font* font = TTF_OpenFont(FONT_DIR, fontsize);
+
+  int fontwidth, fontheight;
+  TTF_SizeText(font, text, &fontwidth, &fontheight);
+
+  int drawtextY = boxY + (boxH / 2) - (fontheight / 2);
+  int drawtextX = boxX + (boxW / 2) - (fontwidth / 2);
+
+  DrawText(screenSurface, font, text, drawtextX, drawtextY, textColor);
+
+  TTF_CloseFont(font);
 }
 
 TTF_Font* DrawTextQuit(TTF_Font* font)

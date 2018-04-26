@@ -82,18 +82,16 @@ void SnakeMove(snake PlayerSnake, int direction)
     PlayerSnake->headDirection = direction;
   }
 
+  SnakeBodyMove(PlayerSnake);
+
   switch (PlayerSnake->headDirection) {
     case DIRECTION_LEFT:
-      SnakeBodyMove(PlayerSnake);
       PlayerSnake->blocksX[0] -= 1; break;
     case DIRECTION_RIGHT:
-      SnakeBodyMove(PlayerSnake);
       PlayerSnake->blocksX[0] += 1; break;
     case DIRECTION_UP:
-      SnakeBodyMove(PlayerSnake);
       PlayerSnake->blocksY[0] -= 1; break;
     case DIRECTION_DOWN:
-      SnakeBodyMove(PlayerSnake);
       PlayerSnake->blocksY[0] += 1; break;
     default: break;
   }
@@ -182,7 +180,7 @@ void SnakeDraw(SDL_Surface* LevelSurface, snake PlayerSnake)
   DrawBox(LevelSurface, startfaceX + 3 * eyesize, startfaceY + eyesize, eyesize, eyesize, COLOR_BLACK);
 
   // The mouth
-  DrawBox(LevelSurface, startfaceX + eyesize, startfaceY + 3 * eyesize, 3 * eyesize, eyesize, COLOR_RED);
+  DrawBox(LevelSurface, startfaceX + eyesize, startfaceY + 3 * eyesize, 3 * eyesize, eyesize, COLOR_SNAKE_BODY);
 }
 
 snake SnakeDestroy(snake PlayerSnake)

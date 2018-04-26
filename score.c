@@ -17,11 +17,14 @@ void ScoreIncrease(score GameScore)
 
 void ScoreDraw(SDL_Surface* LevelSurface, TTF_Font* font, score GameScore)
 {
-  int posX = (((BLOCKS_X - 1) * BLOCK_SIZE) / 2) - (BLOCK_SIZE / 10);
-  int posY = ((BLOCKS_Y - 3) * BLOCK_SIZE);
-
   char scoreInStr[2];
   sprintf(scoreInStr, "%d", *GameScore);
+
+  int fontwidth, fontheight;
+  TTF_SizeText(font, scoreInStr, &fontwidth, &fontheight);
+
+  int posX = (BLOCKS_X * BLOCK_SIZE) / 2 - (fontwidth / 2);
+  int posY = ((BLOCKS_Y - 3) * BLOCK_SIZE);
 
   DrawText(LevelSurface, font, scoreInStr, posX, posY, COLOR_SCORE);
 }
@@ -30,4 +33,6 @@ score ScoreDestroy(score GameScore)
 {
   free(GameScore);
   GameScore = NULL;
+
+  return GameScore;
 }
