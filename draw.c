@@ -50,12 +50,9 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font, char* text, int x, int
 
 void DrawButton(SDL_Surface* screenSurface,
                 int boxX, int boxY, int boxW, int boxH, SDL_Color boxColor,
-                char* text, SDL_Color textColor)
+                TTF_Font* font, char* text, SDL_Color textColor)
 {
   DrawBox(screenSurface, boxX, boxY, boxW, boxH, boxColor);
-
-  int fontsize = (boxW + boxH) / 10;
-  TTF_Font* font = TTF_OpenFont(FONT_DIR, fontsize);
 
   int fontwidth, fontheight;
   TTF_SizeText(font, text, &fontwidth, &fontheight);
@@ -64,8 +61,6 @@ void DrawButton(SDL_Surface* screenSurface,
   int drawtextX = boxX + (boxW / 2) - (fontwidth / 2);
 
   DrawText(screenSurface, font, text, drawtextX, drawtextY, textColor);
-
-  TTF_CloseFont(font);
 }
 
 TTF_Font* DrawTextQuit(TTF_Font* font)

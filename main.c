@@ -25,6 +25,14 @@ static void SleepMS(int timeinms)
   nanosleep(&timetosleep, NULL);
 }
 
+static int MouseInButton(SDL_Event event, int buttonX, int buttonY, int buttonwidth, int buttonheight)
+{
+  int MouseInX = (event.motion.x >= buttonX) && (event.motion.x <= buttonX + buttonwidth);
+  int MouseInY = (event.motion.y >= buttonY) && (event.motion.y <= buttonY + buttonheight);
+
+  return (MouseInX && MouseInY);
+}
+
 static int GameOver(window GameWindow, TTF_Font* font)
 {
   // Draw "game over" text
@@ -38,33 +46,36 @@ static int GameOver(window GameWindow, TTF_Font* font)
 
   DrawText(GameWindow->surface, font, text, textposX, textposY, COLOR_SCORE);
 
-  // Draw option quit button
-  text = "QUIT";
-
+  // Draw the quit button
   int buttonwidth = WINDOW_WIDTH / 6;
   int buttonheight = buttonwidth / 2;
 
   int buttonquitX = (WINDOW_WIDTH / 2) - (buttonwidth + buttonheight);
   int buttonquitY = textposY + buttonheight;
 
+  int fontsize = (buttonwidth + buttonheight) / 10;
+  TTF_Font* buttonfont = TTF_OpenFont(FONT_DIR, fontsize);
+
   DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
-             buttonwidth, buttonheight, COLOR_BLACK, text, COLOR_WHITE);
+             buttonwidth, buttonheight, COLOR_BLACK,
+             buttonfont, "QUIT", COLOR_WHITE);
 
-  // Draw option restart button
-  text = "RESTART";
-
+  // Draw the restart button
   int buttonrestartX = buttonquitX + (2 * buttonwidth);
   int buttonrestartY = textposY + buttonheight;
 
   DrawButton(GameWindow->surface, buttonrestartX, buttonrestartY,
-             buttonwidth, buttonheight, COLOR_BLACK, text, COLOR_WHITE);
+             buttonwidth, buttonheight, COLOR_BLACK,
+             buttonfont, "RESTART", COLOR_WHITE);
 
-  WindowSurfaceUpdate(GameWindow);
-
+  // Wait for response loop
+  SDL_Color boxbuttoncolor, textbuttoncolor;
   int quit = OPTION_CONTINUE;
   SDL_Event event;
 
   while(!quit) {
+    WindowSurfaceUpdate(GameWindow);
+
     while(SDL_PollEvent(&event)) {
       switch (event.type) {
         case SDL_QUIT: quit = OPTION_QUIT; break;
@@ -78,35 +89,43 @@ static int GameOver(window GameWindow, TTF_Font* font)
             case SDLK_ESCAPE: quit = OPTION_QUIT; break;
             default: break;
           }
-        /*
-        case SDL_MOUSEMOTION: TODO ver drawinit, cambiar switch, funcion para la posicion del mouse
-          if((event.motion.x >= buttonquitX) && (event.motion.x <= buttonquitX + buttonwidth)
-            && (event.motion.y >= buttonquitY) && (event.motion.y <= buttonquitY + buttonheight)) {
-            DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
-                       buttonwidth, buttonheight, COLOR_WHITE, "QUIT", COLOR_BLACK);
-          } break;
-        */
-        case SDL_MOUSEBUTTONDOWN:
-          if(event.button.button == SDL_BUTTON_LEFT) {
-            int mouseX = event.button.x;
-            int mouseY = event.button.y;
-
-            if((mouseX >= buttonquitX) && (mouseX <= buttonquitX + buttonwidth)
-               && (mouseY >= buttonquitY) && (mouseY <= buttonquitY + buttonheight)) {
-              quit = OPTION_QUIT;
-            } else if((mouseX >= buttonrestartX) && (mouseX <= buttonrestartX + buttonwidth)
-                      && (mouseY >= buttonrestartY) && (mouseY <= buttonrestartY + buttonheight)) {
-              quit = OPTION_RESTART;
+        case SDL_MOUSEMOTION:
+          if(MouseInButton(event, buttonquitX, buttonquitY, buttonwidth, buttonheight)) {
+            boxbuttoncolor = COLOR_WHITE;
+            textbuttoncolor = COLOR_BLACK;
+          } else {
+            if(MouseInButton(event, buttonrestartX, buttonrestartY, buttonwidth, buttonheight)) {
+              boxbuttoncolor = COLOR_WHITE;
+              textbuttoncolor = COLOR_BLACK;
+            } else {
+              boxbuttoncolor = COLOR_BLACK;
+              textbuttoncolor = COLOR_WHITE;
             }
-          } break;
+            DrawButton(GameWindow->surface, buttonrestartX, buttonrestartY,
+                       buttonwidth, buttonheight, boxbuttoncolor,
+                       buttonfont, "RESTART", textbuttoncolor);
+
+            boxbuttoncolor = COLOR_BLACK;
+            textbuttoncolor = COLOR_WHITE;
+          }
+          DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
+                     buttonwidth, buttonheight, boxbuttoncolor,
+                     buttonfont, "QUIT", textbuttoncolor);
+          break;
+        case SDL_MOUSEBUTTONDOWN:
+          if(MouseInButton(event, buttonquitX, buttonquitY, buttonwidth, buttonheight)) {
+            quit = OPTION_QUIT;
+          } else if(MouseInButton(event, buttonrestartX, buttonrestartY, buttonwidth, buttonheight)) {
+            quit = OPTION_RESTART;
+          }
         default: break;
       }
     }
 
-    WindowSurfaceUpdate(GameWindow);
-
-    SleepMS(DELAY_IN_MS);
+    SleepMS(DELAY_IN_MS / 2);
   }
+
+  TTF_CloseFont(buttonfont);
 
   return quit;
 }

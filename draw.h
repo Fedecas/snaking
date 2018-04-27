@@ -33,7 +33,7 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
 
 void DrawButton(SDL_Surface* screenSurface,
                 int boxX, int boxY, int boxW, int boxH, SDL_Color boxColor,
-                char* text, SDL_Color textColor);
+                TTF_Font* font, char* text, SDL_Color textColor);
 /*
  * Draw a box with text inside
  */
