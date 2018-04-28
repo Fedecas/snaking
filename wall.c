@@ -4,15 +4,13 @@
 
 static wall WallCreate(int size, int x, int y, int rotation)
 {
-  wall LevelWall = NULL;
-
-  LevelWall = malloc(sizeof(struct wall));
+  wall LevelWall = (wall) malloc(sizeof(struct wall));
 
   LevelWall->size = size;
   LevelWall->rotation = rotation;
 
-  LevelWall->blocksX = malloc(sizeof(int) * LevelWall->size);
-  LevelWall->blocksY = malloc(sizeof(int) * LevelWall->size);
+  LevelWall->blocksX = (int*) malloc(sizeof(int) * LevelWall->size);
+  LevelWall->blocksY = (int*) malloc(sizeof(int) * LevelWall->size);
 
   switch (LevelWall->rotation) {
     case WALL_HORIZONTAL:
@@ -33,7 +31,7 @@ static wall WallCreate(int size, int x, int y, int rotation)
 
 wall* WallsCreate()
 {
-  wall* LevelWalls = malloc(sizeof(struct wall) * WALLS_IN_LEVEL);
+  wall* LevelWalls = (wall*) malloc(sizeof(struct wall) * WALLS_IN_LEVEL);
 
   LevelWalls[0] = WallCreate(BLOCKS_Y - 1, 0, 0, WALL_VERTICAL); // Left
   LevelWalls[1] = WallCreate(BLOCKS_Y - 1, BLOCKS_X - 1, 1, WALL_VERTICAL); // Right

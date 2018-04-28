@@ -9,11 +9,11 @@
 #include "wall.h"
 #include "window.h"
 
-#define OPTION_CONTINUE 0
-#define OPTION_QUIT     1
-#define OPTION_RESTART  2
+#define OPTION_CONTINUE   0
+#define OPTION_QUIT       1
+#define OPTION_RESTART    2
 
-#define DELAY_IN_MS 75
+#define DELAY_IN_MS       75
 
 static void SleepMS(int timeinms)
 {
@@ -25,10 +25,13 @@ static void SleepMS(int timeinms)
   nanosleep(&timetosleep, NULL);
 }
 
-static int MouseInButton(SDL_Event event, int buttonX, int buttonY, int buttonwidth, int buttonheight)
+static int MouseInButton(SDL_Event event, int buttonX, int buttonY,
+                         int buttonwidth, int buttonheight)
 {
-  int MouseInX = (event.motion.x >= buttonX) && (event.motion.x <= buttonX + buttonwidth);
-  int MouseInY = (event.motion.y >= buttonY) && (event.motion.y <= buttonY + buttonheight);
+  int MouseInX = (event.motion.x >= buttonX)
+                 && (event.motion.x <= buttonX + buttonwidth);
+  int MouseInY = (event.motion.y >= buttonY)
+                 && (event.motion.y <= buttonY + buttonheight);
 
   return (MouseInX && MouseInY);
 }
@@ -90,11 +93,13 @@ static int GameOver(window GameWindow, TTF_Font* font)
             default: break;
           }
         case SDL_MOUSEMOTION:
-          if(MouseInButton(event, buttonquitX, buttonquitY, buttonwidth, buttonheight)) {
+          if(MouseInButton(event, buttonquitX, buttonquitY,
+                           buttonwidth, buttonheight)) {
             boxbuttoncolor = COLOR_WHITE;
             textbuttoncolor = COLOR_BLACK;
           } else {
-            if(MouseInButton(event, buttonrestartX, buttonrestartY, buttonwidth, buttonheight)) {
+            if(MouseInButton(event, buttonrestartX, buttonrestartY,
+                             buttonwidth, buttonheight)) {
               boxbuttoncolor = COLOR_WHITE;
               textbuttoncolor = COLOR_BLACK;
             } else {
@@ -113,9 +118,11 @@ static int GameOver(window GameWindow, TTF_Font* font)
                      buttonfont, "QUIT", textbuttoncolor);
           break;
         case SDL_MOUSEBUTTONDOWN:
-          if(MouseInButton(event, buttonquitX, buttonquitY, buttonwidth, buttonheight)) {
+          if(MouseInButton(event, buttonquitX, buttonquitY,
+                           buttonwidth, buttonheight)) {
             quit = OPTION_QUIT;
-          } else if(MouseInButton(event, buttonrestartX, buttonrestartY, buttonwidth, buttonheight)) {
+          } else if(MouseInButton(event, buttonrestartX, buttonrestartY,
+                                  buttonwidth, buttonheight)) {
             quit = OPTION_RESTART;
           }
         default: break;
@@ -130,19 +137,19 @@ static int GameOver(window GameWindow, TTF_Font* font)
   return quit;
 }
 
-static void GameRestart(food ActualFood, snake PlayerSnake, score GameScore)
+static void GameRestart(food* ActualFood, snake* PlayerSnake, score* GameScore)
 {
-  // Restart the food
-  FoodDestroy(ActualFood);
-  ActualFood = FoodCreate();
-
   // Restart the snake
-  SnakeDestroy(PlayerSnake);
-  PlayerSnake = SnakeCreate();
+  SnakeDestroy(*PlayerSnake);
+  *PlayerSnake = SnakeCreate();
+
+  // Restart the food
+  FoodDestroy(*ActualFood);
+  *ActualFood = FoodCreate();
 
   // Restart the score
-  ScoreDestroy(GameScore);
-  GameScore = ScoreInit();
+  ScoreDestroy(*GameScore);
+  *GameScore = ScoreInit();
 }
 
 int main(int argc, char* args[])
@@ -175,9 +182,6 @@ int main(int argc, char* args[])
   int arrow = DIRECTION_NONE;
   int quit = OPTION_CONTINUE;
 
-  // Draw the limits of the level
-  WallsDraw(GameWindow->surface, LevelWalls);
-
   start:
   while(1) {
     clock_t start = clock();
@@ -203,50 +207,38 @@ int main(int argc, char* args[])
       }
     }
 
-    if(arrow > DIRECTION_NONE) {
-      // Move the snake according the last key pressed
-      SnakeMove(PlayerSnake, arrow);
-    }
+    /* React to event */
+    // Move the snake according the last key pressed
+    SnakeMove(PlayerSnake, arrow);
 
-    // If snake eat the food
-    if(SnakeIsCollidingWithFood(PlayerSnake, ActualFood)) {
-      int newsnakehunger = PlayerSnake->hunger - 1;
+    // Snake eat the food if colliding it
+    SnakeEat(PlayerSnake, &ActualFood, GameScore);
 
-      if(newsnakehunger <= 0) {
-        SnakeIncrease(PlayerSnake);
-
-        newsnakehunger = newsnakehunger + SNAKE_HUNGER;
-      }
-
-      PlayerSnake->hunger = newsnakehunger;
-
-      FoodDestroy(ActualFood);
-      ActualFood = FoodCreate();
-
-      ScoreIncrease(GameScore);
-    }
-
-    // If snake collide with some wall
-    if(SnakeIsCollidingWithWall(PlayerSnake, LevelWalls)) {
+    // If snake collide walls or her body, show lose menu
+    if(SnakeCollidingWallOrBody(PlayerSnake, LevelWalls)) {
       quit = GameOver(GameWindow, ScoreFont);
     }
 
-    // If snake hit herself
-    if(SnakeIsCollidingWithHerself(PlayerSnake)) {
-      quit = GameOver(GameWindow, ScoreFont);
+    // Check if continue or quit the game
+    switch (quit) {
+      case OPTION_CONTINUE:
+        break;
+      case OPTION_QUIT:
+        goto end;
+      case OPTION_RESTART:
+        GameRestart(&ActualFood, &PlayerSnake, &GameScore);
+        arrow = DIRECTION_NONE;
+        quit = OPTION_CONTINUE;
+        goto start;
+      default: break;
     }
 
-    if(quit == OPTION_QUIT) {
-      break;
-    } else if(quit == OPTION_RESTART) {
-      GameRestart(ActualFood, PlayerSnake, GameScore);
-      arrow = DIRECTION_NONE;
-      quit = OPTION_CONTINUE;
-      goto start;
-    }
-
-    // Draw the blocks of the level
+    /* Draw game objects and wait */
+    // Draw the base terrain
     TerrainDraw(GameWindow->surface, LevelTerrain);
+
+    // Draw the limits of the level
+    WallsDraw(GameWindow->surface, LevelWalls);
 
     // Draw the snake in the screen
     SnakeDraw(GameWindow->surface, PlayerSnake);
@@ -265,6 +257,7 @@ int main(int argc, char* args[])
     // Wait
     SleepMS(DELAY_IN_MS - (int)diff);
   }
+  end:
 
   // Destroy the score
   ScoreDestroy(GameScore);

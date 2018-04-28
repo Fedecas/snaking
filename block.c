@@ -42,7 +42,7 @@ void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type)
 
       int pivot = 0;
 
-      for (int posY = drawposY + (BLOCK_SIZE - 1); posY > drawposY + 1; posY--) {
+      for (int posY = drawposY + (BLOCK_SIZE - 2); posY > drawposY; posY--) {
         pivot++;
         for(int posX = drawposX + pivot; posX < drawposX + (BLOCK_SIZE - 1); posX++) {
           DrawPixel(surface, posX, posY, color);

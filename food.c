@@ -4,9 +4,7 @@
 
 food FoodCreate()
 {
-  food NewFood = NULL;
-
-  NewFood = malloc(sizeof(struct food));
+  food NewFood = (food) malloc(sizeof(struct food));
 
   NewFood->x = FOOD_SPAWNX;
   NewFood->y = FOOD_SPAWNY;

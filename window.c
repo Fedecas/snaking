@@ -7,9 +7,9 @@ window WindowAndSurfaceInit()
   }
 
   SDL_Window* context = SDL_CreateWindow(WINDOW_TITLE,
-                            WINDOW_POSX, WINDOW_POSY,
-                            WINDOW_WIDTH, WINDOW_HEIGHT,
-                            SDL_WINDOW_BORDERLESS);
+                                         WINDOW_POSX, WINDOW_POSY,
+                                         WINDOW_WIDTH, WINDOW_HEIGHT,
+                                         SDL_WINDOW_BORDERLESS);
 
   if(context == NULL) {
     printf("[error] Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -21,7 +21,7 @@ window WindowAndSurfaceInit()
     printf("[error] Surface could not be created! SDL_Error: %s\n", SDL_GetError());
   }
 
-  window GameWindow = malloc(sizeof(struct window));
+  window GameWindow = (window) malloc(sizeof(struct window));
 
   GameWindow->context = context;
   GameWindow->surface = surface;
@@ -31,7 +31,9 @@ window WindowAndSurfaceInit()
 
 void WindowSurfaceUpdate(window GameWindow)
 {
-  SDL_UpdateWindowSurface(GameWindow->context);
+  if(SDL_UpdateWindowSurface(GameWindow->context) == -1) {
+    printf("[error] Surface could not be updated! SDL_Error: %s\n", SDL_GetError());
+  }
 }
 
 window WindowAndSurfaceQuit(window GameWindow)

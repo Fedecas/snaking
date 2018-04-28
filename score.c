@@ -4,7 +4,7 @@
 
 score ScoreInit()
 {
-  score GameScore = malloc(sizeof(unsigned int));
+  score GameScore = (score) malloc(sizeof(unsigned int));
   *GameScore = 0;
 
   return GameScore;

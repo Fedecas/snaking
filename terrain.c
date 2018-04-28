@@ -3,9 +3,7 @@
 
 terrain TerrainCreate()
 {
-  terrain LevelTerrain = NULL;
-
-  LevelTerrain = malloc(sizeof(struct terrain));
+  terrain LevelTerrain = (terrain) malloc(sizeof(struct terrain));
 
   LevelTerrain->x = TERRAIN_X;
   LevelTerrain->y = TERRAIN_Y;

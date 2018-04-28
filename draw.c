@@ -11,16 +11,14 @@ TTF_Font* DrawTextInit()
     printf("[error] Font could not be loaded! TTF_Error: %s\n", SDL_GetError());
   }
 
-  TTF_SetFontStyle(font, FONT_STYLE);
-
   return font;
 }
 
-void DrawPixel(SDL_Surface* screenSurface, int x, int y, SDL_Color color)
+void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color)
 {
-  Uint32 col = SDL_MapRGBA(screenSurface->format, color.r, color.g, color.b, color.a);
-  SDL_Rect pixel = {x, y, 1, 1};
-  SDL_FillRect(screenSurface, &pixel, col);
+  Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
+  Uint32* pixels = surface->pixels;
+  pixels[(y * surface->w) + x] = col;
 }
 
 void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Color color)
@@ -41,9 +39,12 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font, char* text, int x, int
 
   SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, color);
 
-  SDL_Rect textLocation = {x, y, 0, 0};
+  if(textSurface == NULL) {
+    printf("[error] Text could not be writen! TTF_Error: %s\n", SDL_GetError());
+  }
 
-  SDL_BlitSurface(textSurface, NULL, screenSurface, &textLocation);
+  SDL_Rect textLocation = {x, y, 0, 0};
+  SDL_UpperBlit(textSurface, NULL, screenSurface, &textLocation);
 
   SDL_FreeSurface(textSurface);
 }
