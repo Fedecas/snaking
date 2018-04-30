@@ -1,7 +1,8 @@
 #ifndef SNAKE_BLOCK_H
 #define SNAKE_BLOCK_H
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_surface.h>
 
 #define BLOCK_SIZE  24 // Size in pixels of each block
 

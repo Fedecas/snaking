@@ -3,7 +3,7 @@
 
 typedef unsigned int * score;
 
-score ScoreInit();
+score ScoreCreate();
 /*
  * Initialize the score count in '0'
  */

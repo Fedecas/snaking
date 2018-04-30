@@ -1,6 +1,8 @@
 #ifndef SNAKE_WINDOW_H
 #define SNAKE_WINDOW_H
 
+#include <SDL2/SDL.h>
+
 #include "block.h"
 
 #define WINDOW_TITLE  "Snaking Alpha" // Title of the window

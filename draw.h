@@ -5,9 +5,9 @@
 
 #include "colors.h"
 
-#define FONT_TYPE     "RobotoMono-Light"       // Type of font to use
-#define FONT_DIR      "assets/"FONT_TYPE".ttf" // Path of a TrueType font for write
-#define FONT_SIZE     (BLOCK_SIZE * 2)         // Size of letter
+#define FONT_TYPE     "RobotoMono-Light"                // Type of font to use
+#define FONT_PATH     "assets/fonts/"FONT_TYPE".ttf"    // Path of a TrueType font for write
+#define FONT_SIZE     (BLOCK_SIZE * 2)                  // Size of letter
 
 TTF_Font* DrawTextInit();
 /*

@@ -3,6 +3,7 @@
 
 #include "food.h"
 #include "score.h"
+#include "sound.h"
 #include "wall.h"
 
 #define DIRECTION_NONE  0
@@ -36,7 +37,7 @@ void SnakeMove(snake PlayerSnake, int direction);
  * Move the snake one block to the entered direction, if direction given is valid
  */
 
-void SnakeIncrease(snake PlayerSnake);
+void SnakeIncrease(snake PlayerSnake, sound IncreaseSound);
 /*
  * Increase the large of the snake in one block
  */
@@ -46,7 +47,7 @@ int SnakeCollidingWallOrBody(snake PlayerSnake, wall* LevelWalls);
  * Check if snake is colliding with some wall or herself
  */
 
-void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore);
+void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore, sound IncreaseSound, sound EatSound);
 /*
  * Increase the snake, restart the food and increase the score, if snake collide the food
  */

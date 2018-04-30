@@ -1,6 +1,6 @@
 #include <time.h>
+#include <SDL2/SDL_mixer.h>
 
-#include "block.h"
 #include "draw.h"
 #include "food.h"
 #include "score.h"
@@ -8,6 +8,7 @@
 #include "terrain.h"
 #include "wall.h"
 #include "window.h"
+#include "sound.h"
 
 #define OPTION_CONTINUE   0
 #define OPTION_QUIT       1
@@ -36,8 +37,10 @@ static int MouseInButton(SDL_Event event, int buttonX, int buttonY,
   return (MouseInX && MouseInY);
 }
 
-static int GameOver(window GameWindow, TTF_Font* font)
+static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
 {
+  SoundPlay(GameOverSound, 1);
+
   // Draw "game over" text
   char* text = "GAME OVER";
 
@@ -57,7 +60,7 @@ static int GameOver(window GameWindow, TTF_Font* font)
   int buttonquitY = textposY + buttonheight;
 
   int fontsize = (buttonwidth + buttonheight) / 10;
-  TTF_Font* buttonfont = TTF_OpenFont(FONT_DIR, fontsize);
+  TTF_Font* buttonfont = TTF_OpenFont(FONT_PATH, fontsize);
 
   DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
              buttonwidth, buttonheight, COLOR_BLACK,
@@ -134,6 +137,8 @@ static int GameOver(window GameWindow, TTF_Font* font)
 
   TTF_CloseFont(buttonfont);
 
+  SoundStop(1);
+
   return quit;
 }
 
@@ -149,7 +154,7 @@ static void GameRestart(food* ActualFood, snake* PlayerSnake, score* GameScore)
 
   // Restart the score
   ScoreDestroy(*GameScore);
-  *GameScore = ScoreInit();
+  *GameScore = ScoreCreate();
 }
 
 int main(int argc, char* args[])
@@ -159,6 +164,12 @@ int main(int argc, char* args[])
 
   // Initialize TTF module and the font for texts
   TTF_Font* ScoreFont = DrawTextInit();
+
+  // Initialize the sounds to play
+  sound IncreaseSound = SoundInit("SnakeIncrease");
+  sound EatSound = SoundInit("SnakeEat");
+  sound GameOverSound = SoundInit("GameOver");
+  sound GameRestartSound = SoundInit("GameRestart");
 
   // Create the terrain to move
   terrain LevelTerrain = TerrainCreate();
@@ -173,7 +184,7 @@ int main(int argc, char* args[])
   food ActualFood = FoodCreate();
 
   // Initialize the score
-  score GameScore = ScoreInit();
+  score GameScore = ScoreCreate();
 
   // For events on window
   SDL_Event event;
@@ -212,11 +223,11 @@ int main(int argc, char* args[])
     SnakeMove(PlayerSnake, arrow);
 
     // Snake eat the food if colliding it
-    SnakeEat(PlayerSnake, &ActualFood, GameScore);
+    SnakeEat(PlayerSnake, &ActualFood, GameScore, IncreaseSound, EatSound);
 
     // If snake collide walls or her body, show lose menu
     if(SnakeCollidingWallOrBody(PlayerSnake, LevelWalls)) {
-      quit = GameOver(GameWindow, ScoreFont);
+      quit = GameOver(GameWindow, ScoreFont, GameOverSound);
     }
 
     // Check if continue or quit the game
@@ -227,6 +238,7 @@ int main(int argc, char* args[])
         goto end;
       case OPTION_RESTART:
         GameRestart(&ActualFood, &PlayerSnake, &GameScore);
+        SoundPlay(GameRestartSound, 1);
         arrow = DIRECTION_NONE;
         quit = OPTION_CONTINUE;
         goto start;
@@ -273,6 +285,12 @@ int main(int argc, char* args[])
 
   // Destroy the terrain
   TerrainDestroy(LevelTerrain);
+
+  // Close the sounds
+  SoundQuit(GameRestartSound);
+  SoundQuit(GameOverSound);
+  SoundQuit(EatSound);
+  SoundQuit(IncreaseSound);
 
   // Close the font opened and exit TTF module
   DrawTextQuit(ScoreFont);

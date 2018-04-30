@@ -5,7 +5,7 @@ TTF_Font* DrawTextInit()
 {
   TTF_Init();
 
-  TTF_Font* font = TTF_OpenFont(FONT_DIR, FONT_SIZE);
+  TTF_Font* font = TTF_OpenFont(FONT_PATH, FONT_SIZE);
 
   if(font == NULL) {
     printf("[error] Font could not be loaded! TTF_Error: %s\n", SDL_GetError());

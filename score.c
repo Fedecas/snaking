@@ -2,7 +2,7 @@
 #include "draw.h"
 #include "score.h"
 
-score ScoreInit()
+score ScoreCreate()
 {
   score GameScore = (score) malloc(sizeof(unsigned int));
   *GameScore = 0;

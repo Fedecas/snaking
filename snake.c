@@ -104,7 +104,7 @@ snake SnakeCreate()
   NewSnake->blocksY[0] = SNAKE_SPAWNY;
 
   for(int i = 1; i < SNAKE_SIZE; i++) {
-    SnakeIncrease(NewSnake);
+    SnakeIncrease(NewSnake, NULL);
   }
 
   return NewSnake;
@@ -135,7 +135,7 @@ void SnakeMove(snake PlayerSnake, int direction)
   }
 }
 
-void SnakeIncrease(snake PlayerSnake)
+void SnakeIncrease(snake PlayerSnake, sound IncreaseSound)
 {
   int oldlastblock = PlayerSnake->size - 1;
 
@@ -165,6 +165,8 @@ void SnakeIncrease(snake PlayerSnake)
       break;
     default: break;
   }
+
+  SoundPlay(IncreaseSound, 0);
 }
 
 int SnakeCollidingWallOrBody(snake PlayerSnake, wall* LevelWalls)
@@ -182,14 +184,15 @@ int SnakeCollidingWallOrBody(snake PlayerSnake, wall* LevelWalls)
   return 0;
 }
 
-void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore)
+void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore, sound IncreaseSound, sound EatSound)
 {
   // If snake eat the food
   if(SnakeIsCollidingWithFood(PlayerSnake, *ActualFood)) {
+    SoundPlay(EatSound, 0);
     int newsnakehunger = PlayerSnake->hunger - 1;
 
     if(newsnakehunger <= 0) {
-      SnakeIncrease(PlayerSnake);
+      SnakeIncrease(PlayerSnake, IncreaseSound);
 
       newsnakehunger = newsnakehunger + SNAKE_HUNGER;
     }

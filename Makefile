@@ -1,8 +1,8 @@
-OBJS = block.c draw.c food.c score.c snake.c terrain.c wall.c window.c
+OBJS = block.c draw.c food.c score.c snake.c sound.c terrain.c wall.c window.c
 CFLAGS = -Wall -Werror -Wextra -pedantic -std=c99
 PROGRAM = snaking
 COMPILER = gcc
-SDL = -lSDL2 -lSDL2_ttf
+SDL = -lSDL2 -lSDL2_ttf -lSDL2_mixer
 
 test: $(OBJS)
 	$(COMPILER) -c $(OBJS) $(SDL)
