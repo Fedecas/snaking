@@ -18,24 +18,23 @@
 #define WINDOW_LIMIT_UP     0               // The minimum block Y
 #define WINDOW_LIMIT_DOWN   (BLOCKS_Y - 1)  // The maximum block Y
 
-typedef struct window {
-    SDL_Window* context;
-    SDL_Surface* surface;
-} * window;
+typedef struct _window_t * window_t;
 
-window WindowAndSurfaceInit();
+window_t WindowAndSurfaceInit();
 /*
  * Create a window in WINDOW_POSX and WINDOW_POSY,
  * of size (WINDOW_WIDTH * WINDOW_HEIGHT),
  * with title WINDOW_TITLE
  */
 
-void WindowSurfaceUpdate(window GameWindow);
+SDL_Surface* WindowSurface(window_t window);
+
+void WindowSurfaceUpdate(window_t window);
 /*
  * Update the surface of the window
  */
 
-window WindowAndSurfaceQuit(window GameWindow);
+window_t WindowAndSurfaceQuit(window_t window);
 /*
  * Free the surface and destroy the window
  */

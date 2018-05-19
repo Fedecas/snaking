@@ -11,14 +11,14 @@
 #define SOUND_PATH  "assets/sounds/"  // Path for load sounds
 #define SOUND_EXT   ".wav"            // Extension of sound files
 
-typedef Mix_Chunk * sound;
+typedef Mix_Chunk * sound_t;
 
-sound SoundInit(char* SoundName);
+sound_t SoundInit(char* name);
 /*
  * Initialize a sound file from the path
  */
 
-void SoundPlay(sound GameSound, int channel);
+void SoundPlay(sound_t sound, int channel);
 /*
  * Play a sound in given channel
  */
@@ -28,7 +28,7 @@ void SoundStop(int channel);
  * Stop a playing channel
  */
 
-sound SoundQuit(sound GameSound);
+sound_t SoundQuit(sound_t sound);
 /*
  * Close a sound file opened
  */

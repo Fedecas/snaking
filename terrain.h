@@ -9,24 +9,19 @@
 #define TERRAIN_WIDTH   (WINDOW_WIDTH - (2 * BLOCK_SIZE))
 #define TERRAIN_HEIGHT  (WINDOW_HEIGHT - (2 * BLOCK_SIZE))
 
-typedef struct terrain {
-    int x;
-    int y;
-    int width;
-    int height;
-} * terrain;
+typedef struct _terrain_t * terrain_t;
 
-terrain TerrainCreate();
+terrain_t TerrainCreate();
 /*
  * Initialize the terrain and set the parameters in default values
  */
 
-void TerrainDraw(SDL_Surface* LevelSurface, terrain LevelTerrain);
+void TerrainDraw(SDL_Surface* surface, terrain_t terrain);
 /*
  * Draw the space between the walls
  */
 
-terrain TerrainDestroy(terrain LevelTerrain);
+terrain_t TerrainDestroy(terrain_t terrain);
 /*
  * Free the terrain's memory
  */

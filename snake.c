@@ -2,17 +2,26 @@
 #include "snake.h"
 #include "window.h"
 
-static int SnakeIsColliding(snake PlayerSnake, int x, int y)
+struct _snake_t {
+    int headDirection;
+    int tailDirection;
+    int size;
+    int hunger;
+    int* blocksX;
+    int* blocksY;
+} _snake_t;
+
+static int SnakeIsColliding(snake_t PlayerSnake, int x, int y)
 {
   return BlockInCollision(PlayerSnake->blocksX[0], PlayerSnake->blocksY[0], x, y);
 }
 
-static int SnakeIsCollidingWithFood(snake PlayerSnake, food ActualFood)
+static int SnakeIsCollidingWithFood(snake_t PlayerSnake, food_t ActualFood)
 {
-  return SnakeIsColliding(PlayerSnake, ActualFood->x, ActualFood->y);
+  return SnakeIsColliding(PlayerSnake, FoodPosX(ActualFood), FoodPosY(ActualFood));
 }
 
-static int SnakeIsCollidingWithHerself(snake PlayerSnake)
+static int SnakeIsCollidingWithHerself(snake_t PlayerSnake)
 {
   for (int i = 1; i < PlayerSnake->size; ++i) {
     if(SnakeIsColliding(PlayerSnake, PlayerSnake->blocksX[i], PlayerSnake->blocksY[i]))
@@ -22,13 +31,16 @@ static int SnakeIsCollidingWithHerself(snake PlayerSnake)
   return 0;
 }
 
-static int SnakeIsCollidingWithWalls(snake PlayerSnake, wall* LevelWalls)
+static int SnakeIsCollidingWithWalls(snake_t PlayerSnake, wall_t* LevelWalls)
 {
   for(int i = 0; i < WALLS_IN_LEVEL; i++) {
-    wall thiswall = LevelWalls[i];
-    for(int j = 0; j < thiswall->size; j++) {
-      int thiswallX = thiswall->blocksX[j];
-      int thiswallY = thiswall->blocksY[j];
+    wall_t thiswall = LevelWalls[i];
+    int wallsize = WallSize(thiswall);
+    int* wallX = WallBlocksX(thiswall);
+    int* wallY = WallBlocksY(thiswall);
+    for(int j = 0; j < wallsize; j++) {
+      int thiswallX = wallX[j];
+      int thiswallY = wallY[j];
 
       if(SnakeIsColliding(PlayerSnake, thiswallX, thiswallY))
         return 1;
@@ -38,7 +50,7 @@ static int SnakeIsCollidingWithWalls(snake PlayerSnake, wall* LevelWalls)
   return 0;
 }
 
-static void SnakeBodyMove(snake PlayerSnake)
+static void SnakeBodyMove(snake_t PlayerSnake)
 {
   for (int i = PlayerSnake->size - 1; i > 0; i--) {
     PlayerSnake->blocksX[i] = PlayerSnake->blocksX[i - 1];
@@ -46,7 +58,7 @@ static void SnakeBodyMove(snake PlayerSnake)
   }
 }
 
-static void SnakeTailDirectionUpdate(snake PlayerSnake)
+static void SnakeTailDirectionUpdate(snake_t PlayerSnake)
 {
   int prevIsUpOrDown = PlayerSnake->blocksX[PlayerSnake->size - 2] ==
                        PlayerSnake->blocksX[PlayerSnake->size - 1];
@@ -88,9 +100,9 @@ static int SnakeContraryDirection(int direction)
   }
 }
 
-snake SnakeCreate()
+snake_t SnakeCreate()
 {
-  snake NewSnake = (snake) malloc(sizeof(struct snake));
+  snake_t NewSnake = (snake_t) malloc(sizeof(_snake_t));
 
   NewSnake->headDirection = SNAKE_DIRECTION;
   NewSnake->tailDirection = NewSnake->headDirection;
@@ -110,7 +122,7 @@ snake SnakeCreate()
   return NewSnake;
 }
 
-void SnakeMove(snake PlayerSnake, int direction)
+void SnakeMove(snake_t PlayerSnake, int direction)
 {
   if(direction > DIRECTION_NONE) {
     if(direction != SnakeContraryDirection(PlayerSnake->headDirection)) {
@@ -135,7 +147,7 @@ void SnakeMove(snake PlayerSnake, int direction)
   }
 }
 
-void SnakeIncrease(snake PlayerSnake, sound IncreaseSound)
+void SnakeIncrease(snake_t PlayerSnake, sound_t IncreaseSound)
 {
   int oldlastblock = PlayerSnake->size - 1;
 
@@ -169,7 +181,7 @@ void SnakeIncrease(snake PlayerSnake, sound IncreaseSound)
   SoundPlay(IncreaseSound, 0);
 }
 
-int SnakeCollidingWallOrBody(snake PlayerSnake, wall* LevelWalls)
+int SnakeCollidingWallOrBody(snake_t PlayerSnake, wall_t* LevelWalls)
 {
   // If snake collide with some wall
   if(SnakeIsCollidingWithWalls(PlayerSnake, LevelWalls)) {
@@ -184,7 +196,7 @@ int SnakeCollidingWallOrBody(snake PlayerSnake, wall* LevelWalls)
   return 0;
 }
 
-void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore, sound IncreaseSound, sound EatSound)
+void SnakeEat(snake_t PlayerSnake, food_t* ActualFood, score_t GameScore, sound_t IncreaseSound, sound_t EatSound)
 {
   // If snake eat the food
   if(SnakeIsCollidingWithFood(PlayerSnake, *ActualFood)) {
@@ -206,7 +218,7 @@ void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore, sound Increa
   }
 }
 
-void SnakeDraw(SDL_Surface* LevelSurface, snake PlayerSnake)
+void SnakeDraw(SDL_Surface* LevelSurface, snake_t PlayerSnake)
 {
   for(int i = 1; i < PlayerSnake->size; i++) {
     BlockDraw(LevelSurface, PlayerSnake->blocksX[i], PlayerSnake->blocksY[i], COLOR_SNAKE_BODY, 0);
@@ -230,7 +242,7 @@ void SnakeDraw(SDL_Surface* LevelSurface, snake PlayerSnake)
           3 * eyesize, eyesize, COLOR_SNAKE_BODY);
 }
 
-snake SnakeDestroy(snake PlayerSnake)
+snake_t SnakeDestroy(snake_t PlayerSnake)
 {
   free(PlayerSnake->blocksX);
   PlayerSnake->blocksX = NULL;

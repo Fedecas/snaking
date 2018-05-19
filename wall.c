@@ -2,9 +2,16 @@
 #include "draw.h"
 #include "wall.h"
 
-static wall WallCreate(int size, int x, int y, int rotation)
+struct _wall_t {
+    int size;
+    int* blocksX;
+    int* blocksY;
+    int rotation;
+} _wall_t;
+
+static wall_t WallCreate(int size, int x, int y, int rotation)
 {
-  wall LevelWall = (wall) malloc(sizeof(struct wall));
+  wall_t LevelWall = (wall_t) malloc(sizeof(_wall_t));
 
   LevelWall->size = size;
   LevelWall->rotation = rotation;
@@ -29,9 +36,9 @@ static wall WallCreate(int size, int x, int y, int rotation)
   return LevelWall;
 }
 
-wall* WallsCreate()
+wall_t* WallsCreate()
 {
-  wall* LevelWalls = (wall*) malloc(sizeof(struct wall) * WALLS_IN_LEVEL);
+  wall_t* LevelWalls = (wall_t*) malloc(sizeof(wall_t) * WALLS_IN_LEVEL);
 
   LevelWalls[0] = WallCreate(BLOCKS_Y - 1, 0, 0, WALL_VERTICAL); // Left
   LevelWalls[1] = WallCreate(BLOCKS_Y - 1, BLOCKS_X - 1, 1, WALL_VERTICAL); // Right
@@ -41,7 +48,22 @@ wall* WallsCreate()
   return LevelWalls;
 }
 
-static void WallDraw(SDL_Surface* LevelSurface, wall LevelWall)
+int WallSize(wall_t LevelWall)
+{
+  return (LevelWall->size);
+}
+
+int* WallBlocksX(wall_t LevelWall)
+{
+  return (LevelWall->blocksX);
+}
+
+int* WallBlocksY(wall_t LevelWall)
+{
+  return (LevelWall->blocksY);
+}
+
+static void WallDraw(SDL_Surface* LevelSurface, wall_t LevelWall)
 {
   for(int i = 0; i < LevelWall->size; i++) {
     int thiswallX = LevelWall->blocksX[i];
@@ -51,14 +73,14 @@ static void WallDraw(SDL_Surface* LevelSurface, wall LevelWall)
   }
 }
 
-void WallsDraw(SDL_Surface* LevelSurface, wall* LevelWalls)
+void WallsDraw(SDL_Surface* LevelSurface, wall_t* LevelWalls)
 {
   for(int i = 0; i < WALLS_IN_LEVEL; i++) {
     WallDraw(LevelSurface, LevelWalls[i]);
   }
 }
 
-static wall WallDestroy(wall LevelWall)
+static wall_t WallDestroy(wall_t LevelWall)
 {
   free(LevelWall->blocksX);
   LevelWall->blocksX = NULL;
@@ -72,7 +94,7 @@ static wall WallDestroy(wall LevelWall)
   return LevelWall;
 }
 
-wall* WallsDestroy(wall* LevelWalls)
+wall_t* WallsDestroy(wall_t* LevelWalls)
 {
   for(int i = 0; i < WALLS_IN_LEVEL; i++) {
     LevelWalls[i] = WallDestroy(LevelWalls[i]);

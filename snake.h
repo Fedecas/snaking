@@ -18,46 +18,39 @@
 #define SNAKE_SPAWNX    (SNAKE_SIZE + ((int)random() % (BLOCKS_X - (2 * SNAKE_SIZE)))) // Default block X to spawn a snake
 #define SNAKE_SPAWNY    (SNAKE_SIZE + ((int)random() % (BLOCKS_Y - (2 * SNAKE_SIZE)))) // Default block Y to spawn a snake
 
-typedef struct snake {
-    int headDirection;
-    int tailDirection;
-    int size;
-    int hunger;
-    int* blocksX;
-    int* blocksY;
-} * snake;
+typedef struct _snake_t * snake_t;
 
-snake SnakeCreate();
+snake_t SnakeCreate();
 /*
  * Initialize the snake and set the parameters in default values
  */
 
-void SnakeMove(snake PlayerSnake, int direction);
+void SnakeMove(snake_t snake, int direction);
 /*
  * Move the snake one block to the entered direction, if direction given is valid
  */
 
-void SnakeIncrease(snake PlayerSnake, sound IncreaseSound);
+void SnakeIncrease(snake_t snake, sound_t sound);
 /*
  * Increase the large of the snake in one block
  */
 
-int SnakeCollidingWallOrBody(snake PlayerSnake, wall* LevelWalls);
+int SnakeCollidingWallOrBody(snake_t snake, wall_t* walls);
 /*
  * Check if snake is colliding with some wall or herself
  */
 
-void SnakeEat(snake PlayerSnake, food* ActualFood, score GameScore, sound IncreaseSound, sound EatSound);
+void SnakeEat(snake_t snake, food_t* food, score_t score, sound_t increase, sound_t eat);
 /*
  * Increase the snake, restart the food and increase the score, if snake collide the food
  */
 
-void SnakeDraw(SDL_Surface* LevelSurface, snake PlayerSnake);
+void SnakeDraw(SDL_Surface* surface, snake_t snake);
 /*
  * Draw a snake of color in the screen
  */
 
-snake SnakeDestroy(snake PlayerSnake);
+snake_t SnakeDestroy(snake_t snake);
 /*
  * Free the snake's memory
  */

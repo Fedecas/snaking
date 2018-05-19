@@ -1,24 +1,24 @@
 #ifndef SNAKE_SCORE_H
 #define SNAKE_SCORE_H
 
-typedef unsigned int * score;
+typedef unsigned int * score_t;
 
-score ScoreCreate();
+score_t ScoreCreate();
 /*
  * Initialize the score count in '0'
  */
 
-void ScoreIncrease(score GameScore);
+void ScoreIncrease(score_t score);
 /*
  * Increase by '1' the score given
  */
 
-void ScoreDraw(SDL_Surface* LevelSurface, TTF_Font* font, score GameScore);
+void ScoreDraw(SDL_Surface* surface, TTF_Font* font, score_t score);
 /*
  * Draw the actual score in the game screen
  */
 
-score ScoreDestroy(score GameScore);
+score_t ScoreDestroy(score_t score);
 /*
  * Free the score's memory
  */

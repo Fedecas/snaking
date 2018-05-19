@@ -2,9 +2,14 @@
 #include "draw.h"
 #include "food.h"
 
-food FoodCreate()
+struct _food_t {
+    int x;
+    int y;
+} _food_t;
+
+food_t FoodCreate()
 {
-  food NewFood = (food) malloc(sizeof(struct food));
+  food_t NewFood = (food_t) malloc(sizeof(_food_t));
 
   NewFood->x = FOOD_SPAWNX;
   NewFood->y = FOOD_SPAWNY;
@@ -12,7 +17,17 @@ food FoodCreate()
   return NewFood;
 }
 
-void FoodDraw(SDL_Surface* LevelSurface, food ActualFood)
+int FoodPosX(food_t ActualFood)
+{
+  return (ActualFood->x);
+}
+
+int FoodPosY(food_t ActualFood)
+{
+  return (ActualFood->y);
+}
+
+void FoodDraw(SDL_Surface* LevelSurface, food_t ActualFood)
 {
   int posX = ActualFood->x;
   int posY = ActualFood->y;
@@ -20,7 +35,7 @@ void FoodDraw(SDL_Surface* LevelSurface, food ActualFood)
   BlockDraw(LevelSurface, posX, posY, COLOR_FOOD, 0);
 }
 
-food FoodDestroy(food ActualFood)
+food_t FoodDestroy(food_t ActualFood)
 {
   free(ActualFood);
   ActualFood = NULL;

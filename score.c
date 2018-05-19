@@ -2,20 +2,20 @@
 #include "draw.h"
 #include "score.h"
 
-score ScoreCreate()
+score_t ScoreCreate()
 {
-  score GameScore = (score) malloc(sizeof(unsigned int));
+  score_t GameScore = (score_t) malloc(sizeof(unsigned int));
   *GameScore = 0;
 
   return GameScore;
 }
 
-void ScoreIncrease(score GameScore)
+void ScoreIncrease(score_t GameScore)
 {
   ++*GameScore;
 }
 
-void ScoreDraw(SDL_Surface* LevelSurface, TTF_Font* font, score GameScore)
+void ScoreDraw(SDL_Surface* LevelSurface, TTF_Font* font, score_t GameScore)
 {
   char scoreInStr[2];
   sprintf(scoreInStr, "%d", *GameScore);
@@ -29,7 +29,7 @@ void ScoreDraw(SDL_Surface* LevelSurface, TTF_Font* font, score GameScore)
   DrawText(LevelSurface, font, scoreInStr, posX, posY, COLOR_SCORE);
 }
 
-score ScoreDestroy(score GameScore)
+score_t ScoreDestroy(score_t GameScore)
 {
   free(GameScore);
   GameScore = NULL;

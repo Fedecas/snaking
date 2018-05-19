@@ -37,9 +37,10 @@ static int MouseInButton(SDL_Event event, int buttonX, int buttonY,
   return (MouseInX && MouseInY);
 }
 
-static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
+static int GameOver(window_t GameWindow, TTF_Font* font, sound_t GameOverSound)
 {
   SoundPlay(GameOverSound, 1);
+  SDL_Surface* windowsurface = WindowSurface(GameWindow);
 
   // Draw "game over" text
   char* text = "GAME OVER";
@@ -50,7 +51,7 @@ static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
   int textposX = (WINDOW_WIDTH / 2) - (fontwidth / 2);
   int textposY = (WINDOW_HEIGHT / 2) - fontheight;
 
-  DrawText(GameWindow->surface, font, text, textposX, textposY, COLOR_SCORE);
+  DrawText(windowsurface, font, text, textposX, textposY, COLOR_SCORE);
 
   // Draw the quit button
   int buttonwidth = WINDOW_WIDTH / 6;
@@ -62,7 +63,7 @@ static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
   int fontsize = (buttonwidth + buttonheight) / 10;
   TTF_Font* buttonfont = TTF_OpenFont(FONT_PATH, fontsize);
 
-  DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
+  DrawButton(windowsurface, buttonquitX, buttonquitY,
              buttonwidth, buttonheight, COLOR_BLACK,
              buttonfont, "QUIT", COLOR_WHITE);
 
@@ -70,7 +71,7 @@ static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
   int buttonrestartX = buttonquitX + (2 * buttonwidth);
   int buttonrestartY = textposY + buttonheight;
 
-  DrawButton(GameWindow->surface, buttonrestartX, buttonrestartY,
+  DrawButton(windowsurface, buttonrestartX, buttonrestartY,
              buttonwidth, buttonheight, COLOR_BLACK,
              buttonfont, "RESTART", COLOR_WHITE);
 
@@ -109,14 +110,14 @@ static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
               boxbuttoncolor = COLOR_BLACK;
               textbuttoncolor = COLOR_WHITE;
             }
-            DrawButton(GameWindow->surface, buttonrestartX, buttonrestartY,
+            DrawButton(windowsurface, buttonrestartX, buttonrestartY,
                        buttonwidth, buttonheight, boxbuttoncolor,
                        buttonfont, "RESTART", textbuttoncolor);
 
             boxbuttoncolor = COLOR_BLACK;
             textbuttoncolor = COLOR_WHITE;
           }
-          DrawButton(GameWindow->surface, buttonquitX, buttonquitY,
+          DrawButton(windowsurface, buttonquitX, buttonquitY,
                      buttonwidth, buttonheight, boxbuttoncolor,
                      buttonfont, "QUIT", textbuttoncolor);
           break;
@@ -142,7 +143,7 @@ static int GameOver(window GameWindow, TTF_Font* font, sound GameOverSound)
   return quit;
 }
 
-static void GameRestart(food* ActualFood, snake* PlayerSnake, score* GameScore)
+static void GameRestart(food_t* ActualFood, snake_t* PlayerSnake, score_t* GameScore)
 {
   // Restart the snake
   SnakeDestroy(*PlayerSnake);
@@ -160,31 +161,31 @@ static void GameRestart(food* ActualFood, snake* PlayerSnake, score* GameScore)
 int main(int argc, char* args[])
 {
   // Init SDL, create the window and her surface
-  window GameWindow = WindowAndSurfaceInit();
+  window_t GameWindow = WindowAndSurfaceInit();
 
   // Initialize TTF module and the font for texts
   TTF_Font* ScoreFont = DrawTextInit();
 
   // Initialize the sounds to play
-  sound IncreaseSound = SoundInit("SnakeIncrease");
-  sound EatSound = SoundInit("SnakeEat");
-  sound GameOverSound = SoundInit("GameOver");
-  sound GameRestartSound = SoundInit("GameRestart");
+  sound_t IncreaseSound = SoundInit("SnakeIncrease");
+  sound_t EatSound = SoundInit("SnakeEat");
+  sound_t GameOverSound = SoundInit("GameOver");
+  sound_t GameRestartSound = SoundInit("GameRestart");
 
   // Create the terrain to move
-  terrain LevelTerrain = TerrainCreate();
+  terrain_t LevelTerrain = TerrainCreate();
 
   // Create the limits
-  wall* LevelWalls = WallsCreate();
+  wall_t* LevelWalls = WallsCreate();
 
   // Create the snake for use
-  snake PlayerSnake = SnakeCreate();
+  snake_t PlayerSnake = SnakeCreate();
 
   // Create first food
-  food ActualFood = FoodCreate();
+  food_t ActualFood = FoodCreate();
 
   // Initialize the score
-  score GameScore = ScoreCreate();
+  score_t GameScore = ScoreCreate();
 
   // For events on window
   SDL_Event event;
@@ -247,19 +248,19 @@ int main(int argc, char* args[])
 
     /* Draw game objects and wait */
     // Draw the base terrain
-    TerrainDraw(GameWindow->surface, LevelTerrain);
+    TerrainDraw(WindowSurface(GameWindow), LevelTerrain);
 
     // Draw the limits of the level
-    WallsDraw(GameWindow->surface, LevelWalls);
+    WallsDraw(WindowSurface(GameWindow), LevelWalls);
 
     // Draw the snake in the screen
-    SnakeDraw(GameWindow->surface, PlayerSnake);
+    SnakeDraw(WindowSurface(GameWindow), PlayerSnake);
 
     // Draw the actual food in the screen
-    FoodDraw(GameWindow->surface, ActualFood);
+    FoodDraw(WindowSurface(GameWindow), ActualFood);
 
     // Draw the score
-    ScoreDraw(GameWindow->surface, ScoreFont, GameScore);
+    ScoreDraw(WindowSurface(GameWindow), ScoreFont, GameScore);
 
     // Update the changes in surface
     WindowSurfaceUpdate(GameWindow);
