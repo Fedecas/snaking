@@ -38,6 +38,7 @@ static int SnakeIsCollidingWithWalls(snake_t PlayerSnake, wall_t* LevelWalls)
     int wallsize = WallSize(thiswall);
     int* wallX = WallBlocksX(thiswall);
     int* wallY = WallBlocksY(thiswall);
+
     for(int j = 0; j < wallsize; j++) {
       int thiswallX = wallX[j];
       int thiswallY = wallY[j];

@@ -1,5 +1,4 @@
 #include <time.h>
-#include <SDL2/SDL_mixer.h>
 
 #include "draw.h"
 #include "food.h"
@@ -37,10 +36,93 @@ static int MouseInButton(SDL_Event event, int buttonX, int buttonY,
   return (MouseInX && MouseInY);
 }
 
+void HandleInputArrows(int* quit, int* arrow)
+{
+  SDL_Event event;
+
+  while(SDL_PollEvent(&event)) {
+    switch (event.type) {
+      case SDL_QUIT: *quit = OPTION_QUIT; break;
+      case SDL_WINDOWEVENT:
+        switch (event.window.event) {
+          case SDL_WINDOWEVENT_CLOSE: *quit = OPTION_QUIT; break;
+          default: break;
+        } break;
+      case SDL_KEYDOWN:
+        switch (event.key.keysym.sym) {
+          case SDLK_ESCAPE: *quit = OPTION_QUIT; break;
+          case SDLK_LEFT: *arrow = DIRECTION_LEFT; break;
+          case SDLK_RIGHT: *arrow = DIRECTION_RIGHT; break;
+          case SDLK_UP: *arrow = DIRECTION_UP; break;
+          case SDLK_DOWN: *arrow = DIRECTION_DOWN; break;
+          default: break;
+        } break;
+      default: break;
+    }
+  }
+}
+
+void HandleInputButtons(window_t GameWindow, int* quit, int buttonquitX, int buttonquitY,
+                        int buttonrestartX, int buttonrestartY,
+                        int buttonwidth, int buttonheight, TTF_Font* buttonfont)
+{
+  SDL_Color boxbuttoncolor, textbuttoncolor;
+  SDL_Event event;
+
+  while(SDL_PollEvent(&event)) {
+    switch (event.type) {
+      case SDL_QUIT: *quit = OPTION_QUIT; break;
+      case SDL_WINDOWEVENT:
+        switch (event.window.event) {
+          case SDL_WINDOWEVENT_CLOSE: *quit = OPTION_QUIT; break;
+          default: break;
+        } break;
+      case SDL_KEYDOWN:
+        switch (event.key.keysym.sym) {
+          case SDLK_ESCAPE: *quit = OPTION_QUIT; break;
+          default: break;
+        }
+      case SDL_MOUSEMOTION:
+        if(MouseInButton(event, buttonquitX, buttonquitY,
+                         buttonwidth, buttonheight)) {
+          boxbuttoncolor = COLOR_WHITE;
+          textbuttoncolor = COLOR_BLACK;
+        } else {
+          if(MouseInButton(event, buttonrestartX, buttonrestartY,
+                           buttonwidth, buttonheight)) {
+            boxbuttoncolor = COLOR_WHITE;
+            textbuttoncolor = COLOR_BLACK;
+          } else {
+            boxbuttoncolor = COLOR_BLACK;
+            textbuttoncolor = COLOR_WHITE;
+          }
+          DrawButton(WindowSurface(GameWindow), buttonrestartX, buttonrestartY,
+                     buttonwidth, buttonheight, boxbuttoncolor,
+                     buttonfont, "RESTART", textbuttoncolor);
+
+          boxbuttoncolor = COLOR_BLACK;
+          textbuttoncolor = COLOR_WHITE;
+        }
+        DrawButton(WindowSurface(GameWindow), buttonquitX, buttonquitY,
+                   buttonwidth, buttonheight, boxbuttoncolor,
+                   buttonfont, "QUIT", textbuttoncolor);
+        break;
+      case SDL_MOUSEBUTTONDOWN:
+        if(MouseInButton(event, buttonquitX, buttonquitY,
+                         buttonwidth, buttonheight)) {
+          *quit = OPTION_QUIT;
+        } else if(MouseInButton(event, buttonrestartX, buttonrestartY,
+                                buttonwidth, buttonheight)) {
+          *quit = OPTION_RESTART;
+        }
+      default: break;
+    }
+  }
+}
+
 static int GameOver(window_t GameWindow, TTF_Font* font, sound_t GameOverSound)
 {
   SoundPlay(GameOverSound, 1);
-  SDL_Surface* windowsurface = WindowSurface(GameWindow);
 
   // Draw "game over" text
   char* text = "GAME OVER";
@@ -51,7 +133,7 @@ static int GameOver(window_t GameWindow, TTF_Font* font, sound_t GameOverSound)
   int textposX = (WINDOW_WIDTH / 2) - (fontwidth / 2);
   int textposY = (WINDOW_HEIGHT / 2) - fontheight;
 
-  DrawText(windowsurface, font, text, textposX, textposY, COLOR_SCORE);
+  DrawText(WindowSurface(GameWindow), font, text, textposX, textposY, COLOR_SCORE);
 
   // Draw the quit button
   int buttonwidth = WINDOW_WIDTH / 6;
@@ -63,7 +145,7 @@ static int GameOver(window_t GameWindow, TTF_Font* font, sound_t GameOverSound)
   int fontsize = (buttonwidth + buttonheight) / 10;
   TTF_Font* buttonfont = TTF_OpenFont(FONT_PATH, fontsize);
 
-  DrawButton(windowsurface, buttonquitX, buttonquitY,
+  DrawButton(WindowSurface(GameWindow), buttonquitX, buttonquitY,
              buttonwidth, buttonheight, COLOR_BLACK,
              buttonfont, "QUIT", COLOR_WHITE);
 
@@ -71,67 +153,17 @@ static int GameOver(window_t GameWindow, TTF_Font* font, sound_t GameOverSound)
   int buttonrestartX = buttonquitX + (2 * buttonwidth);
   int buttonrestartY = textposY + buttonheight;
 
-  DrawButton(windowsurface, buttonrestartX, buttonrestartY,
+  DrawButton(WindowSurface(GameWindow), buttonrestartX, buttonrestartY,
              buttonwidth, buttonheight, COLOR_BLACK,
              buttonfont, "RESTART", COLOR_WHITE);
 
   // Wait for response loop
-  SDL_Color boxbuttoncolor, textbuttoncolor;
   int quit = OPTION_CONTINUE;
-  SDL_Event event;
 
   while(!quit) {
     WindowSurfaceUpdate(GameWindow);
 
-    while(SDL_PollEvent(&event)) {
-      switch (event.type) {
-        case SDL_QUIT: quit = OPTION_QUIT; break;
-        case SDL_WINDOWEVENT:
-          switch (event.window.event) {
-            case SDL_WINDOWEVENT_CLOSE: quit = OPTION_QUIT; break;
-            default: break;
-          } break;
-        case SDL_KEYDOWN:
-          switch (event.key.keysym.sym) {
-            case SDLK_ESCAPE: quit = OPTION_QUIT; break;
-            default: break;
-          }
-        case SDL_MOUSEMOTION:
-          if(MouseInButton(event, buttonquitX, buttonquitY,
-                           buttonwidth, buttonheight)) {
-            boxbuttoncolor = COLOR_WHITE;
-            textbuttoncolor = COLOR_BLACK;
-          } else {
-            if(MouseInButton(event, buttonrestartX, buttonrestartY,
-                             buttonwidth, buttonheight)) {
-              boxbuttoncolor = COLOR_WHITE;
-              textbuttoncolor = COLOR_BLACK;
-            } else {
-              boxbuttoncolor = COLOR_BLACK;
-              textbuttoncolor = COLOR_WHITE;
-            }
-            DrawButton(windowsurface, buttonrestartX, buttonrestartY,
-                       buttonwidth, buttonheight, boxbuttoncolor,
-                       buttonfont, "RESTART", textbuttoncolor);
-
-            boxbuttoncolor = COLOR_BLACK;
-            textbuttoncolor = COLOR_WHITE;
-          }
-          DrawButton(windowsurface, buttonquitX, buttonquitY,
-                     buttonwidth, buttonheight, boxbuttoncolor,
-                     buttonfont, "QUIT", textbuttoncolor);
-          break;
-        case SDL_MOUSEBUTTONDOWN:
-          if(MouseInButton(event, buttonquitX, buttonquitY,
-                           buttonwidth, buttonheight)) {
-            quit = OPTION_QUIT;
-          } else if(MouseInButton(event, buttonrestartX, buttonrestartY,
-                                  buttonwidth, buttonheight)) {
-            quit = OPTION_RESTART;
-          }
-        default: break;
-      }
-    }
+    HandleInputButtons(GameWindow, &quit, buttonquitX, buttonquitY, buttonrestartX, buttonrestartY, buttonwidth, buttonheight, buttonfont);
 
     SleepMS(DELAY_IN_MS / 2);
   }
@@ -187,9 +219,6 @@ int main(int argc, char* args[])
   // Initialize the score
   score_t GameScore = ScoreCreate();
 
-  // For events on window
-  SDL_Event event;
-
   /* - Game running loop - */
   int arrow = DIRECTION_NONE;
   int quit = OPTION_CONTINUE;
@@ -198,26 +227,7 @@ int main(int argc, char* args[])
   while(1) {
     clock_t start = clock();
     // Wait events in window/keyboard
-    while(SDL_PollEvent(&event)) {
-      switch (event.type) {
-        case SDL_QUIT: quit = OPTION_QUIT; break;
-        case SDL_WINDOWEVENT:
-          switch (event.window.event) {
-            case SDL_WINDOWEVENT_CLOSE: quit = OPTION_QUIT; break;
-            default: break;
-          } break;
-        case SDL_KEYDOWN:
-          switch (event.key.keysym.sym) {
-            case SDLK_ESCAPE: quit = OPTION_QUIT; break;
-            case SDLK_LEFT: arrow = DIRECTION_LEFT; break;
-            case SDLK_RIGHT: arrow = DIRECTION_RIGHT; break;
-            case SDLK_UP: arrow = DIRECTION_UP; break;
-            case SDLK_DOWN: arrow = DIRECTION_DOWN; break;
-            default: break;
-          } break;
-        default: break;
-      }
-    }
+    HandleInputArrows(&quit, &arrow);
 
     /* React to event */
     // Move the snake according the last key pressed

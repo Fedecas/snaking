@@ -4,8 +4,8 @@
 
 struct _wall_t {
     int size;
-    int* blocksX;
-    int* blocksY;
+    int blocksX[WALL_SIZE];
+    int blocksY[WALL_SIZE];
     int rotation;
 } _wall_t;
 
@@ -15,9 +15,6 @@ static wall_t WallCreate(int size, int x, int y, int rotation)
 
   LevelWall->size = size;
   LevelWall->rotation = rotation;
-
-  LevelWall->blocksX = (int*) malloc(sizeof(int) * LevelWall->size);
-  LevelWall->blocksY = (int*) malloc(sizeof(int) * LevelWall->size);
 
   switch (LevelWall->rotation) {
     case WALL_HORIZONTAL:
@@ -82,12 +79,6 @@ void WallsDraw(SDL_Surface* LevelSurface, wall_t* LevelWalls)
 
 static wall_t WallDestroy(wall_t LevelWall)
 {
-  free(LevelWall->blocksX);
-  LevelWall->blocksX = NULL;
-
-  free(LevelWall->blocksY);
-  LevelWall->blocksY = NULL;
-
   free(LevelWall);
   LevelWall = NULL;
 

@@ -28,6 +28,9 @@ window_t WindowAndSurfaceInit();
  */
 
 SDL_Surface* WindowSurface(window_t window);
+/*
+ * Return the direction to the surface of window
+ */
 
 void WindowSurfaceUpdate(window_t window);
 /*
