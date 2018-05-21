@@ -1,5 +1,5 @@
-#include "block.h"
-#include "draw.h"
+#include "../engine/block.h"
+#include "../engine/draw.h"
 #include "food.h"
 
 struct _food_t {

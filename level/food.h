@@ -1,8 +1,8 @@
 #ifndef SNAKE_FOOD_H
 #define SNAKE_FOOD_H
 
-#define FOOD_SPAWNX   (1 + ((int)random() % (BLOCKS_X - 2))) // Pick a block X in the usable area
-#define FOOD_SPAWNY   (1 + ((int)random() % (BLOCKS_Y - 2))) // Pick a block Y in the usable area
+#define FOOD_SPAWNX   (1 + ((int)rand() % (BLOCKS_X - 2))) // Pick a block X in the usable area
+#define FOOD_SPAWNY   (1 + ((int)rand() % (BLOCKS_Y - 2))) // Pick a block Y in the usable area
 
 typedef struct _food_t * food_t;
 

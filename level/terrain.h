@@ -1,8 +1,8 @@
 #ifndef SNAKE_TERRAIN_H
 #define SNAKE_TERRAIN_H
 
-#include "block.h"
-#include "window.h"
+#include "../engine/block.h"
+#include "../engine/window.h"
 
 #define TERRAIN_X       BLOCK_SIZE
 #define TERRAIN_Y       BLOCK_SIZE

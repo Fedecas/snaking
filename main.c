@@ -1,13 +1,13 @@
 #include <time.h>
 
-#include "draw.h"
-#include "food.h"
-#include "score.h"
-#include "snake.h"
-#include "terrain.h"
-#include "wall.h"
-#include "window.h"
-#include "sound.h"
+#include "engine/draw.h"
+#include "level/food.h"
+#include "level/score.h"
+#include "level/snake.h"
+#include "level/terrain.h"
+#include "level/wall.h"
+#include "engine/window.h"
+#include "engine/sound.h"
 
 #define OPTION_CONTINUE   0
 #define OPTION_QUIT       1

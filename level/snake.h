@@ -3,7 +3,7 @@
 
 #include "food.h"
 #include "score.h"
-#include "sound.h"
+#include "../engine/sound.h"
 #include "wall.h"
 
 #define DIRECTION_NONE  0
@@ -12,11 +12,11 @@
 #define DIRECTION_UP    3
 #define DIRECTION_DOWN  4
 
-#define SNAKE_DIRECTION (1 + ((int)random() % 4)) // Pick a direction to snake by default
+#define SNAKE_DIRECTION (1 + ((int)rand() % 4)) // Pick a direction to snake by default
 #define SNAKE_SIZE      3   // Size of the snake in blocks
 #define SNAKE_HUNGER    2   // Number of food the snake have to eat for increase
-#define SNAKE_SPAWNX    (SNAKE_SIZE + ((int)random() % (BLOCKS_X - (2 * SNAKE_SIZE)))) // Default block X to spawn a snake
-#define SNAKE_SPAWNY    (SNAKE_SIZE + ((int)random() % (BLOCKS_Y - (2 * SNAKE_SIZE)))) // Default block Y to spawn a snake
+#define SNAKE_SPAWNX    (SNAKE_SIZE + ((int)rand() % (BLOCKS_X - (2 * SNAKE_SIZE)))) // Default block X to spawn a snake
+#define SNAKE_SPAWNY    (SNAKE_SIZE + ((int)rand() % (BLOCKS_Y - (2 * SNAKE_SIZE)))) // Default block Y to spawn a snake
 
 typedef struct _snake_t * snake_t;
 

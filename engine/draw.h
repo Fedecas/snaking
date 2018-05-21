@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL_ttf.h>
 
-#include "colors.h"
+#include "../colors.h"
 
 #define FONT_TYPE     "RobotoMono-Light"                // Type of font to use
 #define FONT_PATH     "assets/fonts/"FONT_TYPE".ttf"    // Path of a TrueType font for write
