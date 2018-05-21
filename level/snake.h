@@ -1,9 +1,10 @@
 #ifndef SNAKING_SNAKE_H
 #define SNAKING_SNAKE_H
 
+#include "../engine/sound.h"
+
 #include "food.h"
 #include "score.h"
-#include "../engine/sound.h"
 #include "wall.h"
 
 #define DIRECTION_NONE  0

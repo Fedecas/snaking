@@ -1,6 +1,7 @@
+#include "../engine/block.h"
 #include "../engine/draw.h"
+
 #include "snake.h"
-#include "../engine/window.h"
 
 struct _snake_t {
     int headDirection;

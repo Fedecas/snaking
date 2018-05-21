@@ -1,9 +1,6 @@
 #ifndef SNAKING_TERRAIN_H
 #define SNAKING_TERRAIN_H
 
-#include "../engine/block.h"
-#include "../engine/window.h"
-
 #define TERRAIN_X       BLOCK_SIZE
 #define TERRAIN_Y       BLOCK_SIZE
 #define TERRAIN_WIDTH   (WINDOW_WIDTH - (2 * BLOCK_SIZE))

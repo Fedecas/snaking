@@ -1,4 +1,6 @@
 #include "../engine/draw.h"
+#include "../engine/window.h"
+
 #include "terrain.h"
 
 struct _terrain_t {
