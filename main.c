@@ -275,10 +275,10 @@ int main(int argc, char* args[])
     // Update the changes in surface
     WindowSurfaceUpdate(GameWindow);
 
-    float diff = (float)(clock() - start) * 1000 / CLOCKS_PER_SEC;
+    int diff = (int)((clock() - start) * 1000 / CLOCKS_PER_SEC);
 
     // Wait
-    SleepMS(DELAY_IN_MS - (int)diff);
+    SleepMS(DELAY_IN_MS - diff);
   }
   end:
 
