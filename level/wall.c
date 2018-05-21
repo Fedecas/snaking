@@ -35,7 +35,7 @@ static wall_t WallCreate(int size, int x, int y, int rotation)
 
 wall_t* WallsCreate()
 {
-  wall_t* LevelWalls = (wall_t*) malloc(sizeof(wall_t) * WALLS_IN_LEVEL);
+  wall_t* LevelWalls = (wall_t*) malloc(sizeof(wall_t) * 4);
 
   LevelWalls[0] = WallCreate(BLOCKS_Y - 1, 0, 0, WALL_VERTICAL); // Left
   LevelWalls[1] = WallCreate(BLOCKS_Y - 1, BLOCKS_X - 1, 1, WALL_VERTICAL); // Right
@@ -72,7 +72,7 @@ static void WallDraw(SDL_Surface* LevelSurface, wall_t LevelWall)
 
 void WallsDraw(SDL_Surface* LevelSurface, wall_t* LevelWalls)
 {
-  for(int i = 0; i < WALLS_IN_LEVEL; i++) {
+  for(int i = 0; i < 4; i++) {
     WallDraw(LevelSurface, LevelWalls[i]);
   }
 }
@@ -87,7 +87,7 @@ static wall_t WallDestroy(wall_t LevelWall)
 
 wall_t* WallsDestroy(wall_t* LevelWalls)
 {
-  for(int i = 0; i < WALLS_IN_LEVEL; i++) {
+  for(int i = 0; i < 4; i++) {
     LevelWalls[i] = WallDestroy(LevelWalls[i]);
   }
 

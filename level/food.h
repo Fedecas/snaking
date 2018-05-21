@@ -1,5 +1,5 @@
-#ifndef SNAKE_FOOD_H
-#define SNAKE_FOOD_H
+#ifndef SNAKING_FOOD_H
+#define SNAKING_FOOD_H
 
 #define FOOD_SPAWNX   (1 + ((int)rand() % (BLOCKS_X - 2))) // Pick a block X in the usable area
 #define FOOD_SPAWNY   (1 + ((int)rand() % (BLOCKS_Y - 2))) // Pick a block Y in the usable area
@@ -31,4 +31,4 @@ food_t FoodDestroy(food_t food);
  * Free the food's memory
  */
 
-#endif //SNAKE_FOOD_H
+#endif //SNAKING_FOOD_H

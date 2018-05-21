@@ -33,7 +33,7 @@ static int SnakeIsCollidingWithHerself(snake_t PlayerSnake)
 
 static int SnakeIsCollidingWithWalls(snake_t PlayerSnake, wall_t* LevelWalls)
 {
-  for(int i = 0; i < WALLS_IN_LEVEL; i++) {
+  for(int i = 0; i < 4; i++) {
     wall_t thiswall = LevelWalls[i];
     int wallsize = WallSize(thiswall);
     int* wallX = WallBlocksX(thiswall);

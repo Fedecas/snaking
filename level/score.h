@@ -1,5 +1,5 @@
-#ifndef SNAKE_SCORE_H
-#define SNAKE_SCORE_H
+#ifndef SNAKING_SCORE_H
+#define SNAKING_SCORE_H
 
 typedef unsigned int * score_t;
 
@@ -23,4 +23,4 @@ score_t ScoreDestroy(score_t score);
  * Free the score's memory
  */
 
-#endif //SNAKE_SCORE_H
+#endif //SNAKING_SCORE_H

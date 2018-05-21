@@ -1,5 +1,5 @@
-#ifndef SNAKE_SNAKE_H
-#define SNAKE_SNAKE_H
+#ifndef SNAKING_SNAKE_H
+#define SNAKING_SNAKE_H
 
 #include "food.h"
 #include "score.h"
@@ -55,4 +55,4 @@ snake_t SnakeDestroy(snake_t snake);
  * Free the snake's memory
  */
 
-#endif //SNAKE_SNAKE_H
+#endif //SNAKING_SNAKE_H

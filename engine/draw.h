@@ -1,5 +1,5 @@
-#ifndef SNAKE_DRAW_H
-#define SNAKE_DRAW_H
+#ifndef SNAKING_DRAW_H
+#define SNAKING_DRAW_H
 
 #include <SDL2/SDL_ttf.h>
 
@@ -24,13 +24,13 @@ void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Colo
  * Draw a box of color in the screen
  */
 
-void DrawText(SDL_Surface* screenSurface, TTF_Font* font,
+void DrawText(SDL_Surface* surface, TTF_Font* font,
               char* text, int x, int y, SDL_Color color);
 /*
  * Draw text in the screen
  */
 
-void DrawButton(SDL_Surface* screenSurface,
+void DrawButton(SDL_Surface* surface,
                 int boxX, int boxY, int boxW, int boxH, SDL_Color boxColor,
                 TTF_Font* font, char* text, SDL_Color textColor);
 /*
@@ -42,4 +42,4 @@ TTF_Font* DrawTextQuit(TTF_Font* font);
  * Close the font opened and exit TTF module
  */
 
-#endif //SNAKE_DRAW_H
+#endif //SNAKING_DRAW_H

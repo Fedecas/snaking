@@ -1,5 +1,5 @@
-#ifndef SNAKE_WINDOW_H
-#define SNAKE_WINDOW_H
+#ifndef SNAKING_WINDOW_H
+#define SNAKING_WINDOW_H
 
 #include <SDL2/SDL.h>
 
@@ -42,4 +42,4 @@ window_t WindowAndSurfaceQuit(window_t window);
  * Free the surface and destroy the window
  */
 
-#endif //SNAKE_WINDOW_H
+#endif //SNAKING_WINDOW_H

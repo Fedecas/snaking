@@ -1,12 +1,10 @@
-#ifndef SNAKE_WALL_H
-#define SNAKE_WALL_H
+#ifndef SNAKING_WALL_H
+#define SNAKING_WALL_H
 
 #define WALL_SIZE       (BLOCKS_X - 1)
 
 #define WALL_HORIZONTAL   0 // Rotation of the wall
 #define WALL_VERTICAL     1 // Rotation of the wall
-
-#define WALLS_IN_LEVEL    4
 
 typedef struct _wall_t * wall_t;
 
@@ -40,4 +38,4 @@ wall_t* WallsDestroy(wall_t* walls);
  * Free the wall's memory
  */
 
-#endif //SNAKE_WALL_H
+#endif //SNAKING_WALL_H

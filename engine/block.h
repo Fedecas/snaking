@@ -1,5 +1,5 @@
-#ifndef SNAKE_BLOCK_H
-#define SNAKE_BLOCK_H
+#ifndef SNAKING_BLOCK_H
+#define SNAKING_BLOCK_H
 
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_surface.h>
@@ -28,4 +28,4 @@ void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type);
  * Draw a block of color in the screen
  */
 
-#endif //SNAKE_BLOCK_H
+#endif //SNAKING_BLOCK_H

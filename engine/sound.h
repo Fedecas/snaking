@@ -1,5 +1,5 @@
-#ifndef SNAKE_SOUND_H
-#define SNAKE_SOUND_H
+#ifndef SNAKING_SOUND_H
+#define SNAKING_SOUND_H
 
 #include <SDL2/SDL_mixer.h>
 
@@ -33,4 +33,4 @@ sound_t SoundQuit(sound_t sound);
  * Close a sound file opened
  */
 
-#endif //SNAKE_SOUND_H
+#endif //SNAKING_SOUND_H

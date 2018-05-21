@@ -1,5 +1,5 @@
-#ifndef SNAKE_TERRAIN_H
-#define SNAKE_TERRAIN_H
+#ifndef SNAKING_TERRAIN_H
+#define SNAKING_TERRAIN_H
 
 #include "../engine/block.h"
 #include "../engine/window.h"
@@ -26,4 +26,4 @@ terrain_t TerrainDestroy(terrain_t terrain);
  * Free the terrain's memory
  */
 
-#endif //SNAKE_TERRAIN_H
+#endif //SNAKING_TERRAIN_H
