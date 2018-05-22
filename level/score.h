@@ -1,6 +1,8 @@
 #ifndef SNAKING_SCORE_H
 #define SNAKING_SCORE_H
 
+#include "../engine/draw.h"
+
 typedef unsigned int * score_t;
 
 score_t ScoreCreate();
@@ -10,7 +12,7 @@ score_t ScoreCreate();
 
 void ScoreIncrease(score_t score);
 /*
- * Increase by '1' the score given
+ * Increase by '1' the given score
  */
 
 void ScoreDraw(SDL_Surface* surface, TTF_Font* font, score_t score);

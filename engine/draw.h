@@ -30,13 +30,6 @@ void DrawText(SDL_Surface* surface, TTF_Font* font,
  * Draw text in the screen
  */
 
-void DrawButton(SDL_Surface* surface,
-                int boxX, int boxY, int boxW, int boxH, SDL_Color boxColor,
-                TTF_Font* font, char* text, SDL_Color textColor);
-/*
- * Draw a box with text inside
- */
-
 TTF_Font* DrawTextQuit(TTF_Font* font);
 /*
  * Close the font opened and exit TTF module

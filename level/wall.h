@@ -20,12 +20,12 @@ int WallSize(wall_t wall);
 
 int* WallBlocksX(wall_t wall);
 /*
- * Return the direction X to the first block of wall
+ * Return the x direction to the first block of wall
  */
 
 int* WallBlocksY(wall_t wall);
 /*
- * Return the direction y to the first block of wall
+ * Return the y direction to the first block of wall
  */
 
 void WallsDraw(SDL_Surface* surface, wall_t* walls);

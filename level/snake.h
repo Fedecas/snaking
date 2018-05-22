@@ -1,6 +1,7 @@
 #ifndef SNAKING_SNAKE_H
 #define SNAKING_SNAKE_H
 
+#include "../engine/draw.h"
 #include "../engine/sound.h"
 
 #include "food.h"
