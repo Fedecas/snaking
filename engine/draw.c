@@ -1,35 +1,29 @@
 #include "block.h"
 #include "draw.h"
+#include "window.h"
 
-TTF_Font* DrawTextInit()
+void DrawPixel(int x, int y, color_t color)
 {
-  TTF_Init();
+  surface_t surface = WindowSurface();
 
-  TTF_Font* font = TTF_OpenFont(FONT_PATH, FONT_SIZE);
-
-  if(font == NULL) {
-    printf("[error] Font could not be loaded! TTF_Error: %s\n", SDL_GetError());
-  }
-
-  return font;
-}
-
-void DrawPixel(SDL_Surface* surface, int x, int y, SDL_Color color)
-{
   Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
   Uint32* pixels = surface->pixels;
   pixels[(y * surface->w) + x] = col;
 }
 
-void DrawBox(SDL_Surface* surface, int x, int y, int width, int height, SDL_Color color)
+void DrawBox(int x, int y, int width, int height, color_t color)
 {
+  surface_t surface = WindowSurface();
+
   Uint32 col = SDL_MapRGBA(surface->format, color.r, color.g, color.b, color.a);
   SDL_Rect rect = {x, y, width, height};
   SDL_FillRect(surface, &rect, col);
 }
 
-void DrawText(SDL_Surface* screenSurface, TTF_Font* font, char* text, int x, int y, SDL_Color color)
+void DrawText(font_t font, char* text, int x, int y, color_t color)
 {
+  surface_t screenSurface = WindowSurface();
+
   int blockX = (x / BLOCK_SIZE);
   int blockY = (y / BLOCK_SIZE);
 
@@ -37,7 +31,7 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font, char* text, int x, int
     printf("[warning] Text out of the screen! (x: %d, y: %d)\n", x, y);
   }
 
-  SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, color);
+  surface_t textSurface = TTF_RenderText_Solid(font, text, color);
 
   if(textSurface == NULL) {
     printf("[error] Text could not be writen! TTF_Error: %s\n", SDL_GetError());
@@ -47,14 +41,4 @@ void DrawText(SDL_Surface* screenSurface, TTF_Font* font, char* text, int x, int
   SDL_UpperBlit(textSurface, NULL, screenSurface, &textLocation);
 
   SDL_FreeSurface(textSurface);
-}
-
-TTF_Font* DrawTextQuit(TTF_Font* font)
-{
-  TTF_CloseFont(font);
-  font = NULL;
-
-  TTF_Quit();
-
-  return font;
 }

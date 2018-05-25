@@ -1,8 +1,7 @@
 #ifndef SNAKING_BLOCK_H
 #define SNAKING_BLOCK_H
 
-#include <SDL2/SDL_pixels.h>
-#include <SDL2/SDL_surface.h>
+#include "draw.h"
 
 #define BLOCK_SIZE  24 // Size in pixels of each block
 
@@ -23,7 +22,7 @@ int BlockOutOfLimits(int x, int y);
  * Check if the block in pos (x, y) is inside or outside of the window
  */
 
-void BlockDraw(SDL_Surface* surface, int x, int y, SDL_Color color, int type);
+void BlockDraw(int x, int y, color_t color, int type);
 /*
  * Draw a block of color in the screen
  */

@@ -8,17 +8,19 @@
 
 typedef struct _terrain_t * terrain_t;
 
-terrain_t TerrainCreate();
+terrain_t LevelTerrain;
+
+void TerrainCreate();
 /*
  * Initialize the terrain and set the parameters in default values
  */
 
-void TerrainDraw(SDL_Surface* surface, terrain_t terrain);
+void TerrainDraw();
 /*
  * Draw the space between the walls
  */
 
-terrain_t TerrainDestroy(terrain_t terrain);
+void TerrainDestroy();
 /*
  * Free the terrain's memory
  */

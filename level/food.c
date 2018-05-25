@@ -1,44 +1,45 @@
+#include <time.h>
+
 #include "../engine/block.h"
+#include "../engine/window.h"
 
 #include "food.h"
 
 struct _food_t {
     int x;
     int y;
-} _food_t;
+};
 
-food_t FoodCreate()
+void FoodCreate()
 {
-  food_t NewFood = (food_t) malloc(sizeof(_food_t));
+  LevelFood = (food_t) malloc(sizeof(struct _food_t));
 
-  NewFood->x = FOOD_SPAWNX;
-  NewFood->y = FOOD_SPAWNY;
+  srand((unsigned int) time(NULL));
 
-  return NewFood;
+  LevelFood->x = FOOD_SPAWNX;
+  LevelFood->y = FOOD_SPAWNY;
 }
 
-int FoodPosX(food_t ActualFood)
+int FoodPosX()
 {
-  return (ActualFood->x);
+  return (LevelFood->x);
 }
 
-int FoodPosY(food_t ActualFood)
+int FoodPosY()
 {
-  return (ActualFood->y);
+  return (LevelFood->y);
 }
 
-void FoodDraw(SDL_Surface* LevelSurface, food_t ActualFood)
+void FoodDraw()
 {
-  int posX = ActualFood->x;
-  int posY = ActualFood->y;
+  int posX = LevelFood->x;
+  int posY = LevelFood->y;
 
-  BlockDraw(LevelSurface, posX, posY, COLOR_FOOD, 0);
+  BlockDraw(posX, posY, COLOR_FOOD, 0);
 }
 
-food_t FoodDestroy(food_t ActualFood)
+void FoodDestroy()
 {
-  free(ActualFood);
-  ActualFood = NULL;
-
-  return ActualFood;
+  free(LevelFood);
+  LevelFood = NULL;
 }

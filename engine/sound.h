@@ -13,22 +13,26 @@
 
 typedef Mix_Chunk * sound_t;
 
-sound_t SoundInit(char* name);
+sound_t EatSound;
+sound_t GameOverSound;
+sound_t GameRestartSound;
+
+void SoundsInit();
 /*
- * Initialize a sound file from the path
+ * Initialize all sound files from the path
  */
 
-void SoundPlay(sound_t sound, int channel);
+void SoundPlay(sound_t sound);
 /*
  * Play a sound in given channel
  */
 
-void SoundStop(int channel);
+void SoundStop();
 /*
  * Stop a playing channel
  */
 
-sound_t SoundQuit(sound_t sound);
+void SoundsQuit();
 /*
  * Close a sound file opened
  */

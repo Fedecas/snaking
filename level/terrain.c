@@ -8,30 +8,30 @@ struct _terrain_t {
     int y;
     int width;
     int height;
-} _terrain_t;
+};
 
-terrain_t TerrainCreate()
+void TerrainCreate()
 {
-  terrain_t LevelTerrain = (terrain_t) malloc(sizeof(_terrain_t));
+  LevelTerrain = (terrain_t) malloc(sizeof(struct _terrain_t));
 
   LevelTerrain->x = TERRAIN_X;
   LevelTerrain->y = TERRAIN_Y;
   LevelTerrain->width = TERRAIN_WIDTH;
   LevelTerrain->height = TERRAIN_HEIGHT;
-
-  return LevelTerrain;
 }
 
-void TerrainDraw(SDL_Surface* LevelSurface, terrain_t LevelTerrain)
+void TerrainDraw()
 {
-  DrawBox(LevelSurface, LevelTerrain->x, LevelTerrain->y,
-          LevelTerrain->width, LevelTerrain->height, COLOR_TERRAIN);
+  int x = LevelTerrain->x;
+  int y = LevelTerrain->y;
+  int width = LevelTerrain->width;
+  int height = LevelTerrain->height;
+
+  DrawBox(x, y, width, height, COLOR_TERRAIN);
 }
 
-terrain_t TerrainDestroy(terrain_t LevelTerrain)
+void TerrainDestroy()
 {
   free(LevelTerrain);
   LevelTerrain = NULL;
-
-  return LevelTerrain;
 }

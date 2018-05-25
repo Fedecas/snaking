@@ -1,38 +1,28 @@
 #include "../engine/block.h"
+#include "../engine/window.h"
 
 #include "score.h"
 
-score_t ScoreCreate()
+void ScoreRestart()
 {
-  score_t GameScore = (score_t) malloc(sizeof(unsigned int));
-  *GameScore = 0;
-
-  return GameScore;
+  LevelScore = 0;
 }
 
-void ScoreIncrease(score_t GameScore)
+void ScoreIncrease()
 {
-  ++*GameScore;
+  ++LevelScore;
 }
 
-void ScoreDraw(SDL_Surface* LevelSurface, TTF_Font* font, score_t GameScore)
+void ScoreDraw()
 {
   char scoreInStr[2];
-  sprintf(scoreInStr, "%d", *GameScore);
+  sprintf(scoreInStr, "%d", LevelScore);
 
   int fontwidth, fontheight;
-  TTF_SizeText(font, scoreInStr, &fontwidth, &fontheight);
+  TTF_SizeText(ScoreFont, scoreInStr, &fontwidth, &fontheight);
 
   int posX = (BLOCKS_X * BLOCK_SIZE) / 2 - (fontwidth / 2);
   int posY = ((BLOCKS_Y - 3) * BLOCK_SIZE);
 
-  DrawText(LevelSurface, font, scoreInStr, posX, posY, COLOR_SCORE);
-}
-
-score_t ScoreDestroy(score_t GameScore)
-{
-  free(GameScore);
-  GameScore = NULL;
-
-  return GameScore;
+  DrawText(ScoreFont, scoreInStr, posX, posY, COLOR_SCORE);
 }

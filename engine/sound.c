@@ -2,7 +2,7 @@
 
 #include "sound.h"
 
-sound_t SoundInit(char* SoundName)
+static sound_t SoundInit(char* SoundName)
 {
   if(SDL_Init(SDL_INIT_AUDIO) < 0) {
     printf("SDL audio subsystem could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -21,27 +21,39 @@ sound_t SoundInit(char* SoundName)
   if(GameSound == NULL) {
     printf("Failed to load sound effect! Mix_Error: %s\n", Mix_GetError());
   }
-
-  return GameSound;
 }
 
-void SoundPlay(sound_t GameSound, int channel)
+void SoundsInit()
 {
-  Mix_PlayChannel(channel, GameSound, 0);
+  EatSound = SoundInit("SnakeEat");
+  GameOverSound = SoundInit("GameOver");
+  GameRestartSound = SoundInit("GameRestart");
 }
 
-void SoundStop(int channel)
+void SoundPlay(sound_t GameSound)
 {
-  Mix_HaltChannel(channel);
+  Mix_PlayChannel(0, GameSound, 0);
 }
 
-sound_t SoundQuit(sound_t GameSound)
+void SoundStop()
+{
+  Mix_HaltChannel(0);
+}
+
+static sound_t SoundQuit(sound_t GameSound)
 {
   Mix_FreeChunk(GameSound);
   GameSound = NULL;
 
+  return GameSound;
+}
+
+void SoundsQuit()
+{
+  EatSound = SoundQuit(EatSound);
+  GameOverSound = SoundQuit(GameOverSound);
+  GameRestartSound = SoundQuit(GameRestartSound);
+
   Mix_CloseAudio();
   Mix_Quit();
-
-  return GameSound;
 }

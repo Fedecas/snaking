@@ -8,7 +8,9 @@
 
 typedef struct _wall_t * wall_t;
 
-wall_t* WallsCreate();
+wall_t* LevelWalls;
+
+void WallsCreate();
 /*
  * Initialize the walls and set the parameters in default values
  */
@@ -28,12 +30,12 @@ int* WallBlocksY(wall_t wall);
  * Return the y direction to the first block of wall
  */
 
-void WallsDraw(SDL_Surface* surface, wall_t* walls);
+void WallsDraw();
 /*
  * Draw the walls of the level
  */
 
-wall_t* WallsDestroy(wall_t* walls);
+void WallsDestroy();
 /*
  * Free the wall's memory
  */

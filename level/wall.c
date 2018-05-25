@@ -1,5 +1,6 @@
 #include "../engine/block.h"
 #include "../engine/draw.h"
+#include "../engine/window.h"
 
 #include "wall.h"
 
@@ -8,11 +9,11 @@ struct _wall_t {
     int blocksX[WALL_SIZE];
     int blocksY[WALL_SIZE];
     int rotation;
-} _wall_t;
+};
 
 static wall_t WallCreate(int size, int x, int y, int rotation)
 {
-  wall_t LevelWall = (wall_t) malloc(sizeof(_wall_t));
+  wall_t LevelWall = (wall_t) malloc(sizeof(struct _wall_t));
 
   LevelWall->size = size;
   LevelWall->rotation = rotation;
@@ -34,16 +35,14 @@ static wall_t WallCreate(int size, int x, int y, int rotation)
   return LevelWall;
 }
 
-wall_t* WallsCreate()
+void WallsCreate()
 {
-  wall_t* LevelWalls = (wall_t*) malloc(sizeof(wall_t) * 4);
+  LevelWalls = (wall_t*) malloc(sizeof(wall_t) * 4);
 
   LevelWalls[0] = WallCreate(BLOCKS_Y - 1, 0, 0, WALL_VERTICAL); // Left
   LevelWalls[1] = WallCreate(BLOCKS_Y - 1, BLOCKS_X - 1, 1, WALL_VERTICAL); // Right
   LevelWalls[2] = WallCreate(BLOCKS_X - 1, 1, 0, WALL_HORIZONTAL); // Up
   LevelWalls[3] = WallCreate(BLOCKS_X - 1, 0, BLOCKS_Y - 1, WALL_HORIZONTAL); // Down
-
-  return LevelWalls;
 }
 
 int WallSize(wall_t LevelWall)
@@ -61,20 +60,20 @@ int* WallBlocksY(wall_t LevelWall)
   return (LevelWall->blocksY);
 }
 
-static void WallDraw(SDL_Surface* LevelSurface, wall_t LevelWall)
+static void WallDraw(wall_t LevelWall)
 {
   for(int i = 0; i < LevelWall->size; i++) {
     int thiswallX = LevelWall->blocksX[i];
     int thiswallY = LevelWall->blocksY[i];
 
-    BlockDraw(LevelSurface, thiswallX, thiswallY, COLOR_WALL, 2);
+    BlockDraw(thiswallX, thiswallY, COLOR_WALL, 2);
   }
 }
 
-void WallsDraw(SDL_Surface* LevelSurface, wall_t* LevelWalls)
+void WallsDraw()
 {
   for(int i = 0; i < 4; i++) {
-    WallDraw(LevelSurface, LevelWalls[i]);
+    WallDraw(LevelWalls[i]);
   }
 }
 
@@ -86,7 +85,7 @@ static wall_t WallDestroy(wall_t LevelWall)
   return LevelWall;
 }
 
-wall_t* WallsDestroy(wall_t* LevelWalls)
+void WallsDestroy()
 {
   for(int i = 0; i < 4; i++) {
     LevelWalls[i] = WallDestroy(LevelWalls[i]);
@@ -94,6 +93,4 @@ wall_t* WallsDestroy(wall_t* LevelWalls)
 
   free(LevelWalls);
   LevelWalls = NULL;
-
-  return LevelWalls;
 }

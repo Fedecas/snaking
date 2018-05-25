@@ -20,24 +20,26 @@
 
 typedef struct _window_t * window_t;
 
-window_t WindowAndSurfaceInit();
+window_t GameWindow;
+
+void WindowAndSurfaceInit();
 /*
  * Create a window in WINDOW_POSX and WINDOW_POSY,
  * of size (WINDOW_WIDTH * WINDOW_HEIGHT),
  * with title WINDOW_TITLE
  */
 
-SDL_Surface* WindowSurface(window_t window);
+surface_t WindowSurface();
 /*
  * Return the direction to the surface of window
  */
 
-void WindowSurfaceUpdate(window_t window);
+void WindowSurfaceUpdate();
 /*
  * Update the surface of the window
  */
 
-window_t WindowAndSurfaceQuit(window_t window);
+void WindowAndSurfaceQuit();
 /*
  * Free the surface and destroy the window
  */

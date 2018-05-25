@@ -1,4 +1,4 @@
-ENGINEOBJS = engine/block.c engine/button.c engine/draw.c engine/font.c engine/handlers.c engine/sound.c engine/window.c
+ENGINEOBJS = engine/block.c engine/button.c engine/draw.c engine/handlers.c engine/sound.c engine/window.c
 LEVELOBJS = level/food.c level/score.c level/snake.c level/terrain.c level/wall.c
 CFLAGS = -Wall -Werror -Wextra -pedantic -std=c99
 PROGRAM = snaking

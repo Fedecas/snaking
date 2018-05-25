@@ -1,14 +1,14 @@
 #ifndef SNAKING_BUTTON_H
 #define SNAKING_BUTTON_H
 
-#include "engine/draw.h"
+#include "draw.h"
 
 typedef struct _button_t * button_t;
 
-button_t ButtonCreate(int x, int y,
-                      int width, int height,
-                      SDL_Color boxColor, SDL_Color textColor,
-                      char* text);
+button_t ButtonQuit;
+button_t ButtonRestart;
+
+void ButtonsCreate();
 /*
  * Create a button with his parameters
  */
@@ -33,22 +33,22 @@ int ButtonHeight(button_t button);
  * Return the height of the button
  */
 
-void ButtonSetBoxColor(button_t button, SDL_Color boxColor);
+void ButtonSetBoxColor(button_t button, color_t boxColor);
 /*
  * Set a new box color for the button
  */
 
-void ButtonSetTextColor(button_t button, SDL_Color textColor);
+void ButtonSetTextColor(button_t button, color_t textColor);
 /*
  * Set a new text color for the button
  */
 
-void ButtonDraw(SDL_Surface* surface, button_t button, TTF_Font* font);
+void ButtonsDraw();
 /*
  * Draw a button in the surface of window
  */
 
-button_t ButtonDestroy(button_t button);
+void ButtonsDestroy();
 /*
  * Free the button's memory
  */

@@ -2,12 +2,10 @@
 
 /* TODO
  * Ver includes
- * Sonidos
- * Sleep
- * Button y Handlers en main?
- * Fuente de buttons (y en general, se usa siempre la misma)
  * Uso de SDL en main
 */
+
+#include "engine/handlers.h"
 
 #include "level/food.h"
 #include "level/score.h"
@@ -15,148 +13,130 @@
 #include "level/terrain.h"
 #include "level/wall.h"
 
-#include "button.h"
 #include "colors.h"
-#include "handlers.h"
 
-#define DELAY_IN_MS       75
+#define SLEEP_DEFAULT   75
 
-static void SleepMS(int timeinms)
+int sleep_in_ms;
+
+static void Sleep()
 {
   struct timespec timetosleep;
 
-  timetosleep.tv_nsec = 1000 * 1000 * timeinms;
+  timetosleep.tv_nsec = 1000 * 1000 * sleep_in_ms;
   timetosleep.tv_sec = 0;
 
   nanosleep(&timetosleep, NULL);
 }
 
-static int GameOver(window_t GameWindow, TTF_Font* font, sound_t GameOverSound)
+static int GameOver()
 {
-  SoundPlay(GameOverSound, 1);
-  SDL_Surface* windowSurface = WindowSurface(GameWindow);
+  SoundPlay(GameOverSound);
+
+  // Create 'ButtonQuit' and 'ButtonRestart'
+  ButtonsCreate();
+
+  // Init 'ButtonFont'
+  FontInitButton();
 
   // Draw "game over" text
-  char* text = "GAME OVER";
-
   int fontwidth, fontheight;
-  TTF_SizeText(font, text, &fontwidth, &fontheight);
+  TTF_SizeText(ScoreFont, "GAME OVER", &fontwidth, &fontheight);
 
   int textposX = (WINDOW_WIDTH / 2) - (fontwidth / 2);
   int textposY = (WINDOW_HEIGHT / 2) - fontheight;
 
-  DrawText(windowSurface, font, text, textposX, textposY, COLOR_SCORE);
-
-  // Draw the quit button
-  int buttonwidth = WINDOW_WIDTH / 6;
-  int buttonheight = buttonwidth / 2;
-
-  int buttonquitX = (WINDOW_WIDTH / 2) - (buttonwidth + buttonheight);
-  int buttonquitY = textposY + buttonheight;
-
-  button_t buttonQuit = ButtonCreate(buttonquitX, buttonquitY,
-                                     buttonwidth, buttonheight,
-                                     COLOR_BLACK, COLOR_WHITE, "QUIT");
-
-  int fontsize = (buttonwidth + buttonheight) / 10;
-  TTF_Font* buttonfont = TTF_OpenFont(FONT_PATH, fontsize);
-
-  // Draw the restart button
-  int buttonrestartX = buttonquitX + (2 * buttonwidth);
-  int buttonrestartY = textposY + buttonheight;
-
-  button_t buttonRestart = ButtonCreate(buttonrestartX, buttonrestartY,
-                                        buttonwidth, buttonheight,
-                                        COLOR_BLACK, COLOR_WHITE, "RESTART");
+  DrawText(ScoreFont, "GAME OVER", textposX, textposY, COLOR_SCORE);
 
   // Wait for response loop
-  int quit = OPTION_CONTINUE;
+  quit = OPTION_CONTINUE;
+  sleep_in_ms /= 2;
 
   while(!quit) {
-    HandleInputOption(&quit, buttonQuit, buttonRestart);
+    HandleInputOption();
 
-    ButtonDraw(windowSurface, buttonQuit, buttonfont);
-    ButtonDraw(windowSurface, buttonRestart, buttonfont);
+    ButtonsDraw();
 
-    WindowSurfaceUpdate(GameWindow);
+    WindowSurfaceUpdate();
 
-    SleepMS(DELAY_IN_MS / 2);
+    Sleep();
   }
 
-  ButtonDestroy(buttonQuit);
-  ButtonDestroy(buttonRestart);
+  sleep_in_ms = SLEEP_DEFAULT;
 
-  TTF_CloseFont(buttonfont);
-
-  SoundStop(1);
+  FontQuitButton();
+  ButtonsDestroy();
+  SoundStop();
 
   return quit;
 }
 
-static void GameRestart(food_t* ActualFood, snake_t* PlayerSnake, score_t* GameScore)
+static void GameRestart()
 {
+  SoundPlay(GameRestartSound);
+
   // Restart the snake
-  SnakeDestroy(*PlayerSnake);
-  *PlayerSnake = SnakeCreate();
+  SnakeDestroy();
+  SnakeCreate();
 
   // Restart the food
-  FoodDestroy(*ActualFood);
-  *ActualFood = FoodCreate();
+  FoodDestroy();
+  FoodCreate();
 
   // Restart the score
-  ScoreDestroy(*GameScore);
-  *GameScore = ScoreCreate();
+  ScoreRestart();
+
+  arrow = DIRECTION_NONE;
+  quit = OPTION_CONTINUE;
 }
 
-int main(int argc, char* args[])
+int main(void)
 {
   // Init SDL, create the window and her surface
-  window_t GameWindow = WindowAndSurfaceInit();
+  WindowAndSurfaceInit();
 
   // Initialize TTF module and the font for texts
-  TTF_Font* ScoreFont = DrawTextInit();
+  FontInitModuleAndScore();
 
   // Initialize the sounds to play
-  sound_t IncreaseSound = SoundInit("SnakeIncrease");
-  sound_t EatSound = SoundInit("SnakeEat");
-  sound_t GameOverSound = SoundInit("GameOver");
-  sound_t GameRestartSound = SoundInit("GameRestart");
+  SoundsInit();
 
   // Create the terrain to move
-  terrain_t LevelTerrain = TerrainCreate();
+  TerrainCreate();
 
   // Create the limits
-  wall_t* LevelWalls = WallsCreate();
+  WallsCreate();
 
   // Create the snake for use
-  snake_t PlayerSnake = SnakeCreate();
+  SnakeCreate();
 
   // Create first food
-  food_t ActualFood = FoodCreate();
+  FoodCreate();
 
   // Initialize the score
-  score_t GameScore = ScoreCreate();
+  ScoreRestart();
 
   /* - Game running loop - */
-  int arrow = DIRECTION_NONE;
-  int quit = OPTION_CONTINUE;
+  arrow = DIRECTION_NONE;
+  quit = OPTION_CONTINUE;
 
   start:
   while(1) {
+    sleep_in_ms = SLEEP_DEFAULT;
     clock_t start = clock();
-    // Wait events in window/keyboard
-    HandleInputDirection(&quit, &arrow);
 
-    /* React to event */
+    // Check for events in window/keyboard
+    HandleInputDirection();
+
     // Move the snake according the last key pressed
-    SnakeMove(PlayerSnake, arrow);
+    SnakeMove();
 
-    // Snake eat the food if colliding it
-    SnakeEat(PlayerSnake, &ActualFood, GameScore, IncreaseSound, EatSound);
+    // Snake eat the food if correspond
+    SnakeEat();
 
-    // If snake collide walls or her body, show lose menu
-    if(SnakeCollidingWallOrBody(PlayerSnake, LevelWalls)) {
-      quit = GameOver(GameWindow, ScoreFont, GameOverSound);
+    // If snake collide walls or her body, the game is over D:
+    if(SnakeCollidingWallOrBody()) {
+      quit = GameOver();
     }
 
     // Check if continue or quit the game
@@ -166,66 +146,59 @@ int main(int argc, char* args[])
       case OPTION_QUIT:
         goto end;
       case OPTION_RESTART:
-        GameRestart(&ActualFood, &PlayerSnake, &GameScore);
-        SoundPlay(GameRestartSound, 1);
-        arrow = DIRECTION_NONE;
-        quit = OPTION_CONTINUE;
+        GameRestart();
         goto start;
       default: break;
     }
 
     /* Draw game objects and wait */
     // Draw the base terrain
-    TerrainDraw(WindowSurface(GameWindow), LevelTerrain);
+    TerrainDraw();
 
     // Draw the limits of the level
-    WallsDraw(WindowSurface(GameWindow), LevelWalls);
+    WallsDraw();
 
     // Draw the snake in the screen
-    SnakeDraw(WindowSurface(GameWindow), PlayerSnake);
+    SnakeDraw();
 
     // Draw the actual food in the screen
-    FoodDraw(WindowSurface(GameWindow), ActualFood);
+    FoodDraw();
 
     // Draw the score
-    ScoreDraw(WindowSurface(GameWindow), ScoreFont, GameScore);
+    ScoreDraw();
 
     // Update the changes in surface
-    WindowSurfaceUpdate(GameWindow);
+    WindowSurfaceUpdate();
 
+    // Equal sleep time between frames
     int diff = (int)((clock() - start) * 1000 / CLOCKS_PER_SEC);
+    sleep_in_ms -= diff;
 
     // Wait
-    SleepMS(DELAY_IN_MS - diff);
+    Sleep();
   }
   end:
 
-  // Destroy the score
-  ScoreDestroy(GameScore);
-
   // Destroy the food
-  FoodDestroy(ActualFood);
+  FoodDestroy();
 
   // Destroy the snake
-  SnakeDestroy(PlayerSnake);
+  SnakeDestroy();
 
   // Destroy the walls
-  WallsDestroy(LevelWalls);
+  WallsDestroy();
 
   // Destroy the terrain
-  TerrainDestroy(LevelTerrain);
+  TerrainDestroy();
 
   // Close the sounds
-  SoundQuit(GameRestartSound);
-  SoundQuit(GameOverSound);
-  SoundQuit(EatSound);
-  SoundQuit(IncreaseSound);
+  SoundsQuit();
 
   // Close the font opened and exit TTF module
-  DrawTextQuit(ScoreFont);
+  FontQuitScore();
 
   // Destroy the window and her surface, quit SDL module
-  WindowAndSurfaceQuit(GameWindow);
+  WindowAndSurfaceQuit();
 
   return 0;
 }
