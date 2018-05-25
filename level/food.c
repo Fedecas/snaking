@@ -1,7 +1,5 @@
+#include <stdlib.h>
 #include <time.h>
-
-#include "../engine/block.h"
-#include "../engine/window.h"
 
 #include "food.h"
 

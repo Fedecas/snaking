@@ -1,10 +1,12 @@
 #include <time.h>
 
-#include "../engine/block.h"
 #include "../engine/handlers.h"
-#include "../engine/window.h"
+#include "../engine/sound.h"
 
+#include "food.h"
+#include "score.h"
 #include "snake.h"
+#include "wall.h"
 
 struct _snake_t {
     int headDirection;

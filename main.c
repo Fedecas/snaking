@@ -1,11 +1,12 @@
 #include <time.h>
 
-/* TODO
- * Ver includes
- * Uso de SDL en main
-*/
-
+#include "engine/block.h"
+#include "engine/button.h"
+#include "engine/draw.h"
+#include "engine/font.h"
 #include "engine/handlers.h"
+#include "engine/sound.h"
+#include "engine/window.h"
 
 #include "level/food.h"
 #include "level/score.h"
@@ -17,19 +18,24 @@
 
 #define SLEEP_DEFAULT   75
 
-int sleep_in_ms;
+int sleep_remain;
 
 static void Sleep()
 {
   struct timespec timetosleep;
 
-  timetosleep.tv_nsec = 1000 * 1000 * sleep_in_ms;
+  timetosleep.tv_nsec = 1000 * 1000 * SLEEP_DEFAULT;
   timetosleep.tv_sec = 0;
 
-  nanosleep(&timetosleep, NULL);
+  struct timespec timeremaining;
+
+  timeremaining.tv_nsec = 1000 * 1000 * (SLEEP_DEFAULT - sleep_remain);
+  timeremaining.tv_sec = 0;
+
+  nanosleep(&timetosleep, &timeremaining);
 }
 
-static int GameOver()
+static void GameOver()
 {
   SoundPlay(GameOverSound);
 
@@ -41,7 +47,7 @@ static int GameOver()
 
   // Draw "game over" text
   int fontwidth, fontheight;
-  TTF_SizeText(ScoreFont, "GAME OVER", &fontwidth, &fontheight);
+  FontSize(ScoreFont, "GAME OVER", &fontwidth, &fontheight);
 
   int textposX = (WINDOW_WIDTH / 2) - (fontwidth / 2);
   int textposY = (WINDOW_HEIGHT / 2) - fontheight;
@@ -50,7 +56,7 @@ static int GameOver()
 
   // Wait for response loop
   quit = OPTION_CONTINUE;
-  sleep_in_ms /= 2;
+  sleep_remain /= 2;
 
   while(!quit) {
     HandleInputOption();
@@ -62,13 +68,11 @@ static int GameOver()
     Sleep();
   }
 
-  sleep_in_ms = SLEEP_DEFAULT;
+  sleep_remain = SLEEP_DEFAULT;
 
   FontQuitButton();
   ButtonsDestroy();
   SoundStop();
-
-  return quit;
 }
 
 static void GameRestart()
@@ -122,7 +126,7 @@ int main(void)
 
   start:
   while(1) {
-    sleep_in_ms = SLEEP_DEFAULT;
+    sleep_remain = SLEEP_DEFAULT;
     clock_t start = clock();
 
     // Check for events in window/keyboard
@@ -136,7 +140,7 @@ int main(void)
 
     // If snake collide walls or her body, the game is over D:
     if(SnakeCollidingWallOrBody()) {
-      quit = GameOver();
+      GameOver();
     }
 
     // Check if continue or quit the game
@@ -172,7 +176,7 @@ int main(void)
 
     // Equal sleep time between frames
     int diff = (int)((clock() - start) * 1000 / CLOCKS_PER_SEC);
-    sleep_in_ms -= diff;
+    sleep_remain -= diff;
 
     // Wait
     Sleep();

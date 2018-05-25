@@ -1,11 +1,9 @@
 #ifndef SNAKING_WINDOW_H
 #define SNAKING_WINDOW_H
 
-#include <SDL2/SDL.h>
-
 #include "block.h"
 
-#define WINDOW_TITLE  "Snaking Alpha" // Title of the window
+#define WINDOW_TITLE  "Snaking" // Title of the window
 
 #define WINDOW_POSX   SDL_WINDOWPOS_UNDEFINED // The X position where create a window
 #define WINDOW_POSY   SDL_WINDOWPOS_UNDEFINED // The Y position where create a window

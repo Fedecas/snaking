@@ -1,5 +1,7 @@
-#include "../engine/block.h"
-#include "../engine/window.h"
+#include <stdio.h>
+
+#include "../engine/draw.h"
+#include "../engine/font.h"
 
 #include "score.h"
 

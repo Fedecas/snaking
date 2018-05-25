@@ -1,4 +1,3 @@
-#include "block.h"
 #include "button.h"
 #include "font.h"
 
@@ -23,6 +22,11 @@ void FontInitButton()
   if(ButtonFont == NULL) {
     printf("[error] Button font could not be loaded! TTF_Error: %s\n", SDL_GetError());
   }
+}
+
+void FontSize(font_t font, char* text, int* fontwidth, int* fontheight)
+{
+  TTF_SizeText(font, text, fontwidth, fontheight);
 }
 
 void FontQuitButton()

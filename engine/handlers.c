@@ -1,5 +1,6 @@
-#include "../level/snake.h"
+#include <SDL2/SDL_events.h>
 
+#include "button.h"
 #include "handlers.h"
 
 static SDL_Event event;

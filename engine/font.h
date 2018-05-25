@@ -3,9 +3,11 @@
 
 #include <SDL2/SDL_ttf.h>
 
-#define FONT_TYPE           "RobotoMono-Light"                // Type of font to use
-#define FONT_PATH           "assets/fonts/"FONT_TYPE".ttf"    // Path of a TrueType font for write
-#define FONT_SIZE           (BLOCK_SIZE * 2)                  // Size of the score font
+#include "block.h"
+
+#define FONT_TYPE   "RobotoMono-Light"                // Type of font to use
+#define FONT_PATH   "assets/fonts/"FONT_TYPE".ttf"    // Path of a TrueType font for write
+#define FONT_SIZE   (BLOCK_SIZE * 2)                  // Size of the score font
 
 typedef TTF_Font * font_t;
 
@@ -20,6 +22,11 @@ void FontInitModuleAndScore();
 void FontInitButton();
 /*
  * Init 'ButtonFont' for button's text
+ */
+
+void FontSize(font_t font, char* text, int* fontwidth, int* fontheight);
+/*
+ *
  */
 
 void FontQuitButton();

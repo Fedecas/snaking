@@ -1,7 +1,3 @@
-#include "../engine/block.h"
-#include "../engine/draw.h"
-#include "../engine/window.h"
-
 #include "wall.h"
 
 struct _wall_t {

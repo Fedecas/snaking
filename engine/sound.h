@@ -5,7 +5,6 @@
 
 #define SOUND_FREQ      MIX_DEFAULT_FREQUENCY // Frequency of audio
 #define SOUND_FORMAT    MIX_DEFAULT_FORMAT    // The format of sound
-#define SOUND_CHANNELS  MIX_DEFAULT_CHANNELS  // Number of channels to play sound simultaneously
 #define SOUND_SIZE      2048                  // Size in bytes of each sample
 
 #define SOUND_PATH  "assets/sounds/"  // Path for load sounds

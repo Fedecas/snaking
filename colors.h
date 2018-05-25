@@ -1,9 +1,11 @@
-#ifndef SNAKE_COLORS_H
-#define SNAKE_COLORS_H
+#ifndef SNAKING_COLORS_H
+#define SNAKING_COLORS_H
 
-static inline SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
+#include "engine/draw.h"
+
+static inline color_t mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 {
-  SDL_Color color = {red, green, blue, alpha};
+  color_t color = {red, green, blue, alpha};
   return color;
 }
 
@@ -26,4 +28,4 @@ static inline SDL_Color mk_SDL_Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 a
 
 #define COLOR_WALL                  mk_SDL_Color(96, 125, 139, 255)
 
-#endif //SNAKE_COLORS_H
+#endif //SNAKING_COLORS_H

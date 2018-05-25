@@ -1,7 +1,9 @@
 #ifndef SNAKING_WALL_H
 #define SNAKING_WALL_H
 
-#define WALL_SIZE       (BLOCKS_X - 1)
+#include "../engine/block.h"
+
+#define WALL_SIZE         (BLOCKS_X - 1)
 
 #define WALL_HORIZONTAL   0 // Rotation of the wall
 #define WALL_VERTICAL     1 // Rotation of the wall

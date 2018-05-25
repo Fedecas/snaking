@@ -1,9 +1,6 @@
 #ifndef SNAKING_HANDLERS_H
 #define SNAKING_HANDLERS_H
 
-#include "button.h"
-#include "window.h"
-
 #define DIRECTION_NONE  0
 #define DIRECTION_LEFT  1
 #define DIRECTION_RIGHT 2

@@ -3,11 +3,12 @@
 
 #include <SDL2/SDL_surface.h>
 
-#include "font.h"
-#include "../colors.h"
-
 typedef SDL_Color color_t;
 typedef SDL_Surface * surface_t;
+
+#include "../colors.h"
+
+#include "font.h"
 
 void DrawPixel(int x, int y, color_t color);
 /*

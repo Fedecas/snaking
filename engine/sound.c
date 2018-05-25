@@ -2,16 +2,21 @@
 
 #include "sound.h"
 
-static sound_t SoundInit(char* SoundName)
+static void SoundInit()
 {
-  if(SDL_Init(SDL_INIT_AUDIO) < 0) {
+  if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
     printf("SDL audio subsystem could not initialize! SDL_Error: %s\n", SDL_GetError());
   }
 
-  if(Mix_OpenAudio(SOUND_FREQ, SOUND_FORMAT, SOUND_CHANNELS, SOUND_SIZE) < 0) {
+  Mix_Init(MIX_INIT_FLAC);
+
+  if(Mix_OpenAudio(SOUND_FREQ, SOUND_FORMAT, 1, SOUND_SIZE) < 0) {
     printf("Failed to open audio! Mix_Error: %s\n", Mix_GetError());
   }
+}
 
+static sound_t SoundOpen(char* SoundName)
+{
   char SoundPath[30] = SOUND_PATH;
   strcat(SoundPath, SoundName);
   strcat(SoundPath, SOUND_EXT);
@@ -21,13 +26,17 @@ static sound_t SoundInit(char* SoundName)
   if(GameSound == NULL) {
     printf("Failed to load sound effect! Mix_Error: %s\n", Mix_GetError());
   }
+
+  return GameSound;
 }
 
 void SoundsInit()
 {
-  EatSound = SoundInit("SnakeEat");
-  GameOverSound = SoundInit("GameOver");
-  GameRestartSound = SoundInit("GameRestart");
+  SoundInit();
+
+  EatSound = SoundOpen("SnakeEat");
+  GameOverSound = SoundOpen("GameOver");
+  GameRestartSound = SoundOpen("GameRestart");
 }
 
 void SoundPlay(sound_t GameSound)
@@ -56,4 +65,5 @@ void SoundsQuit()
 
   Mix_CloseAudio();
   Mix_Quit();
+  SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }

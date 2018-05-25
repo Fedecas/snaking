@@ -1,12 +1,7 @@
 #ifndef SNAKING_SNAKE_H
 #define SNAKING_SNAKE_H
 
-#include "../engine/draw.h"
-#include "../engine/sound.h"
-
-#include "food.h"
-#include "score.h"
-#include "wall.h"
+#include "../engine/block.h"
 
 #define SNAKE_DIRECTION (1 + ((int)rand() % 4)) // Pick a direction to snake by default
 #define SNAKE_SIZE      3   // Size of the snake in blocks

@@ -1,5 +1,6 @@
+#include <stdio.h>
+
 #include "block.h"
-#include "draw.h"
 #include "window.h"
 
 int BlockInCollision(int x1, int y1, int x2, int y2)

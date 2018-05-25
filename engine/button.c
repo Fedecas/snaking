@@ -1,4 +1,7 @@
+#include <SDL2/SDL_ttf.h>
+
 #include "button.h"
+#include "font.h"
 #include "window.h"
 
 struct _button_t {
@@ -24,12 +27,14 @@ static button_t ButtonCreate(int buttonX, int buttonY,
   NewButton->boxColor = COLOR_BUTTON_BOX;
   NewButton->textColor = COLOR_BUTTON_TEXT;
   NewButton->text = buttonText;
+
+  return NewButton;
 }
 
 void ButtonsCreate()
 {
   int fontHeight;
-  TTF_SizeText(ScoreFont, "GAME OVER", NULL, &fontHeight); // TODO ver
+  TTF_SizeText(ScoreFont, "", NULL, &fontHeight);
 
   int buttonWidth = WINDOW_WIDTH / 6;
   int buttonHeight = buttonWidth / 2;
